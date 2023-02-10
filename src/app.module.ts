@@ -6,19 +6,23 @@ import { ResponseInterceptor } from './helper/response.interceptor';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpExceptionFilter } from './helper/http-exception.filter';
 import { LoggerMiddleware } from './helper/logger.middleware';
+import { ConfigModule } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config/dist';
+import { configuration, EConfiguration } from './config/configuration.config';
+import { validate } from './helper/env.validation';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      // imports: [ConfigModule],
-      // inject: [ConfigService],
-      useFactory: () => ({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: 'localhost',
-        port: 3306,
-        username: 'root',
-        password: 'n1nbmkbhgct',
-        database: 'comp1640_web_prj',
+        host: configService.get(EConfiguration.DB_MYSQL_HOST),
+        port: +configService.get<number>(EConfiguration.DB_MYSQL_PORT),
+        username: configService.get(EConfiguration.DB_MYSQL_USER),
+        password: configService.get(EConfiguration.DB_MYSQL_PASSWORD),
+        database: configService.get(EConfiguration.DB_MYSQL_NAME),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
         autoLoadEntities: true,
@@ -27,6 +31,11 @@ import { LoggerMiddleware } from './helper/logger.middleware';
         timezone: '+09:00',
         legacySpatialSupport: false, //fix version mysql 8
       }),
+    }),
+    ConfigModule.forRoot({
+      load: [configuration],
+      isGlobal: true,
+      validate,
     }),
   ],
   controllers: [AppController],

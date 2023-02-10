@@ -1,21 +1,23 @@
 import { plainToInstance } from 'class-transformer';
 import { IsNumber, IsString, validateSync } from 'class-validator';
+
 class EnvironmentVariables {
-  @IsNumber()
-  PORT: number;
   @IsString()
   DB_MYSQL_HOST: string;
+
   @IsString()
   DB_MYSQL_USER: string;
+
   @IsNumber()
   DB_MYSQL_PORT: number;
+
   @IsString()
   DB_MYSQL_PASSWORD: string;
+
   @IsString()
   DB_MYSQL_NAME: string;
-  @IsString()
-  DB_MYSQL_TZ: string;
 }
+
 export function validate(config: Record<string, unknown>) {
   const validatedConfig = plainToInstance(EnvironmentVariables, config, {
     enableImplicitConversion: true,
