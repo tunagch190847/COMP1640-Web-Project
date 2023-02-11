@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config/dist';
 import { configuration, EConfiguration } from './config/configuration.config';
 import { validate } from './helper/env.validation';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { validate } from './helper/env.validation';
         database: configService.get(EConfiguration.DB_MYSQL_NAME),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
-        autoLoadEntities: true,
+        // autoLoadEntities: true,
         logging: false,
         // logger: new DatabaseMysqlLogger(),
         timezone: '+09:00',
@@ -37,6 +38,7 @@ import { validate } from './helper/env.validation';
       isGlobal: true,
       validate,
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [
