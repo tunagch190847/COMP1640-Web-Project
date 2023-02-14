@@ -10,24 +10,29 @@
 			margin: 50px auto;
 			padding: 30px 40px;
 			background-color: white;">
-				<form>
+			<form  [formGroup]="formGroup" (ngSubmit)="Save()">
 					<!-- Email input -->
 					<div class="form-outline mb-4">
-						<span class="far fa-user p-2"></span>
-						<input type="email" id="form3Example3" class="form-control form-control-lg"
-							placeholder="Enter a valid email address" />
+						<div class="col-md-6">
+							<label>Email</label>
+						</div>
+						<input type="email" pInputText formControlName="email" placeholder="Enter your Email"
+							style="width:378px; height:50px" />
 					</div>
 
 					<!-- Password input -->
 					<div class="form-outline mb-3">
-						<span class="fas fa-lock p-2"></span>
-						<p-password [toggleMask]="true" placeholder="Enter Password"></p-password>
+						<div class="col-md-6">
+							<label>Password</label>
+						</div>
+						<p-password [toggleMask]="true" placeholder="Enter your Password" formControlName="password"
+							[style]="{'width': '90%'}"></p-password>
 					</div>
 
 					<div class="d-flex justify-content-between align-items-center">
 						<!-- Checkbox -->
 						<div class="form-check mb-0">
-							<input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+							<input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" formControlName="checked"/>
 							<label class="form-check-label" for="form2Example3">
 								Remember me
 							</label>
@@ -52,7 +57,7 @@
 						</button>
 					</div>
 					<div class="text-center text-lg-start mt-4 pt-2">
-						<button type="button" class="btn btn-primary btn-lg"
+						<button type="submit" class="btn btn-primary btn-lg" 
 							style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
 						<p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
 								class="link-danger">Register</a></p>
