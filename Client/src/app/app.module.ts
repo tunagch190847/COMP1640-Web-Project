@@ -11,8 +11,9 @@ import { AppRoutingModule } from './app-routing.module';
 import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
 import {PasswordModule} from 'primeng/password';
 import {InputTextModule} from 'primeng/inputtext';
-
-
+import { HttpClientModule } from "@angular/common/http";
+import { ReactiveFormsModule } from "@angular/forms";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +28,10 @@ import {InputTextModule} from 'primeng/inputtext';
     AppRoutingModule,
     AccordionModule,
     PasswordModule,
-    InputTextModule
+    InputTextModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule
 
   ],
   providers: [],
