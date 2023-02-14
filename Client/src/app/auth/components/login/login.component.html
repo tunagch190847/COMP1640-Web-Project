@@ -1,1 +1,33 @@
-<p>login works!</p>
+<div class="container">
+	<div class="screen">
+		<div class="screen__content">
+			<form class="login">
+                <h1>Login</h1>
+				<div class="">
+                    <input id="float-input" type="text" pInputText  style="width:235px; height:47px; border: 1px solid #ced4da;"> 
+				</div>
+				<div class="" >
+					<p-password [toggleMask]="true" placeholder="Enter Password"></p-password>
+				</div>
+				<button class="button login__submit" >
+					<span class="button__text">Log In</span>
+					<i class="button__icon fas fa-chevron-right"></i>
+				</button>				
+			</form>
+			<div class="social-login">
+				<h3>Or</h3>
+				<div class="social-icons">
+					<a href="#" class="social-login__icon fab fa-instagram"></a>
+					<a href="#" class="social-login__icon fab fa-facebook"></a>
+					<a href="#" class="social-login__icon fab fa-twitter"></a>
+				</div>
+			</div>
+		</div>
+		<div class="screen__background">
+			<span class="screen__background__shape screen__background__shape4"></span>
+			<span class="screen__background__shape screen__background__shape3"></span>		
+			<span class="screen__background__shape screen__background__shape2"></span>
+			<span class="screen__background__shape screen__background__shape1"></span>
+		</div>		
+	</div>
+</div>
