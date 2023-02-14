@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/components/login/login.component';
 import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
 
-
+//test
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     {
