@@ -11,6 +11,7 @@ import { ConfigService } from '@nestjs/config/dist';
 import { configuration, EConfiguration } from './config/configuration.config';
 import { validate } from './helper/env.validation';
 import { UserModule } from './modules/user/user.module';
+import { IdeaModule } from './modules/idea/idea.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { UserModule } from './modules/user/user.module';
       validate,
     }),
     UserModule,
+    IdeaModule,
   ],
   controllers: [AppController],
   providers: [
