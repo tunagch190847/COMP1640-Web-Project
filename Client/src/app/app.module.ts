@@ -11,6 +11,9 @@ import { AppRoutingModule } from './app-routing.module';
 import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
 import {PasswordModule} from 'primeng/password';
 import {InputTextModule} from 'primeng/inputtext';
+import { HeaderHomeComponent } from './header-home/header-home.component';
+import { MenubarModule } from 'primeng/menubar';
+import { MenuItem } from 'primeng/api';
 
 
 @NgModule({
@@ -20,17 +23,19 @@ import {InputTextModule} from 'primeng/inputtext';
     LoginComponent,
     ResetPasswordComponent,
     HomeComponent,
-    DetailComponent
+    DetailComponent,
+    HeaderHomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AccordionModule,
     PasswordModule,
-    InputTextModule
-
+    InputTextModule,
+    MenubarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
