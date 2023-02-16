@@ -1,0 +1,7 @@
+.test1 {
+    width: 80%;
+}
+
+::ng-deep .test1 p-menubar {
+    padding: 50%;
+}
