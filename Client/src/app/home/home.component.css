@@ -1,0 +1,11 @@
+.menu{
+    width: 10%;
+    float: left;
+}
+
+.content{
+    
+    padding: 20px 35% 0px 0px;
+    
+    float: right;
+}
