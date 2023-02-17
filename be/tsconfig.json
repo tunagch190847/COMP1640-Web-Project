@@ -11,6 +11,18 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
+    "paths": {
+      "@core/*": [
+        "src/core/*"
+      ],
+      "@modules/*": [
+        "src/modules/*"
+      ],
+      "@helper/*": [
+        "src/helper/*"
+      ],
+    
+    },
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
