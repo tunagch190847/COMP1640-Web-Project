@@ -12,16 +12,16 @@ export class HeaderHomeComponent {
   ngOnInit() {
     this.items = [
       {
-        label: 'Category 1',
+        label: 'Thoi su',
       },
       {
-        label: 'Category 2',
+        label: 'tin tuc',
       },
       {
-        label: 'Category 3',
+        label: 'cuu tro',
       },
       {
-        label: 'Category 4',
+        label: 'Phim',
       },
       {
         label: 'Category 5',
@@ -37,9 +37,6 @@ export class HeaderHomeComponent {
       },
       {
         label: 'Category 9',
-      },
-      {
-        label: 'Category 10',
       },
       
     ];

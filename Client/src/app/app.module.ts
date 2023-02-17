@@ -13,29 +13,49 @@ import {PasswordModule} from 'primeng/password';
 import {InputTextModule} from 'primeng/inputtext';
 import { HeaderHomeComponent } from './header-home/header-home.component';
 import { MenubarModule } from 'primeng/menubar';
-import { MenuItem } from 'primeng/api';
+import { SlideMenuModule } from 'primeng/slidemenu';
+import { ButtonModule } from 'primeng/button';
+import { SpeedDialModule } from 'primeng/speeddial';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { SidebarModule } from 'primeng/sidebar';
+import { TabViewModule } from 'primeng/tabview';
+import { SidebarComponent } from './auth/components/sidebar/sidebar.component';
+import { IdeaComponent } from './auth/components/idea/idea.component';
+import { CardModule } from 'primeng/card';
+
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AuthComponent,
-    LoginComponent,
-    ResetPasswordComponent,
-    HomeComponent,
-    DetailComponent,
-    HeaderHomeComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    AccordionModule,
-    PasswordModule,
-    InputTextModule,
-    MenubarModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        AuthComponent,
+        LoginComponent,
+        ResetPasswordComponent,
+        HomeComponent,
+        DetailComponent,
+        HeaderHomeComponent,
+        SidebarComponent,
+        IdeaComponent,
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        AccordionModule,
+        PasswordModule,
+        InputTextModule,
+        MenubarModule,
+        SlideMenuModule,
+        ButtonModule,
+        SpeedDialModule,
+        SidebarModule,
+        CommonModule,
+        FormsModule,
+        TabViewModule,
+        CardModule
+    ]
 })
 export class AppModule { }
 
