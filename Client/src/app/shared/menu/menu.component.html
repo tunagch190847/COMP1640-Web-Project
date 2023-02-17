@@ -1,0 +1,25 @@
+<p-button type="button" class="mr-2" (click)="display = true" style = "position:fixed;">Show Menu</p-button>
+<p-sidebar [(visible)]="display">
+    <nav class="mt-2">
+        <ul>
+            <li>
+                <!-- <a [routerLink]="['']" routerLinkActive="active" class="nav-link"> -->
+                <a  class="nav-link" href="#">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                        Home
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a  class="nav-link" href="#">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                        Home
+                    </p>
+                </a>
+            </li>
+        </ul>
+        <ul></ul>
+    </nav>
+</p-sidebar>

@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
 import {PasswordModule} from 'primeng/password';
 import {InputTextModule} from 'primeng/inputtext';
-import { HeaderHomeComponent } from './header-home/header-home.component';
+import { HeaderHomeComponent } from './shared/header-home/header-home.component';
 import { MenubarModule } from 'primeng/menubar';
 import { SlideMenuModule } from 'primeng/slidemenu';
 import { ButtonModule } from 'primeng/button';
@@ -20,10 +20,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarModule } from 'primeng/sidebar';
 import { TabViewModule } from 'primeng/tabview';
-import { SidebarComponent } from './auth/components/sidebar/sidebar.component';
-import { IdeaComponent } from './auth/components/idea/idea.component';
 import { CardModule } from 'primeng/card';
-
+import { LayoutComponent } from './shared/layout/layout.component';
+import { MenuComponent } from './shared/menu/menu.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -35,8 +35,8 @@ import { CardModule } from 'primeng/card';
         HomeComponent,
         DetailComponent,
         HeaderHomeComponent,
-        SidebarComponent,
-        IdeaComponent,
+        LayoutComponent,
+        MenuComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
@@ -54,7 +54,8 @@ import { CardModule } from 'primeng/card';
         CommonModule,
         FormsModule,
         TabViewModule,
-        CardModule
+        CardModule,
+        BrowserAnimationsModule
     ]
 })
 export class AppModule { }

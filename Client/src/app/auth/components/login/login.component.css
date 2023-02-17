@@ -26,3 +26,10 @@ height: 100%;
     background: linear-gradient(to top, #fff 10%, rgba(93, 42, 141, 0.4) 90%) no-repeat;
 }
 
+::ng-deep .vh-100 input .p-inputtext {
+	width: 900%;
+}
+
+::ng-deep .vh-100 p-password .p-inputtext {
+	width: 100%;
+}
