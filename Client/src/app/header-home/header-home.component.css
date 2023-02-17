@@ -1,7 +1,14 @@
-.test1 {
-    width: 80%;
+:host ::ng-deep .p-menubar{
+    background-color: white;
+    border-width: 0;
 }
 
-::ng-deep .test1 p-menubar {
-    padding: 50%;
+
+
+.test1 {
+    margin-top: 10px;
+}
+
+.header{
+    border-bottom-style: groove;
 }
