@@ -5,7 +5,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Department } from './departments.entity';
+import { Department } from './department.entity';
 import { User } from './user.entity';
 
 @Entity('user_detail')

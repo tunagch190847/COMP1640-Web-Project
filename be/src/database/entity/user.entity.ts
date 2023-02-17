@@ -7,8 +7,8 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Idea } from './ideas.entity';
-import { IdeaComment } from './ideasComment.entity';
+import { Idea } from './idea.entity';
+import { Comment } from './ideaComment.entity';
 import { Role } from './role.entity';
 import { UserDetail } from './userDetail.entity';
 
@@ -66,6 +66,6 @@ export class User {
   @OneToMany(() => Idea, (ideas) => ideas.user)
   ideas: Idea[];
 
-  @OneToMany(() => IdeaComment, (ideaComment) => ideaComment.user)
-  postComments: IdeaComment[];
+  @OneToMany(() => Comment, (ideaComment) => ideaComment.user)
+  postComments: Comment[];
 }

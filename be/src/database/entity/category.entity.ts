@@ -6,15 +6,15 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Idea } from './ideas.entity';
+import { Idea } from './idea.entity';
 
-@Entity('ideas_files')
-export class IdeaFile {
-  @PrimaryGeneratedColumn({ name: 'files_id', type: 'int', unsigned: true })
-  files_id: number;
+@Entity('ideas_categories')
+export class IdeaCategory {
+  @PrimaryGeneratedColumn({ name: 'category_id', type: 'int', unsigned: true })
+  category_id: number;
 
-  @Column({ name: 'link', type: 'varchar' })
-  link: string;
+  @Column({ name: 'content', type: 'varchar' })
+  description: string;
 
   @CreateDateColumn({ name: 'created_date', type: 'timestamp' })
   created_at: Date;
