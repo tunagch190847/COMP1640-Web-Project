@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Idea } from 'src/database/entity/idea.entity';
+import { Idea } from 'src/core/database/mysql/entity/idea.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class IdeaService {
-    constructor(
-        @InjectRepository(Idea)
-        private ideaRepository: Repository<Idea>,
-      ) {}
+  constructor(
+    @InjectRepository(Idea)
+    private ideaRepository: Repository<Idea>,
+  ) {}
 }
