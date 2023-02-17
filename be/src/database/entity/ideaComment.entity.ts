@@ -6,11 +6,11 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Idea } from './ideas.entity';
+import { Idea } from './idea.entity';
 import { User } from './user.entity';
 
 @Entity('ideas_comment')
-export class IdeaComment {
+export class Comment {
   @PrimaryGeneratedColumn({ name: 'comment_id', type: 'int', unsigned: true })
   comment_id: number;
 
