@@ -11,15 +11,15 @@ import { Idea } from './idea.entity';
 @Entity('idea_files')
 export class IdeaFile {
   @PrimaryGeneratedColumn({ name: 'file_id', type: 'int', unsigned: true })
-  fileId: number;
+  file_id: number;
 
   @Column({ name: 'link', type: 'varchar', length: 300 })
   link: string;
   
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  created_at: Date;
 
   @ManyToOne(() => Idea, (idea) => idea.files, { onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'idea_id', referencedColumnName: 'ideaId' })
+  @JoinColumn({ name: 'idea_id', referencedColumnName: 'idea_id' })
   idea: Idea;
 }

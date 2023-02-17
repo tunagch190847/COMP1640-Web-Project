@@ -17,7 +17,7 @@
 //   @PrimaryColumn({ name: 'category_id' })
 //   categoryId: number;
 
-//   @ManyToOne(() => Idea, ideas => ideas.c { onUpdate: 'CASCADE' })
+//   @ManyToOne(() => Idea, idea => idea { onUpdate: 'CASCADE' })
 //   @JoinColumn({ name: 'idea_id' })
 //   idea: Idea;
 

@@ -13,10 +13,10 @@ import { User } from './user.entity';
 @Entity('user_details')
 export class UserDetail {
   @PrimaryColumn({ name: 'user_id' })
-  userId: number
+  user_id: number
 
   @OneToOne(() => User, (user) => user.userDetail, { onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'user_id', referencedColumnName: 'userId' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
   user: User;
 
   @Column({ name: 'first_name', type: 'varchar', length: 255 })
@@ -38,12 +38,12 @@ export class UserDetail {
   dob: Date;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updated_at: Date;
 
   @OneToOne(() => Department, (department) => department.userDetail, { onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'department_id', referencedColumnName: 'departmentId' })
+  @JoinColumn({ name: 'department_id', referencedColumnName: 'department_id' })
   department: Department;
 }

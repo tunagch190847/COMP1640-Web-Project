@@ -9,7 +9,7 @@ import {
 @Entity('idea_categories')
 export class IdeaCategory {
   @PrimaryGeneratedColumn({ name: 'category_id', type: 'int', unsigned: true })
-  categoryId: number;
+  category_id: number;
 
   @Column({ name: 'name', type: 'varchar', length: 100 })
   name: string;
@@ -18,8 +18,8 @@ export class IdeaCategory {
   description: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updated_at: Date;
 }

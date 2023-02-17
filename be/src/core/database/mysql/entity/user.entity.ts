@@ -18,7 +18,7 @@ import { UserDetail } from './userDetail.entity';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
-  userId: string;
+  user_id: string;
 
   @Column({ name: 'email', type: 'varchar', length: 255 })
   email: string;
@@ -39,19 +39,19 @@ export class User {
   is_deleted: number;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updated_at: Date;
 
   @OneToOne(() => UserDetail, (userDetail) => userDetail.user)
   userDetail: UserDetail;
 
   @ManyToOne(() => Role, (role) => role.users, { onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'role_id', referencedColumnName: 'roleId' })
+  @JoinColumn({ name: 'role_id', referencedColumnName: 'role_id' })
   role: Role;
 
-  @OneToMany(() => Idea, (ideas) => ideas.user)
+  @OneToMany(() => Idea, (idea) => idea.user)
   ideas: Idea[];
 
   @OneToMany(() => IdeaComment, (ideaComment) => ideaComment.user)

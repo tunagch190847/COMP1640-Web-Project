@@ -43,13 +43,13 @@ export class UserService {
   }
 
   async updateUser(
-    userId: string,
+    user_id: string,
     body: DeepPartial<User>,
     entityManager?: EntityManager,
   ) {
     const userRepository = entityManager
       ? entityManager.getRepository<User>('user')
       : this.userRepository;
-    return await userRepository.update({ userId }, body);
+    return await userRepository.update({ user_id }, body);
   }
 }

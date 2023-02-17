@@ -11,7 +11,7 @@ import { User } from './user.entity';
 @Entity('roles')
 export class Role {
   @PrimaryGeneratedColumn({ name: 'role_id', type: 'int', unsigned: true })
-  roleId: number;
+  role_id: number;
 
   @Column({ name: 'name', type: 'varchar', length: '20' })
   name: string;
@@ -20,10 +20,10 @@ export class Role {
   description: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updated_at: Date;
 
   @OneToMany(() => User, (user) => user.role)
   users: User[];

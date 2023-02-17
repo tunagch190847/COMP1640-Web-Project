@@ -10,12 +10,13 @@ import {
 } from 'typeorm';
 import { IdeaComment } from './ideaComment.entity';
 import { IdeaFile } from './ideaFile.entity';
+import { Semester } from './semester.entity';
 import { User } from './user.entity';
 
 @Entity('ideas')
 export class Idea {
   @PrimaryGeneratedColumn({ name: 'idea_id', type: 'int', unsigned: true })
-  ideaId: number;
+  idea_id: number;
 
   @Column({ name: 'title', type: 'varchar', length: 100 })
   title: string;
@@ -33,18 +34,25 @@ export class Idea {
   dislikes: number;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updated_at: Date;
 
   @ManyToOne(() => User, (user) => user.ideas, { onUpdate: 'CASCADE' } )
-  @JoinColumn({ name: 'user_id', referencedColumnName: 'userId' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
   user: User;
 
   @OneToMany(() => IdeaComment, (comment) => comment.idea)
   comments: IdeaComment[];
 
-  @OneToMany(() => IdeaFile, (ideaFiles) => ideaFiles.idea)
+  @OneToMany(() => IdeaFile, (file) => file.idea)
   files: IdeaFile[];
+
+  @ManyToOne(() => Semester, (semester) => semester.ideas, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'semester_id', referencedColumnName: 'semester_id' })
+  semester: Semester;
+
+  // @OneToMany(() => CategoriesIdeas, (categoriesIdeas) => categoriesIdeas.idea)
+  // categories: IdeaCategory[];
 }

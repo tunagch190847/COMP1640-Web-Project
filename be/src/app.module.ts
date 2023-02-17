@@ -20,6 +20,9 @@ import { createConnection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { configuration, EConfiguration } from './config/configuration.config';
+import { DepartmentModule } from './modules/department/department.module';
+import { CategoryModule } from './modules/category/category.module';
+import { SemesterModule } from './modules/semester/semester.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -55,6 +58,9 @@ import { configuration, EConfiguration } from './config/configuration.config';
     }),
     UserModule,
     IdeaModule,
+    DepartmentModule,
+    CategoryModule,
+    SemesterModule,
   ],
   controllers: [AppController],
   providers: [
