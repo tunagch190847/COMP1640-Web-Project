@@ -1,20 +1,29 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Department } from './department.entity';
 import { User } from './user.entity';
 
-@Entity('user_detail')
+@Entity('user_details')
 export class UserDetail {
-  @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
-  user_id: string;
+  @PrimaryColumn({ name: 'user_id' })
+  userId: number
 
-  @Column({ name: 'name', type: 'varchar', length: 255, default: null })
-  name: string;
+  @OneToOne(() => User, (user) => user.userDetail, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'userId' })
+  user: User;
+
+  @Column({ name: 'first_name', type: 'varchar', length: 255 })
+  firstName: string;
+
+  @Column({ name: 'last_name', type: 'varchar', length: 255 })
+  lastName: string;
 
   @Column({
     name: 'gender',
@@ -25,35 +34,16 @@ export class UserDetail {
   })
   gender: number;
 
-  @Column({
-    name: 'department_id',
-    type: 'int',
-  })
-  department_id: number;
+  @Column({ name: 'dob', type: 'date', default: null })
+  dob: Date;
 
-  @Column({ name: 'birthdate', type: 'date', default: null })
-  birthdate: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-  @Column({
-    name: 'created_at',
-    type: 'timestamp',
-    default: () => 'current_timestamp',
-  })
-  created_at: Date;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 
-  @Column({
-    name: 'updated_at',
-    type: 'timestamp',
-    default: null,
-    onUpdate: 'current_timestamp',
-  })
-  updated_at: Date | null;
-
-  @OneToOne(() => User, (user) => user.userDetail)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
-  @OneToOne(() => Department, (department) => department.userDetail)
-  @JoinColumn({ name: 'departments_id' })
+  @OneToOne(() => Department, (department) => department.userDetail, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'department_id', referencedColumnName: 'departmentId' })
   department: Department;
 }

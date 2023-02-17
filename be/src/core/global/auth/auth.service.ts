@@ -73,7 +73,7 @@ export class AuthService {
 
     const data = await this.returnResponseAuth(user);
     return {
-      user_id: user.user_id,
+      user_id: user.userId,
       token: data.token,
     };
   }

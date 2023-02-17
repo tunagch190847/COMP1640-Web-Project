@@ -5,26 +5,30 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Idea } from './idea.entity';
 import { User } from './user.entity';
 
-@Entity('ideas_comment')
-export class Comment {
+@Entity('idea_comments')
+export class IdeaComment {
   @PrimaryGeneratedColumn({ name: 'comment_id', type: 'int', unsigned: true })
-  comment_id: number;
+  commentId: number;
 
-  @Column({ name: 'content', type: 'varchar' })
+  @Column({ name: 'content', type: 'varchar', length: 800 })
   content: string;
 
-  @CreateDateColumn({ name: 'created_date', type: 'timestamp' })
-  created_at: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-  @ManyToOne(() => Idea, { onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'idea_id' })
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @ManyToOne(() => Idea, (idea) => idea.comments, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'idea_id', referencedColumnName: 'ideaId' })
   idea: Idea;
 
-  @ManyToOne(() => User, { onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, (user) => user.ideas, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'userId' })
   user: User;
 }

@@ -8,18 +8,18 @@ import {
 } from 'typeorm';
 import { Idea } from './idea.entity';
 
-@Entity('ideas_files')
+@Entity('idea_files')
 export class IdeaFile {
-  @PrimaryGeneratedColumn({ name: 'files_id', type: 'int', unsigned: true })
-  files_id: number;
+  @PrimaryGeneratedColumn({ name: 'file_id', type: 'int', unsigned: true })
+  fileId: number;
 
-  @Column({ name: 'link', type: 'varchar' })
+  @Column({ name: 'link', type: 'varchar', length: 300 })
   link: string;
+  
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-  @CreateDateColumn({ name: 'created_date', type: 'timestamp' })
-  created_at: Date;
-
-  @ManyToOne(() => Idea, { onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'idea_id' })
+  @ManyToOne(() => Idea, (idea) => idea.files, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'idea_id', referencedColumnName: 'ideaId' })
   idea: Idea;
 }

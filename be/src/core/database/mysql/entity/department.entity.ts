@@ -4,27 +4,27 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { UserDetail } from './userDetail.entity';
 
 @Entity('departments')
 export class Department {
-  @PrimaryGeneratedColumn({
-    name: 'departments_id',
-    type: 'int',
-    unsigned: true,
-  })
-  departments_id: number;
+  @PrimaryGeneratedColumn({ name: 'department_id', type: 'int', unsigned: true })
+  departmentId: number;
 
-  @Column({ name: 'name', type: 'varchar' })
+  @Column({ name: 'name', type: 'varchar', length: 20 })
   name: string;
 
-  @Column({ name: 'description', type: 'varchar' })
+  @Column({ name: 'description', type: 'varchar', length: 100 })
   description: string;
 
-  @CreateDateColumn({ name: 'created_date', type: 'timestamp' })
-  created_at: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-  @OneToMany(() => UserDetail, (userDetail) => userDetail.department_id)
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @OneToMany(() => UserDetail, (userDetail) => userDetail.department)
   userDetail: UserDetail[];
 }
