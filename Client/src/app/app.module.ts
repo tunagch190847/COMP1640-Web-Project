@@ -26,7 +26,8 @@ import { MenuComponent } from './shared/menu/menu.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {DynamicDialogModule} from 'primeng/dynamicdialog';
 import {DropdownModule} from 'primeng/dropdown';
-
+import { PostComponent } from './home/post/post.component';
+import {EditorModule} from 'primeng/editor';
 
 @NgModule({
     declarations: [
@@ -39,6 +40,7 @@ import {DropdownModule} from 'primeng/dropdown';
         HeaderHomeComponent,
         LayoutComponent,
         MenuComponent,
+        PostComponent
     ],
     providers: [],
     bootstrap: [AppComponent],
@@ -59,7 +61,8 @@ import {DropdownModule} from 'primeng/dropdown';
         CardModule,
         BrowserAnimationsModule,
         DynamicDialogModule,
-        DropdownModule
+        DropdownModule,
+        EditorModule
         
     ]
 })
