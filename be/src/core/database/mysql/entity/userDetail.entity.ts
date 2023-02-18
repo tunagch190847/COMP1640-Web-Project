@@ -1,59 +1,49 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Department } from './department.entity';
 import { User } from './user.entity';
 
 @Entity('user_detail')
 export class UserDetail {
-  @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
-  user_id: string;
+  @PrimaryColumn({ name: 'user_id' })
+  user_id: number
 
-  @Column({ name: 'name', type: 'varchar', length: 255, default: null })
-  name: string;
+  @OneToOne(() => User, (user) => user.userDetail, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
+  user: User;
+
+  @Column({ name: 'first_name', type: 'varchar', length: 255 })
+  firstName: string;
+
+  @Column({ name: 'last_name', type: 'varchar', length: 255 })
+  lastName: string;
 
   @Column({
     name: 'gender',
     type: 'int',
-    default: -1,
-    comment:
-      '-1: Not selected(Default), 0: Prefer not to say, 1: male, 2: Female',
+    default: 0,
+    unsigned: true,
+    comment: '0: Prefer not to say, 1: Male, 2: Female',
   })
   gender: number;
 
-  @Column({
-    name: 'department_id',
-    type: 'int',
-  })
-  department_id: number;
+  @Column({ name: 'birthday', type: 'date', default: null })
+  birthday: Date;
 
-  @Column({ name: 'birthdate', type: 'date', default: null })
-  birthdate: Date;
-
-  @Column({
-    name: 'created_at',
-    type: 'timestamp',
-    default: () => 'current_timestamp',
-  })
+  @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
-  @Column({
-    name: 'updated_at',
-    type: 'timestamp',
-    default: null,
-    onUpdate: 'current_timestamp',
-  })
-  updated_at: Date | null;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updated_at: Date;
 
-  @OneToOne(() => User, (user) => user.userDetail)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
-  @OneToOne(() => Department, (department) => department.userDetail)
-  @JoinColumn({ name: 'departments_id' })
+  @OneToOne(() => Department, (department) => department.userDetail, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'department_id', referencedColumnName: 'department_id' })
   department: Department;
 }

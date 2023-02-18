@@ -1,14 +1,17 @@
 import { EIsDelete } from 'enum';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Idea } from './idea.entity';
-import { Comment } from './ideaComment.entity';
+import { IdeaComment } from './comment.entity';
 import { Role } from './role.entity';
 import { UserDetail } from './userDetail.entity';
 
@@ -17,21 +20,14 @@ export class User {
   @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
   user_id: string;
 
-  @Column({ name: 'email', type: 'varchar', length: 255, default: null })
+  @Column({ name: 'email', type: 'varchar', length: 255 })
   email: string;
 
-  @Column({ name: 'password', type: 'varchar', length: 255, default: null })
+  @Column({ name: 'password', type: 'varchar', length: 255 })
   password: string;
 
   @Column({ name: 'token', type: 'mediumtext', nullable: true })
   token: string | null;
-
-  // @Column({
-  //   name: 'role_id',
-  //   type: 'int',
-  //   default: 0,
-  // })
-  // role_id: number;
 
   @Column({
     name: 'is_deleted',
@@ -42,30 +38,22 @@ export class User {
   })
   is_deleted: number;
 
-  @Column({
-    name: 'created_at',
-    type: 'datetime',
-    default: () => 'current_timestamp',
-  })
+  @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
-  @Column({
-    name: 'updated_at',
-    type: 'datetime',
-    default: null,
-  })
-  updated_at: Date | null;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updated_at: Date;
 
   @OneToOne(() => UserDetail, (userDetail) => userDetail.user)
   userDetail: UserDetail;
 
-  @OneToOne(() => Role, (role) => role.user)
-  @JoinColumn({ name: 'role_id' })
+  @ManyToOne(() => Role, (role) => role.users, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'role_id', referencedColumnName: 'role_id' })
   role: Role;
 
-  @OneToMany(() => Idea, (ideas) => ideas.user)
+  @OneToMany(() => Idea, (idea) => idea.user)
   ideas: Idea[];
 
-  @OneToMany(() => Comment, (ideaComment) => ideaComment.user)
-  postComments: Comment[];
+  @OneToMany(() => IdeaComment, (ideaComment) => ideaComment.user)
+  ideasComments: IdeaComment[];
 }
