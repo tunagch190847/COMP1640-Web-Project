@@ -1,25 +1,58 @@
-<p-button type="button" class="mr-2" (click)="display = true">Show Menu</p-button>
+<!-- <p-button type="button" class="mr-2" (click)="display = true">Show Menu</p-button> -->
 <!-- <p-button type="button" class="mr-2" (click)="display = true" style = "position:fixed;">Show Menu</p-button> -->
+<p-button type="button" class="mr-2" (click)="display = true" [ngStyle]="{'position':'fixed'}">Show Menu</p-button>
+
 <p-sidebar [(visible)]="display">
     <nav class="mt-2">
-        <ul>
-            <li>
+        <ul class="list-group">
+            <li class="list-group-item">
                 <!-- <a [routerLink]="['']" routerLinkActive="active" class="nav-link"> -->
-                <a  class="nav-link" href="#">
-                    <i class="nav-icon fas fa-home"></i>
-                    <p>
-                        Home
-                    </p>
-                </a>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText placeholder="Search" [(ngModel)]="value3" />
+                </span>
             </li>
-            <li>
-                <a  class="nav-link" href="#">
-                    <i class="nav-icon fas fa-home"></i>
-                    <p>
-                        Home
-                    </p>
-                </a>
+
+            <li class="list-group-item">
+                <p-button styleClass="p-button-text">
+                    <ng-template pTemplate="content">
+                        <img alt="logo" src="../../../assets/images/profile.png"  />
+                        <span class="ml-2 font-bold">View profile</span>
+                    </ng-template>
+                </p-button>
             </li>
+
+            <li class="list-group-item">
+                <p-button styleClass="p-button-text">
+                    <ng-template pTemplate="content">
+                        <img alt="logo" src="../../../assets/images/manage-profile.png"  />
+                        <span class="ml-2 font-bold">Manage accounts</span>
+                    </ng-template>
+                </p-button>
+            </li>
+
+            <li class="list-group-item">
+                <p-button styleClass="p-button-text">
+                    <ng-template pTemplate="content">
+                        <img alt="logo" src="../../../assets/images/settings.png" />
+                        <span class="ml-2 font-bold">Settings</span>
+                    </ng-template>
+                </p-button>
+            </li>
+
+            <li class="list-group-item">
+                <p-panelMenu [model]="items"></p-panelMenu>
+            </li>
+
+            <li class="list-group-item">
+                <p-button styleClass="p-button-text">
+                    <ng-template pTemplate="content">
+                        <img alt="logo" src="../../../assets/images/logout.png" />
+                        <span class="ml-2 font-bold">Log out</span>
+                    </ng-template>
+                </p-button>
+            </li>
+            
         </ul>
         <ul></ul>
     </nav>

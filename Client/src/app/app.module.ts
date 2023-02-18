@@ -26,6 +26,11 @@ import { MenuComponent } from './shared/menu/menu.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {DynamicDialogModule} from 'primeng/dynamicdialog';
 import {DropdownModule} from 'primeng/dropdown';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { TreeSelectModule } from 'primeng/treeselect';
+import { ListboxModule } from 'primeng/listbox';
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 
 @NgModule({
@@ -59,8 +64,12 @@ import {DropdownModule} from 'primeng/dropdown';
         CardModule,
         BrowserAnimationsModule,
         DynamicDialogModule,
-        DropdownModule
-        
+        DropdownModule,
+        MenuModule,
+        SplitButtonModule,
+        TreeSelectModule,
+        ListboxModule,
+        PanelMenuModule
     ]
 })
 export class AppModule { }
