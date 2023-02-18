@@ -4,7 +4,7 @@ import {
     ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Category } from './category';
+import { Category } from './category.entity';
 import { Idea } from './idea.entity';
 
 @Entity('category_idea')

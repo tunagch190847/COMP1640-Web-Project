@@ -1,4 +1,4 @@
-import { Category } from '@core/database/mysql/entity/category';
+import { Category } from '@core/database/mysql/entity/category.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryDto } from 'global/dto/category.dto';
