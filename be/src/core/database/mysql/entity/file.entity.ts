@@ -13,6 +13,9 @@ export class IdeaFile {
   @PrimaryGeneratedColumn({ name: 'file_id', type: 'int', unsigned: true })
   file_id: number;
 
+  @Column({ name: 'idea_id', type: 'int', unsigned: true })
+  idea_id: number;
+
   @Column({ name: 'file', type: 'varchar', length: 300 })
   file: string;
   

@@ -20,6 +20,9 @@ export class User {
   @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
   user_id: string;
 
+  @Column({ name: 'role_id', type: 'int', unsigned: true })
+  role_id: number;
+
   @Column({ name: 'email', type: 'varchar', length: 255 })
   email: string;
 

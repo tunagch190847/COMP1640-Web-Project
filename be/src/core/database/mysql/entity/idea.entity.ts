@@ -19,6 +19,12 @@ export class Idea {
   @PrimaryGeneratedColumn({ name: 'idea_id', type: 'int', unsigned: true })
   idea_id: number;
 
+  @Column('uuid', { name: 'user_id' })
+  user_id: string;
+  
+  @Column({ name: 'semester_id', type: 'int', unsigned: true })
+  semester_id: number;
+
   @Column({ name: 'title', type: 'varchar', length: 100 })
   title: string;
 
@@ -53,15 +59,15 @@ export class Idea {
   @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
   user: User;
 
+  @ManyToOne(() => Semester, (semester) => semester.ideas, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'semester_id', referencedColumnName: 'semester_id' })
+  semester: Semester;
+
   @OneToMany(() => IdeaComment, (comment) => comment.idea)
   comments: IdeaComment[];
 
   @OneToMany(() => IdeaFile, (file) => file.idea)
   files: IdeaFile[];
-
-  @ManyToOne(() => Semester, (semester) => semester.ideas, { onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'semester_id', referencedColumnName: 'semester_id' })
-  semester: Semester;
 
   @OneToMany(() => CategoryIdea, (categoryIdea) => categoryIdea.idea)
   ideaCategories: CategoryIdea[];
