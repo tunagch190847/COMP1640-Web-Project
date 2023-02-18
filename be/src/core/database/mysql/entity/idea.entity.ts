@@ -34,6 +34,15 @@ export class Idea {
   @Column({ name: 'dislikes', type: 'int', unsigned: true, default: 0 })
   dislikes: number;
 
+  @Column({ 
+    name: 'is_anonymous', 
+    type: 'tinyint', 
+    unsigned: true, 
+    default: 0, 
+    comment: '0: not anonymous, 1: anonymous',
+  })
+  is_anonymous: number;
+
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 

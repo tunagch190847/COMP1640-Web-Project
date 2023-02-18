@@ -28,14 +28,14 @@ export class UserDetail {
   @Column({
     name: 'gender',
     type: 'int',
-    default: -1,
-    comment:
-      '-1: Not selected(Default), 0: Prefer not to say, 1: male, 2: Female',
+    default: 0,
+    unsigned: true,
+    comment: '0: Prefer not to say, 1: Male, 2: Female',
   })
   gender: number;
 
-  @Column({ name: 'dob', type: 'date', default: null })
-  dob: Date;
+  @Column({ name: 'birthday', type: 'date', default: null })
+  birthday: Date;
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
