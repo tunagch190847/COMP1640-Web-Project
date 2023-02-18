@@ -10,7 +10,7 @@ import {
 import { Idea } from './idea.entity';
 import { User } from './user.entity';
 
-@Entity('idea_comments')
+@Entity('comment')
 export class IdeaComment {
   @PrimaryGeneratedColumn({ name: 'comment_id', type: 'int', unsigned: true })
   comment_id: number;

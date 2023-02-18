@@ -10,7 +10,7 @@ import {
 import { Department } from './department.entity';
 import { User } from './user.entity';
 
-@Entity('user_details')
+@Entity('user_detail')
 export class UserDetail {
   @PrimaryColumn({ name: 'user_id' })
   user_id: number

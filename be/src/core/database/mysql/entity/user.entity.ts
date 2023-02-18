@@ -11,11 +11,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Idea } from './idea.entity';
-import { IdeaComment } from './ideaComment.entity';
+import { IdeaComment } from './comment.entity';
 import { Role } from './role.entity';
 import { UserDetail } from './userDetail.entity';
 
-@Entity('users')
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
   user_id: string;

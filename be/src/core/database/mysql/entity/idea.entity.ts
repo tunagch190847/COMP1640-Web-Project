@@ -8,12 +8,13 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IdeaComment } from './ideaComment.entity';
-import { IdeaFile } from './ideaFile.entity';
+import { CategoryIdea } from './categoryIdea.entity';
+import { IdeaComment } from './comment.entity';
+import { IdeaFile } from './file.entity';
 import { Semester } from './semester.entity';
 import { User } from './user.entity';
 
-@Entity('ideas')
+@Entity('idea')
 export class Idea {
   @PrimaryGeneratedColumn({ name: 'idea_id', type: 'int', unsigned: true })
   idea_id: number;
@@ -53,6 +54,6 @@ export class Idea {
   @JoinColumn({ name: 'semester_id', referencedColumnName: 'semester_id' })
   semester: Semester;
 
-  // @OneToMany(() => CategoriesIdeas, (categoriesIdeas) => categoriesIdeas.idea)
-  // categories: IdeaCategory[];
+  @OneToMany(() => CategoryIdea, (categoryIdea) => categoryIdea.idea)
+  ideaCategories: CategoryIdea[];
 }

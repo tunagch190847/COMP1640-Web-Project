@@ -2,12 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { CategoryIdea } from './categoryIdea.entity';
 
-@Entity('idea_categories')
-export class IdeaCategory {
+@Entity('category')
+export class Category {
   @PrimaryGeneratedColumn({ name: 'category_id', type: 'int', unsigned: true })
   category_id: number;
 
@@ -22,4 +24,7 @@ export class IdeaCategory {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
+
+  @OneToMany(() => CategoryIdea, (categoryIdea) => categoryIdea.category)
+  categoryIdeas: CategoryIdea[];
 }

@@ -8,13 +8,13 @@ import {
 } from 'typeorm';
 import { Idea } from './idea.entity';
 
-@Entity('idea_files')
+@Entity('file')
 export class IdeaFile {
   @PrimaryGeneratedColumn({ name: 'file_id', type: 'int', unsigned: true })
   file_id: number;
 
-  @Column({ name: 'link', type: 'varchar', length: 300 })
-  link: string;
+  @Column({ name: 'file', type: 'varchar', length: 300 })
+  file: string;
   
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;

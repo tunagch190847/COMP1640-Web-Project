@@ -1,4 +1,4 @@
-import { IdeaCategory } from '@core/database/mysql/entity/ideaCategory.entity';
+import { Category } from '@core/database/mysql/entity/category';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryDto } from 'global/dto/category.dto';
@@ -7,8 +7,8 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class CategoryService {
     constructor(
-        @InjectRepository(IdeaCategory)
-        private readonly categoryRepo: Repository<IdeaCategory>,
+        @InjectRepository(Category)
+        private readonly categoryRepo: Repository<Category>,
     ) {}
 
     async getAllCategories() {

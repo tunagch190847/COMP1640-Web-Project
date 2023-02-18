@@ -8,7 +8,7 @@ import {
   } from 'typeorm';
 import { Idea } from './idea.entity';
   
-  @Entity('semesters')
+  @Entity('semester')
   export class Semester {
     @PrimaryGeneratedColumn({ name: 'semester_id', type: 'int', unsigned: true })
     semester_id: number;
