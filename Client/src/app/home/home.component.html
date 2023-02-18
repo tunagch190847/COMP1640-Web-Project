@@ -2,14 +2,50 @@
 
         <app-header-home></app-header-home>
 
-        <div class="" style="background-color:antiquewhite">
+        <div class="" style="background-color:black">
                 <div class="menu">
                         <app-menu></app-menu>
                 </div>
 
                 <div class="content">
+                        <div class="post" style="width: 380,75px; height:150px; background-color:#E9F0EF; padding-bottom:20px">
+                                <div>
+                                        <img src="https://scontent.fhan14-2.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=cp0_dst-png_p40x40&_nc_cat=1&ccb=1%207&_nc_sid=7206a8&_nc_ohc=uzaU27BDodMAX9HIiWB&_nc_ht=scontent.fhan14-2.fna&oh=00_AfDpLnJbpOgRs5t85dtXrKzPGn1a4Cvm1huXiCIVlF-cRw&oe=6416EA38"
+                                                alt="" style="width:40px; height:40px; border-radius: 50%; margin:10px">
+                                        <button pButton type="button" (click)="postIdeal()"
+                                                label="Chào A, bạn có muốn thêm ý tưởng không?"
+                                                style="border-radius: 20px; background-color:white;color:black; float:right; width:90%;margin:10px "></button>
+                                </div>
+                                <br>
+                                
+                                <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                                        <div class="col-sm-4">
+                                                <button type="button" class="btn btn-primary btn-floating mx-1">
+                                                        <i class="fab fa-facebook-f"></i>
+                                                        Ảnh/Video
+                                                </button>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                                <button type="button" class="btn btn-primary btn-floating mx-1">
+                                                        <i class="fab fa-facebook-f"></i>
+                                                        Cảm xúc/Hoạt động
+                                                </button>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                                <button type="button" class="btn btn-primary btn-floating mx-1">
+                                                        <i class="fab fa-facebook-f"></i>
+                                                        Video trực tiếp
+                                                </button>
+                                        </div>
+                                </div>
+
+                        </div>
+
+                        <br>
                         <p-card header="Idea title"
-                                [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto'}"
+                                [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto', 'background-color':'#E9F0EF'}"
                                 subheader="date post">
                                 <a href="">
                                         <p-card
@@ -32,7 +68,7 @@
                         </p-card>
 
                         <p-card header="Idea title"
-                                [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto'}"
+                                [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto', 'background-color':'#E9F0EF'}"
                                 subheader="date post">
                                 <a href="">
                                         <p-card
@@ -55,7 +91,7 @@
                         </p-card>
 
                         <p-card header="Idea title"
-                                [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto'}"
+                                [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto', 'background-color':'#E9F0EF'}"
                                 subheader="date post">
                                 <a href="">
                                         <p-card
@@ -77,6 +113,7 @@
                                 </ng-template>
                         </p-card>
                 </div>
+
         </div>
 
 
