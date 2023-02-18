@@ -4,30 +4,30 @@ import { DepartmentService } from './department.service';
 
 @Controller('department')
 export class DepartmentController {
-    constructor(private readonly deptService: DepartmentService) {}
+    constructor(private readonly departmentService: DepartmentService) {}
 
     @Get()
     async getAllDepartments() {
-        return await this.deptService.getAllDepartments();
+        return await this.departmentService.getAllDepartments();
     }
 
     @Get(':id')
     getDepartmentById(@Param('id') id: string) {
-        return this.deptService.getDepartmentById(Number(id));
+        return this.departmentService.getDepartmentById(Number(id));
     }
 
     @Post()
-    createDepartment(@Body() dept: DepartmentDto) {
-        return this.deptService.createDepartment(dept);
+    createDepartment(@Body() department: DepartmentDto) {
+        return this.departmentService.createDepartment(department);
     }
 
     @Put(':id')
-    updateDepartment(@Param('id') id: string, @Body() dept: DepartmentDto) {
-        return this.deptService.updateDepartment(Number(id), dept);
+    updateDepartment(@Param('id') id: string, @Body() department: DepartmentDto) {
+        return this.departmentService.updateDepartment(Number(id), department);
     }
 
     @Delete(':id')
     deleteDepartment(@Param('id') id: string) {
-        return this.deptService.deleteDepartment(Number(id));
+        return this.departmentService.deleteDepartment(Number(id));
     }
 }

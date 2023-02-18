@@ -8,26 +8,26 @@ import { Repository } from 'typeorm';
 export class DepartmentService {
     constructor(
         @InjectRepository(Department)
-        private readonly deptRepo: Repository<Department>,
+        private readonly departmentRepository: Repository<Department>,
     ) {}
 
     async getAllDepartments() {
-        return await this.deptRepo.find();
+        return await this.departmentRepository.find();
     }
 
     async getDepartmentById(department_id: number) {
-        return await this.deptRepo.findOne(department_id);
+        return await this.departmentRepository.findOne(department_id);
     }
 
-    async createDepartment(dept: DepartmentDto) {
-        return await this.deptRepo.save(dept);
+    async createDepartment(department: DepartmentDto) {
+        return await this.departmentRepository.save(department);
     }
 
-    async updateDepartment(department_id: number, dept: DepartmentDto) {
-        return await this.deptRepo.update({department_id}, dept);
+    async updateDepartment(department_id: number, department: DepartmentDto) {
+        return await this.departmentRepository.update({department_id}, department);
     }
 
     async deleteDepartment(department_id: number) {
-        return await this.deptRepo.delete({department_id});
+        return await this.departmentRepository.delete({department_id});
     }
 }
