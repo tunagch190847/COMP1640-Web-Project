@@ -24,6 +24,8 @@ import { CardModule } from 'primeng/card';
 import { LayoutComponent } from './shared/layout/layout.component';
 import { MenuComponent } from './shared/menu/menu.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
+import {DropdownModule} from 'primeng/dropdown';
 
 
 @NgModule({
@@ -55,7 +57,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         FormsModule,
         TabViewModule,
         CardModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        DynamicDialogModule,
+        DropdownModule
+        
     ]
 })
 export class AppModule { }
