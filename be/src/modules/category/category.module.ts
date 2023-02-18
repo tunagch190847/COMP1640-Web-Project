@@ -1,4 +1,4 @@
-import { Category } from '@core/database/mysql/entity/category';
+import { Category } from '@core/database/mysql/entity/category.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoryController } from './category.controller';

@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
@@ -13,11 +14,10 @@ import { User } from './user.entity';
 @Entity('user_detail')
 export class UserDetail {
   @PrimaryColumn({ name: 'user_id' })
-  user_id: number
+  user_id: string
 
-  @OneToOne(() => User, (user) => user.userDetail, { onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
-  user: User;
+  @Column({ name: 'department_id', type: 'int', unsigned: true })
+  department_id: number;
 
   @Column({ name: 'first_name', type: 'varchar', length: 255 })
   firstName: string;
@@ -43,7 +43,11 @@ export class UserDetail {
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
 
-  @OneToOne(() => Department, (department) => department.userDetail, { onUpdate: 'CASCADE' })
+  @OneToOne(() => User, (user) => user.userDetail, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
+  user: User;
+
+  @ManyToOne(() => Department, (department) => department.userDetail, { onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'department_id', referencedColumnName: 'department_id' })
   department: Department;
 }

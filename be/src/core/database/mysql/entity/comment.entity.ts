@@ -15,6 +15,12 @@ export class IdeaComment {
   @PrimaryGeneratedColumn({ name: 'comment_id', type: 'int', unsigned: true })
   comment_id: number;
 
+  @Column({ name: 'idea_id', type: 'int', unsigned: true })
+  idea_id: number;
+
+  @Column('uuid', { name: 'user_id' })
+  user_id: string;
+
   @Column({ name: 'content', type: 'varchar', length: 800 })
   content: string;
 

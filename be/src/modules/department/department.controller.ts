@@ -1,3 +1,4 @@
+import { Public } from '@core/decorator/public.decorator';
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { DepartmentDto } from 'global/dto/department.dto';
 import { DepartmentService } from './department.service';
@@ -6,6 +7,7 @@ import { DepartmentService } from './department.service';
 export class DepartmentController {
     constructor(private readonly departmentService: DepartmentService) {}
 
+    @Public()
     @Get()
     async getAllDepartments() {
         return await this.departmentService.getAllDepartments();
