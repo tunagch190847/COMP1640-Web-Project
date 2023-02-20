@@ -52,15 +52,15 @@ export class AuthService {
   }
 
   async login(body: VLogin) {
-    const user = await this.userService.getUserByEmail(body.email);
+    const email = await this.userService.getUserByEmail(body.email);
 
-    if (!user)
+    if (!email)
       throw new HttpException(
-        ErrorMessage.GMAIL_ALREADY_EXITS,
+        ErrorMessage.GMAIL_INCORRECT,
         HttpStatus.BAD_REQUEST,
       );
 
-    const password = await handleBCRYPTCompare(body.password, user.password);
+    const password = await handleBCRYPTCompare(body.password, email.password);
 
     if (!password)
       throw new HttpException(
@@ -71,9 +71,9 @@ export class AuthService {
     //   user_id: user.user_id,
     // };
 
-    const data = await this.returnResponseAuth(user);
+    const data = await this.returnResponseAuth(email);
     return {
-      user_id: user.user_id,
+      user_id: email.user_id,
       token: data.token,
     };
   }

@@ -18,7 +18,7 @@ export class IdeaFile {
 
   @Column({ name: 'file', type: 'varchar', length: 300 })
   file: string;
-  
+
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 

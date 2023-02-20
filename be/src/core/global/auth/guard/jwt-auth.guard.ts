@@ -45,12 +45,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     console.log(this.tokenFromHeader, user, 1111111);
 
-    // if (this.tokenFromHeader !== user?.token) {
-    //   throw new HttpException(
-    //     ErrorMessage.INVALID_TOKEN,
-    //     HttpStatus.UNAUTHORIZED,
-    //   );
-    // }
+    if (this.tokenFromHeader !== user?.token) {
+      throw new HttpException(
+        ErrorMessage.INVALID_TOKEN,
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
 
     if (err || !user) {
       throw err || new UnauthorizedException();
