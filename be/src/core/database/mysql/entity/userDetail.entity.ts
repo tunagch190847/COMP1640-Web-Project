@@ -14,16 +14,16 @@ import { User } from './user.entity';
 @Entity('user_detail')
 export class UserDetail {
   @PrimaryColumn({ name: 'user_id' })
-  user_id: string;
+  user_id: string
 
   @Column({ name: 'department_id', type: 'int', unsigned: true })
   department_id: number;
 
   @Column({ name: 'first_name', type: 'varchar', length: 255 })
-  firstName: string;
+  first_name: string;
 
   @Column({ name: 'last_name', type: 'varchar', length: 255 })
-  lastName: string;
+  last_name: string;
 
   @Column({
     name: 'gender',
@@ -47,9 +47,7 @@ export class UserDetail {
   @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Department, (department) => department.userDetail, {
-    onUpdate: 'CASCADE',
-  })
+  @ManyToOne(() => Department, (department) => department.userDetail, { onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'department_id', referencedColumnName: 'department_id' })
   department: Department;
 }

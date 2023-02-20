@@ -16,4 +16,10 @@ export class IdeaController {
   ) {
     return await this.ideaService.getIdeaDetail(idea_id, userData.user_id);
   }
+
+  @Public()
+  @Get()
+  getAllIdeas() {
+    return this.ideaService.getAllIdeas();
+  }
 }
