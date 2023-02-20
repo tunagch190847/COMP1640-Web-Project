@@ -10,7 +10,11 @@ import { UserDetail } from './userDetail.entity';
 
 @Entity('department')
 export class Department {
-  @PrimaryGeneratedColumn({ name: 'department_id', type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({
+    name: 'department_id',
+    type: 'int',
+    unsigned: true,
+  })
   department_id: number;
 
   @Column({ name: 'name', type: 'varchar', length: 20 })

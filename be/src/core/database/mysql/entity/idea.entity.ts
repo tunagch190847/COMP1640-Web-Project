@@ -21,7 +21,7 @@ export class Idea {
 
   @Column('uuid', { name: 'user_id' })
   user_id: string;
-  
+
   @Column({ name: 'semester_id', type: 'int', unsigned: true })
   semester_id: number;
 
@@ -40,11 +40,11 @@ export class Idea {
   @Column({ name: 'dislikes', type: 'int', unsigned: true, default: 0 })
   dislikes: number;
 
-  @Column({ 
-    name: 'is_anonymous', 
-    type: 'tinyint', 
-    unsigned: true, 
-    default: 0, 
+  @Column({
+    name: 'is_anonymous',
+    type: 'tinyint',
+    unsigned: true,
+    default: 0,
     comment: '0: not anonymous, 1: anonymous',
   })
   is_anonymous: number;
@@ -55,11 +55,13 @@ export class Idea {
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
 
-  @ManyToOne(() => User, (user) => user.ideas, { onUpdate: 'CASCADE' } )
+  @ManyToOne(() => User, (user) => user.ideas, { onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Semester, (semester) => semester.ideas, { onUpdate: 'CASCADE' })
+  @ManyToOne(() => Semester, (semester) => semester.ideas, {
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'semester_id', referencedColumnName: 'semester_id' })
   semester: Semester;
 

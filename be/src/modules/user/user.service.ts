@@ -32,7 +32,7 @@ export class UserService {
 
   async getUserByUserId(userId: string, entityManager?: EntityManager) {
     const userRepository = entityManager
-      ? entityManager.getRepository<User>('m_user')
+      ? entityManager.getRepository<User>('user')
       : this.userRepository;
     return await userRepository.findOne({
       where: {
