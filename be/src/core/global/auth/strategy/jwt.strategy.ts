@@ -19,7 +19,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (payload?.type === 0) {
       return payload;
     }
-    const userExist = await this.authService.getUserById(payload.user_id);
+    const userExist = await this.authService.getUserById(
+      payload.user_id,
+      payload.role_id,
+    );
     if (!userExist || userExist.is_deleted === EIsDelete.DELETED)
       throw new HttpException(
         ErrorMessage.ACCOUNT_NOT_EXISTS,

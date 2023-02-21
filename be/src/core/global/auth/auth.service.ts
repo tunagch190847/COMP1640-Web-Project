@@ -26,13 +26,14 @@ export class AuthService {
     public jwtService: JwtService,
   ) {}
 
-  async getUserById(user_id: string) {
-    return await this.userService.getUserByUserId(user_id);
+  async getUserById(user_id: string, role_id) {
+    return await this.userService.getUserByUserId(user_id, role_id);
   }
 
   async returnResponseAuth(userExist): Promise<IResponseAuth> {
     const payloadToken = {
       user_id: userExist.user_id,
+      role_id: userExist.role_id,
     };
 
     const token = this.jwtService.sign(payloadToken, {
