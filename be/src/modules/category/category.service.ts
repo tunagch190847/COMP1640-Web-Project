@@ -3,31 +3,34 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryDto } from 'global/dto/category.dto';
 import { Repository } from 'typeorm';
+import { EntityManager } from 'typeorm/entity-manager/EntityManager';
 
 @Injectable()
 export class CategoryService {
-  constructor(
-    @InjectRepository(Category)
-    private readonly categoryRepo: Repository<Category>,
-  ) {}
+    constructor(
+        @InjectRepository(Category)
+        private readonly categoryRepository: Repository<Category>,
+    ) {}
 
-  async getAllCategories() {
-    return await this.categoryRepo.find();
-  }
+    async getAllCategories(entityManager?: EntityManager) 
+    {
+        const categoryRepository = entityManager ? entityManager.getRepository<Category>('category') : this.categoryRepository;
+        return await this.categoryRepository.find();
+    }
 
-  async getCategoryById(category_id: number) {
-    return await this.categoryRepo.findOne(category_id);
-  }
+    async getCategoryById(category_id: number) {
+        return await this.categoryRepository.findOne(category_id);
+    }
 
-  async createCategory(category: CategoryDto) {
-    return await this.categoryRepo.save(category);
-  }
+    async createCategory(category: CategoryDto) {
+        return await this.categoryRepository.save(category);
+    }
 
-  async updateCategory(category_id: number, category: CategoryDto) {
-    return await this.categoryRepo.update({ category_id }, category);
-  }
+    async updateCategory(category_id: number, category: CategoryDto) {
+        return await this.categoryRepository.update({category_id}, category);
+    }
 
-  async deleteCategory(category_id: number) {
-    return await this.categoryRepo.delete({ category_id });
-  }
+    async deleteCategory(category_id: number) {
+        return await this.categoryRepository.delete({category_id});
+    }
 }
