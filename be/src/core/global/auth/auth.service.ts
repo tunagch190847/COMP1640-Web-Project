@@ -16,8 +16,6 @@ import { handleBCRYPTCompare } from 'src/helper/utils';
 import { UserService } from 'src/modules/user/user.service';
 import { IResponseAuth } from './interface';
 
-// import admin from 'src/main';
-
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger('AuthService');
@@ -38,8 +36,8 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(payloadToken, {
-      secret: 'cmac56116c11a8s189a1s9c891a13cs',
-      expiresIn: 100000,
+      secret: process.env.SECRET_KEY,
+      expiresIn: process.env.EXPRIE_TOKEN,
     });
 
     this.userService.updateUser(userExist.user_id, {
@@ -67,9 +65,6 @@ export class AuthService {
         ErrorMessage.PASSWORD_INCORRECT,
         HttpStatus.BAD_REQUEST,
       );
-    // const payloadToken = {
-    //   user_id: user.user_id,
-    // };
 
     const data = await this.returnResponseAuth(email);
     return {

@@ -7,7 +7,7 @@ import { IdeaService } from './idea.service';
 @Controller('idea')
 export class IdeaController {
   constructor(private readonly ideaService: IdeaService) {}
-  // @Public()
+
   @Get('/:idea_id')
   async getIdeaDetail(
     @UserData() userData: IUserData,

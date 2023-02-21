@@ -10,14 +10,13 @@ export class IdeaService {
   constructor(
     @InjectRepository(Idea)
     private ideaRepository: Repository<Idea>,
-  ) { }
+  ) {}
 
   async getIdeaDetail(
     idea_id: number,
     user_id?: string,
     entityManager?: EntityManager,
   ) {
-
     let data = [];
 
     const ideaRepository = entityManager
@@ -27,7 +26,7 @@ export class IdeaService {
       where: { idea_id: idea_id },
     });
 
-    if(!idea) {
+    if (!idea) {
       throw new HttpException(
         ErrorMessage.IDEA_NOT_EXIST,
         HttpStatus.BAD_REQUEST,
@@ -63,8 +62,8 @@ export class IdeaService {
       .leftJoinAndSelect('user.userDetail', 'userDetail')
       .leftJoinAndSelect('idea.semester', 'semester')
       .getMany();
-    
-   const data = ideas.map((idea) => {
+
+    const data = ideas.map((idea) => {
       return {
         idea_id: idea.idea_id,
         title: idea.title,

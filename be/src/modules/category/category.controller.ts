@@ -8,7 +8,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { CategoryDto } from 'global/dto/category.dto';
-import { get } from 'http';
 import { CategoryService } from './category.service';
 
 @Controller('category')
