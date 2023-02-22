@@ -8,26 +8,34 @@ import { Repository } from 'typeorm';
 export class SemesterService {
     constructor(
         @InjectRepository(Semester)
-        private readonly semesterRepo: Repository<Semester>,
+        private readonly semesterRepository: Repository<Semester>,
     ) {}
 
     async getAllSemesters() {
-        return await this.semesterRepo.find();
+        return await this.semesterRepository.find();
+    }
+
+    async getCurrentSemester() {
+        return this.semesterRepository.findOne({
+            where: {
+                
+            }
+        })
     }
 
     async getSemesterById(semester_id: number) {
-        return await this.semesterRepo.findOne(semester_id);
+        return await this.semesterRepository.findOne(semester_id);
     }
 
     async createSemester(dept: SemesterDto) {
-        return await this.semesterRepo.save(dept);
+        return await this.semesterRepository.save(dept);
     }
 
     async updateSemester(semester_id: number, dept: SemesterDto) {
-        return await this.semesterRepo.update({semester_id}, dept);
+        return await this.semesterRepository.update({semester_id}, dept);
     }
 
     async deleteSemester(semester_id: number) {
-        return await this.semesterRepo.delete({semester_id});
+        return await this.semesterRepository.delete({semester_id});
     }
 }

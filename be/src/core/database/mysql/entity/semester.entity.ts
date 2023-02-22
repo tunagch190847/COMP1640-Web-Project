@@ -22,6 +22,12 @@ export class Semester {
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
+  @Column({ name: 'first_closure_date', type: 'date', default: null })
+  first_closure_date: Date;
+
+  @Column({ name: 'final_closure_date', type: 'date', default: null })
+  final_closure_date: Date;
+
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
 

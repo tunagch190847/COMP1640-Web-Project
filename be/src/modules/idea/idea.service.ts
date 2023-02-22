@@ -1,3 +1,4 @@
+import { SemesterService } from '@modules/semester/semester.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ok } from 'assert';
@@ -10,14 +11,14 @@ export class IdeaService {
   constructor(
     @InjectRepository(Idea)
     private ideaRepository: Repository<Idea>,
-  ) { }
+    private readonly semesterService: SemesterService,
+  ) {}
 
   async getIdeaDetail(
     idea_id: number,
     user_id?: string,
     entityManager?: EntityManager,
   ) {
-
     let data = [];
 
     const ideaRepository = entityManager
@@ -36,7 +37,6 @@ export class IdeaService {
 
     const queryBuilder = ideaRepository
       .createQueryBuilder('idea')
-      .select()
       .leftJoinAndSelect('idea.files', 'files');
 
     const [listFiles] = await queryBuilder.getMany();
@@ -57,13 +57,15 @@ export class IdeaService {
     const ideaRepository = entityManager
       ? entityManager.getRepository<Idea>('idea')
       : this.ideaRepository;
+    
     const ideas = await ideaRepository
       .createQueryBuilder('idea')
       .innerJoinAndSelect('idea.user', 'user')
       .leftJoinAndSelect('user.userDetail', 'userDetail')
+      .leftJoinAndSelect('idea.comments', 'comments')
       .leftJoinAndSelect('idea.semester', 'semester')
       .getMany();
-    
+
    const data = ideas.map((idea) => {
       return {
         idea_id: idea.idea_id,
@@ -72,6 +74,7 @@ export class IdeaService {
         views: idea.views,
         likes: idea.likes,
         dislikes: idea.dislikes,
+        comments: idea.comments.length,
         is_anonymous: idea.is_anonymous,
         semester: {
           semester_id: idea.semester.semester_id,
@@ -89,6 +92,6 @@ export class IdeaService {
       };
     });
 
-    return data;
+    return ideas;
   }
 }
