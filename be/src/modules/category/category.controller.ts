@@ -20,8 +20,7 @@ export class CategoryController {
     return await this.categoryService.getAllCategories();
   }
 
-  @Public()
-  @Get(':category_id')
+  @Get(':category_id/ideas')
   getIdeasByCategory(@Param('category_id') category_id: number) {
     return this.categoryService.getIdeasByCategory(category_id);
   }

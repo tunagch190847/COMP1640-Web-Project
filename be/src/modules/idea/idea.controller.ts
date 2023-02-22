@@ -8,7 +8,7 @@ import { IdeaService } from './idea.service';
 export class IdeaController {
   constructor(private readonly ideaService: IdeaService) {}
 
-  @Get('/:idea_id')
+  @Get(':idea_id')
   async getIdeaDetail(
     @UserData() userData: IUserData,
     @Param('idea_id')
@@ -17,7 +17,6 @@ export class IdeaController {
     return await this.ideaService.getIdeaDetail(idea_id, userData.user_id);
   }
 
-  @Public()
   @Get()
   getAllIdeasByCurrentSemester() {
     return this.ideaService.getAllIdeasByCurrentSemester();

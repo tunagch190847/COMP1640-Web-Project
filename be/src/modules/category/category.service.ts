@@ -21,7 +21,7 @@ export class CategoryService {
     return await categoryRepository.find();
   }
 
-  async getIdeasByCategory(category_id: number) {
+  getIdeasByCategory(category_id: number) {
     return this.categoryIdeaService.getIdeasByCategory(category_id);
   }
 
