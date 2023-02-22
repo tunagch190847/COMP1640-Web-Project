@@ -2,7 +2,7 @@ import { Semester } from '@core/database/mysql/entity/semester.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SemesterDto } from 'global/dto/semester.dto';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 
 @Injectable()
 export class SemesterService {
@@ -16,11 +16,12 @@ export class SemesterService {
     }
 
     async getCurrentSemester() {
-        return this.semesterRepository.findOne({
+        return await this.semesterRepository.findOne({
             where: {
-                
+                created_at: LessThanOrEqual(new Date()),
+                final_closure_date: MoreThanOrEqual(new Date()),
             }
-        })
+        });
     }
 
     async getSemesterById(semester_id: number) {
