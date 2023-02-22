@@ -20,10 +20,9 @@ export class CategoryController {
     return await this.categoryService.getAllCategories();
   }
 
-  @Public()
-  @Get(':category_id')
-  getAllIdeasByCategory(@Param('category_id') category_id: string) {
-    return this.categoryService.getAllIdeasByCategory(Number(category_id));
+  @Get(':category_id/ideas')
+  getIdeasByCategory(@Param('category_id') category_id: number) {
+    return this.categoryService.getIdeasByCategory(category_id);
   }
 
   @Post()
@@ -32,12 +31,12 @@ export class CategoryController {
   }
 
   @Put(':id')
-  updateCategory(@Param('id') id: string, @Body() dept: CategoryDto) {
-    return this.categoryService.updateCategory(Number(id), dept);
+  updateCategory(@Param('id') category_id: number, @Body() dept: CategoryDto) {
+    return this.categoryService.updateCategory(category_id, dept);
   }
 
   @Delete(':id')
-  deleteCategory(@Param('id') id: string) {
-    return this.categoryService.deleteCategory(Number(id));
+  deleteCategory(@Param('id') category_id: number) {
+    return this.categoryService.deleteCategory(category_id);
   }
 }
