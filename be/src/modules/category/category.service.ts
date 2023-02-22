@@ -16,7 +16,7 @@ export class CategoryService {
     const categoryRepository = entityManager
       ? entityManager.getRepository<Category>('category')
       : this.categoryRepository;
-    return await this.categoryRepository.find();
+    return await categoryRepository.find();
   }
 
   async getAllIdeasByCategory(category_id: number, entityManager?: EntityManager) {
@@ -24,6 +24,7 @@ export class CategoryService {
       ? entityManager.getRepository<Category>('category')
       : this.categoryRepository;
 
+    
     return "abc";
   }
 

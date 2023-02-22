@@ -22,7 +22,7 @@ export class IdeaService {
     entityManager?: EntityManager,
   ) {
     let data = [];
-
+    
     const ideaRepository = entityManager
       ? entityManager.getRepository<Idea>('idea')
       : this.ideaRepository;
@@ -73,7 +73,7 @@ export class IdeaService {
       .getMany();
 
     const temp = [];
-    
+
     for (let idea of ideas) {
       const categoryIdeas = await this.categoryIdeaService.getCategoriesByIdea(idea.idea_id);
       const categories = categoryIdeas.map((categoryIdea) => {
