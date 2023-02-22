@@ -1,4 +1,5 @@
 import { Category } from '@core/database/mysql/entity/category.entity';
+import { CategoryIdeaService } from '@modules/category-idea/category-idea.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryDto } from 'global/dto/category.dto';
@@ -10,6 +11,7 @@ export class CategoryService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
+    private readonly categoryIdeaService: CategoryIdeaService,
   ) {}
 
   async getAllCategories(entityManager?: EntityManager) {
@@ -19,13 +21,8 @@ export class CategoryService {
     return await categoryRepository.find();
   }
 
-  async getAllIdeasByCategory(category_id: number, entityManager?: EntityManager) {
-    const categoryRepository = entityManager
-      ? entityManager.getRepository<Category>('category')
-      : this.categoryRepository;
-
-    
-    return "abc";
+  async getIdeasByCategory(category_id: number) {
+    return this.categoryIdeaService.getIdeasByCategory(category_id);
   }
 
   async createCategory(category: CategoryDto) {
