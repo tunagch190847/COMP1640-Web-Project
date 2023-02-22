@@ -23,6 +23,7 @@ import { configuration, EConfiguration } from './config/configuration.config';
 import { DepartmentModule } from './modules/department/department.module';
 import { CategoryModule } from './modules/category/category.module';
 import { SemesterModule } from './modules/semester/semester.module';
+import { CategoryIdeaModule } from '@modules/category-idea/category-idea.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -61,6 +62,7 @@ import { SemesterModule } from './modules/semester/semester.module';
     DepartmentModule,
     CategoryModule,
     SemesterModule,
+    CategoryIdeaModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,3 +1,4 @@
+import { CategoryIdeaService } from '@modules/category-idea/category-idea.service';
 import { SemesterService } from '@modules/semester/semester.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,6 +13,7 @@ export class IdeaService {
     @InjectRepository(Idea)
     private readonly ideaRepository: Repository<Idea>,
     private readonly semesterService: SemesterService,
+    private readonly categoryIdeaService: CategoryIdeaService,
   ) {}
 
   async getIdeaDetail(
@@ -44,7 +46,7 @@ export class IdeaService {
 
     return {
       user_id: user_id,
-      tilte: idea.title,
+      title: idea.title,
       content: idea.content,
       date: idea.created_at,
       like: idea.likes,
@@ -70,8 +72,19 @@ export class IdeaService {
       .leftJoinAndSelect('idea.comments', 'comments')
       .getMany();
 
-    const temp = ideas.map((idea) => {
-      return {
+    const temp = [];
+    
+    for (let idea of ideas) {
+      const categoryIdeas = await this.categoryIdeaService.getCategoriesByIdea(idea.idea_id);
+      const categories = categoryIdeas.map((categoryIdea) => {
+        return {
+          category_id: categoryIdea.category.category_id,
+          name: categoryIdea.category.name,
+          description: categoryIdea.category.description,
+        }
+      });
+
+      temp.push({
         idea_id: idea.idea_id,
         title: idea.title,
         content: idea.content,
@@ -80,6 +93,7 @@ export class IdeaService {
         dislikes: idea.dislikes,
         comments: idea.comments.length,
         is_anonymous: idea.is_anonymous,
+        categories,
         user: {
           user_id: idea.user.user_id,
           first_name: idea.user.userDetail.first_name,
@@ -92,8 +106,8 @@ export class IdeaService {
             description: idea.user.userDetail.department.description,
           },
         },
-      };
-    });
+      });
+    }
 
     const data = {
       semester: {
