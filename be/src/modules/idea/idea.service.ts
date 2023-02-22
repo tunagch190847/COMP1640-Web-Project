@@ -95,7 +95,7 @@ export class IdeaService {
       };
     });
 
-    return {
+    const data = {
       semester: {
         semester_id: currentSemester.semester_id,
         name: currentSemester.name,
@@ -106,5 +106,7 @@ export class IdeaService {
       },
       ideas: temp,
     };
+
+    return data;
   }
 }
