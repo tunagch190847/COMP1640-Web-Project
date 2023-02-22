@@ -3,10 +3,11 @@ import { IdeaService } from './idea.service';
 import { IdeaController } from './idea.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Idea } from 'src/core/database/mysql/entity/idea.entity';
+import { SemesterModule } from '@modules/semester/semester.module';
 
 @Module({
   controllers: [IdeaController],
   providers: [IdeaService],
-  imports: [TypeOrmModule.forFeature([Idea])],
+  imports: [TypeOrmModule.forFeature([Idea]), SemesterModule],
 })
 export class IdeaModule {}
