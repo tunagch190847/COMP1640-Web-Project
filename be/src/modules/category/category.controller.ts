@@ -1,3 +1,4 @@
+import { Public } from '@core/decorator/public.decorator';
 import {
   Body,
   Controller,
@@ -19,9 +20,10 @@ export class CategoryController {
     return await this.categoryService.getAllCategories();
   }
 
-  @Get(':id')
-  getCategoryById(@Param('id') id: string) {
-    return this.categoryService.getCategoryById(Number(id));
+  @Public()
+  @Get(':category_id')
+  getAllIdeasByCategory(@Param('category_id') category_id: string) {
+    return this.categoryService.getAllIdeasByCategory(Number(category_id));
   }
 
   @Post()

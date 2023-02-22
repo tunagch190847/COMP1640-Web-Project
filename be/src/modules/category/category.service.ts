@@ -19,8 +19,12 @@ export class CategoryService {
     return await this.categoryRepository.find();
   }
 
-  async getCategoryById(category_id: number) {
-    return await this.categoryRepository.findOne(category_id);
+  async getAllIdeasByCategory(category_id: number, entityManager?: EntityManager) {
+    const categoryRepository = entityManager
+      ? entityManager.getRepository<Category>('category')
+      : this.categoryRepository;
+
+    return "abc";
   }
 
   async createCategory(category: CategoryDto) {

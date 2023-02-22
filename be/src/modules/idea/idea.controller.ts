@@ -19,7 +19,7 @@ export class IdeaController {
 
   @Public()
   @Get()
-  getAllIdeas() {
+  getAllIdeasByCurrentSemester() {
     return this.ideaService.getAllIdeasByCurrentSemester();
   }
 }
