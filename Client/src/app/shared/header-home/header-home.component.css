@@ -1,14 +1,10 @@
 :host ::ng-deep .p-menubar{
     background-color: white;
     border-width: 0;
+    padding-top: 20px;
 }
-
-
-
-.test1 {
-    margin-top: 10px;
-}
-
 .header{
     border-bottom-style: groove;
+    width: 100%;
+    position: relative;
 }

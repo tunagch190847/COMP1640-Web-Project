@@ -12,31 +12,25 @@ export class HeaderHomeComponent {
   ngOnInit() {
     this.items = [
       {
-        label: 'Thoi su',
+        label: 'Department 1',
       },
       {
-        label: 'tin tuc',
+        label: 'Department 1',
       },
       {
-        label: 'cuu tro',
+        label: 'Department 1',
       },
       {
-        label: 'Phim',
+        label: 'Department 1',
       },
       {
-        label: 'Category 5',
+        label: 'Department 1',
       },
       {
-        label: 'Category 6',
+        label: 'Department 1',
       },
       {
-        label: 'Category 7',
-      },
-      {
-        label: 'Category 8',
-      },
-      {
-        label: 'Category 9',
+        label: 'Department 1',
       },
       
     ];
