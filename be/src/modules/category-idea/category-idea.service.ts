@@ -16,13 +16,11 @@ export class CategoryIdeaService {
       ? entityManager.getRepository<CategoryIdea>('category_idea')
       : this.categoryIdeaRepository;
 
-    const categories = await categoryIdeaRepository.find({
-      where: { idea_id: idea_id, category: cate },
-    });
-    // .createQueryBuilder('category_idea')
-    // .where('category_idea.idea_id = :idea_id', { idea_id })
-    // .innerJoinAndSelect('category_idea.category', 'category')
-    // .getMany();
+    const categories = await categoryIdeaRepository
+      .createQueryBuilder('category_idea')
+      .where('category_idea.idea_id = :idea_id', { idea_id })
+      .innerJoinAndSelect('category_idea.category', 'category')
+      .getMany();
 
     return categories;
   }
