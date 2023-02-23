@@ -59,7 +59,9 @@ export class Idea {
   @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Semester, (semester) => semester.ideas, {onUpdate: 'CASCADE'})
+  @ManyToOne(() => Semester, (semester) => semester.ideas, {
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'semester_id', referencedColumnName: 'semester_id' })
   semester: Semester;
 

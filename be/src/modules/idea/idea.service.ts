@@ -1,11 +1,16 @@
+import { CategoryIdea } from '@core/database/mysql/entity/categoryIdea.entity';
+import { IdeaFile } from '@core/database/mysql/entity/file.entity';
+import { IUserData } from '@core/interface/default.interface';
 import { CategoryIdeaService } from '@modules/category-idea/category-idea.service';
+import { IdeaFileService } from '@modules/idea-file/idea-file.service';
 import { SemesterService } from '@modules/semester/semester.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ok } from 'assert';
+import { EUserRole } from 'enum/default.enum';
 import { ErrorMessage } from 'enum/error';
+import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
 import { Idea } from 'src/core/database/mysql/entity/idea.entity';
-import { Repository, EntityManager } from 'typeorm';
+import { Repository, EntityManager, DeepPartial, Connection } from 'typeorm';
 
 @Injectable()
 export class IdeaService {
@@ -14,6 +19,8 @@ export class IdeaService {
     private readonly ideaRepository: Repository<Idea>,
     private readonly semesterService: SemesterService,
     private readonly categoryIdeaService: CategoryIdeaService,
+    private ideaFileService: IdeaFileService,
+    private connection: Connection,
   ) {}
 
   async getIdeaDetail(
@@ -22,7 +29,7 @@ export class IdeaService {
     entityManager?: EntityManager,
   ) {
     let data = [];
-    
+
     const ideaRepository = entityManager
       ? entityManager.getRepository<Idea>('idea')
       : this.ideaRepository;
@@ -59,13 +66,13 @@ export class IdeaService {
     const ideaRepository = entityManager
       ? entityManager.getRepository<Idea>('idea')
       : this.ideaRepository;
-    
+
     const currentSemester = await this.semesterService.getCurrentSemester();
     const semesterId = currentSemester.semester_id;
 
     const ideas = await ideaRepository
       .createQueryBuilder('idea')
-      .where('idea.semester_id = :semesterId', {semesterId})
+      .where('idea.semester_id = :semesterId', { semesterId })
       .innerJoinAndSelect('idea.user', 'user')
       .innerJoinAndSelect('user.userDetail', 'userDetail')
       .innerJoinAndSelect('userDetail.department', 'department')
@@ -74,14 +81,16 @@ export class IdeaService {
 
     const temp = [];
 
-    for (let idea of ideas) {
-      const categoryIdeas = await this.categoryIdeaService.getCategoriesByIdea(idea.idea_id);
+    for (const idea of ideas) {
+      const categoryIdeas = await this.categoryIdeaService.getCategoriesByIdea(
+        idea.idea_id,
+      );
       const categories = categoryIdeas.map((categoryIdea) => {
         return {
           category_id: categoryIdea.category.category_id,
           name: categoryIdea.category.name,
           description: categoryIdea.category.description,
-        }
+        };
       });
 
       temp.push({
@@ -122,5 +131,85 @@ export class IdeaService {
     };
 
     return data;
+  }
+
+  async createIdea(userData: IUserData, body: VCreateIdeaDto) {
+    // let countPDF = 0;
+    let data: DeepPartial<Idea>;
+    if (userData.role_id != EUserRole.STAFF) {
+      throw new HttpException(
+        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    try {
+      data = await this.connection.transaction(async (manager) => {
+        const currentSemester = await this.semesterService.getCurrentSemester();
+        const ideaParams = new Idea();
+        ideaParams.user_id = userData.user_id;
+        ideaParams.title = body.title;
+        ideaParams.content = body.content;
+        ideaParams.is_anonymous = body.is_anonymous;
+        ideaParams.semester_id = currentSemester.semester_id;
+
+        const idea = await this.saveIdea(ideaParams, manager);
+
+        console.log(idea);
+
+        const postFileParams = [];
+        if (body?.files && body?.files.length) {
+          body.files.forEach((files) => {
+            const ideaFileParam = new IdeaFile();
+            ideaFileParam.idea_id = idea.idea_id;
+            ideaFileParam.file = files.file;
+            postFileParams.push(ideaFileParam);
+          });
+        }
+        const categoryIdeaParams = [];
+
+        if (body?.category_ids && body?.category_ids?.length) {
+          body.category_ids.forEach((category_id) => {
+            const categoryIdeaParam = new CategoryIdea();
+            categoryIdeaParam.idea_id = idea.idea_id;
+            categoryIdeaParam.category_id = category_id;
+
+            console.log('categoryIdeaParam: ', categoryIdeaParam);
+
+            categoryIdeaParams.push(categoryIdeaParam);
+          });
+        }
+        const result = await Promise.allSettled([
+          this.ideaFileService.createIdeaFile(postFileParams, manager),
+          this.categoryIdeaService.createIdeaCategory(
+            categoryIdeaParams,
+            manager,
+          ),
+        ]);
+
+        if (result.some((r) => r.status === 'rejected'))
+          throw new HttpException(
+            'ErrorMessage.POSTING_IDEA_FAILED',
+            HttpStatus.BAD_REQUEST,
+          );
+
+        return idea;
+      });
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+    return {
+      idea_id: data.idea_id,
+      files: body.files || [],
+    };
+  }
+
+  async saveIdea(value: DeepPartial<Idea>, entityManager?: EntityManager) {
+    const ideaRepository = entityManager
+      ? entityManager.getRepository<Idea>('idea')
+      : this.ideaRepository;
+
+    console.log(value);
+
+    return await ideaRepository.save(value);
   }
 }

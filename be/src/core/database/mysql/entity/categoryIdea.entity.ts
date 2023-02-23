@@ -1,4 +1,5 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column } from 'typeorm/decorator/columns/Column';
 import { Category } from './category.entity';
 import { Idea } from './idea.entity';
 
@@ -10,6 +11,12 @@ export class CategoryIdea {
     unsigned: true,
   })
   category_idea_id: number;
+
+  @Column({ name: 'idea_id', type: 'int', unsigned: true })
+  idea_id: number;
+
+  @Column({ name: 'category_id', type: 'int', unsigned: true })
+  category_id: number;
 
   @ManyToOne(() => Idea, (idea) => idea.ideaCategories, { onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'idea_id', referencedColumnName: 'idea_id' })
