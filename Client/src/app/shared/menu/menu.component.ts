@@ -14,24 +14,13 @@ interface Country {
 export class MenuComponent {
   display: any;
   value3: any;
-  items: MenuItem[] = [];
-
-  constructor(private router: Router) { }
+  items: MenuItem[];
 
   ngOnInit() {
     this.items = [
-      {
-        label: 'Filter',
-        icon: 'pi pi-pw pi-file',
-        items: [
-          { label: 'Category 1', },
-          { label: 'Category 2', },
-          { label: 'Category 3', },
-          { label: 'Category 4', },
-          { label: 'Category 5', },
-          { label: 'Category 6', },
-        ]
-      },
+      { label: 'View profile', icon: 'pi pi-users' },
+      { label: 'Settings', icon: 'pi pi-fw pi-download' },
+      { label: 'Log out', icon: 'pi pi-sign-out' }
     ];
   }
 }

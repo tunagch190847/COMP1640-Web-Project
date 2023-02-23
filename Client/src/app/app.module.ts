@@ -31,6 +31,8 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { TreeSelectModule } from 'primeng/treeselect';
 import { ListboxModule } from 'primeng/listbox';
 import { PanelMenuModule } from 'primeng/panelmenu';
+import { ChipModule } from 'primeng/chip';
+import { AvatarModule } from 'primeng/avatar';
 
 
 @NgModule({
@@ -69,7 +71,9 @@ import { PanelMenuModule } from 'primeng/panelmenu';
         SplitButtonModule,
         TreeSelectModule,
         ListboxModule,
-        PanelMenuModule
+        PanelMenuModule,
+        ChipModule,
+        AvatarModule
     ]
 })
 export class AppModule { }

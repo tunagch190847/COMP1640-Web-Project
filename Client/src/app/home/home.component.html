@@ -1,122 +1,114 @@
 <div class="wrapper" style="background-color: #F2F2F2">
-        
-        <app-header-home></app-header-home>
-
-        <div class="" style="background-color:black">
-        <div class="" >
-                <div class="menu">
+        <div class="menu-bar" style="position: fixed; width: 100%; top: 0%; left: 0%;">
+                <app-header-home></app-header-home>
+        </div>
+        <br>
+        <div class="">
+                <div class="menu" style="position: fixed;">
                         <app-menu></app-menu>
                 </div>
-
-                <div class="content">
-                        <div class="post" style="width: 380,75px; height:150px; background-color:#E9F0EF; padding-bottom:20px">
-                                <div>
-                                        <img src="https://scontent.fhan14-2.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=cp0_dst-png_p40x40&_nc_cat=1&ccb=1%207&_nc_sid=7206a8&_nc_ohc=uzaU27BDodMAX9HIiWB&_nc_ht=scontent.fhan14-2.fna&oh=00_AfDpLnJbpOgRs5t85dtXrKzPGn1a4Cvm1huXiCIVlF-cRw&oe=6416EA38"
-                                                alt="" style="width:40px; height:40px; border-radius: 50%; margin:10px">
-                                        <button pButton type="button" (click)="postIdeal()"
-                                                label="Chào A, bạn có muốn thêm ý tưởng không?"
-                                                style="border-radius: 20px; background-color:white;color:black; float:right; width:90%;margin:10px "></button>
-                                </div>
-                                <br>
-                                
-                                <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                                        <div class="col-sm-4">
-                                                <button type="button" class="btn btn-primary btn-floating mx-1">
-                                                        <i class="fab fa-facebook-f"></i>
-                                                        Ảnh/Video
-                                                </button>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                                <button type="button" class="btn btn-primary btn-floating mx-1">
-                                                        <i class="fab fa-facebook-f"></i>
-                                                        Cảm xúc/Hoạt động
-                                                </button>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                                <button type="button" class="btn btn-primary btn-floating mx-1">
-                                                        <i class="fab fa-facebook-f"></i>
-                                                        Video trực tiếp
-                                                </button>
-                                        </div>
-                                </div>
-
+                <div class="post"
+                        style=" background-color: white;  height: 100px; width: 50rem; margin-left: auto; margin-top: 5em; border-radius: 10px; margin-right: auto;">
+                        <div class="post-detail">
+                                <img src="https://scontent.fhan14-2.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=cp0_dst-png_p40x40&_nc_cat=1&ccb=1%207&_nc_sid=7206a8&_nc_ohc=uzaU27BDodMAX9HIiWB&_nc_ht=scontent.fhan14-2.fna&oh=00_AfDpLnJbpOgRs5t85dtXrKzPGn1a4Cvm1huXiCIVlF-cRw&oe=6416EA38"
+                                        alt="" style="width:40px; height:40px; border-radius: 50%; margin: 20px;">
+                                <button pButton type="button" (click)="postIdeal()"
+                                        label="Chào A, bạn có muốn thêm ý tưởng không?"
+                                        style="border-radius: 20px; background-color:white; color:black; float:right; width:43rem ;  margin: 10px;"></button>
                         </div>
+                </div>
 
-                        <br>
-                <div class="content-container" style="margin-top: 5rem">
-                        <p-card header="Idea title"
-                                [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto', 'background-color':'#E9F0EF'}"
-                                subheader="date post">
-                                <a href="">
-                                        <p-card
-                                                [style]="{'width': '45rem', 'margin-bottom': '2em', 'margin-left': 'auto', 'margin-right': 'auto'}">
-                                                <h6>Le Chien's Sasa group is known by many people in Da Nang as the
-                                                        "hero" squad of the sea. They spend all
-                                                        their
-                                                        energy and
-                                                        money to revive corals, rescue unfortunate sea creatures that
-                                                        are injured and stranded.</h6>
-                                        </p-card>
-                                </a>
-                                <ng-template pTemplate="footer">
-                                        <div [ngStyle]="{'display':'flex', 'flex-direction': 'row'}">
-                                                <h6 [ngStyle]="{'margin-right':'20px'}">3 Likes</h6>
-                                                <h6 [ngStyle]="{'margin-right':'525px'}">3 Dislikes</h6>
-                                                <h6>3 Comments</h6>
-                                        </div>
-                                </ng-template>
-                        </p-card>
+                <div class="" style="margin-top: 5rem">
+                        <p-card header="1/2/2023 - 10/2/2023 - 30/2/2023"
+                                [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto', 'background-color':'white'}">
 
-                        <p-card header="Idea title"
-                                [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto', 'background-color':'#E9F0EF'}"
-                                subheader="date post">
-                                <a href="">
-                                        <p-card
-                                                [style]="{'width': '45rem', 'margin-bottom': '2em', 'margin-left': 'auto', 'margin-right': 'auto'}">
-                                                <h6>Le Chien's Sasa group is known by many people in Da Nang as the
-                                                        "hero" squad of the sea. They spend all
-                                                        their
-                                                        energy and
-                                                        money to revive corals, rescue unfortunate sea creatures that
-                                                        are injured and stranded.</h6>
-                                        </p-card>
-                                </a>
-                                <ng-template pTemplate="footer">
-                                        <div [ngStyle]="{'display':'flex', 'flex-direction': 'row'}">
-                                                <h6 [ngStyle]="{'margin-right':'20px'}">3 Likes</h6>
-                                                <h6 [ngStyle]="{'margin-right':'525px'}">3 Dislikes</h6>
-                                                <h6>3 Comments</h6>
-                                        </div>
-                                </ng-template>
-                        </p-card>
+                                <div class="row"
+                                        style="width: 100%; margin-left: auto; margin-right: auto; justify-content: space-between;">
+                                        <div class="col-2" style="position: static;">
 
-                        <p-card header="Idea title"
-                                [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto', 'background-color':'#E9F0EF'}"
-                                subheader="date post">
-                                <a href="">
-                                        <p-card
-                                                [style]="{'width': '45rem', 'margin-bottom': '2em', 'margin-left': 'auto', 'margin-right': 'auto'}">
-                                                <h6>Le Chien's Sasa group is known by many people in Da Nang as the
-                                                        "hero" squad of the sea. They spend all
-                                                        their
-                                                        energy and
-                                                        money to revive corals, rescue unfortunate sea creatures that
-                                                        are injured and stranded.</h6>
-                                        </p-card>
-                                </a>
-                                <ng-template pTemplate="footer">
-                                        <div [ngStyle]="{'display':'flex', 'flex-direction': 'row'}">
-                                                <h6 [ngStyle]="{'margin-right':'20px'}">3 Likes</h6>
-                                                <h6 [ngStyle]="{'margin-right':'525px'}">3 Dislikes</h6>
-                                                <h6>3 Comments</h6>
                                         </div>
-                                </ng-template>
+                                        <div class="col-5" style="position: static;">
+                                                <p
+                                                        style="text-align: center; margin-left: 10px; font-size: 25px; font-weight: bold;">
+                                                        Popular Ideas
+                                                </p>
+                                        </div>
+                                        <div class="col-3" style="position: static;">
+                                                <p-treeSelect [(ngModel)]="selectedNode" [options]="nodes1"
+                                                        placeholder="Filter"></p-treeSelect>
+                                        </div>
+
+                                </div>
+
+                                <div>
+                                        <div class="row"
+                                                style="margin-top: 2rem; margin-bottom: 1rem; background-color: #F2F2F2; padding: 10px; border-radius: 10px; width: 90%; margin-left: auto; margin-right:auto;">
+                                                <div class="personal-info col-3" style="position: static;">
+                                                        <p-avatar
+                                                                image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                                                                styleClass="mr-2" size="xlarge"
+                                                                shape="circle"></p-avatar>
+                                                        <p>Han Hong Son</p>
+                                                        <p style="font-weight: bold;">Department SH</p>
+                                                </div>
+
+                                                <div class="col-9" style="position: static;">
+                                                        <p style="font-size: 20px; font-weight: bold;">
+                                                                NewVisions continues hiring even during the
+                                                                pandemic due to increased repeat business</p>
+                                                        <div class="row"
+                                                                style="width: 100%; justify-content: space-between; margin-left: auto; margin-right: auto; height: 2rem;">
+                                                                <p>10 September, 2021</p>
+                                                                <p>30 Views</p>
+                                                        </div>
+                                                        <div class="row" style="margin-left: auto; margin-right: auto;">
+                                                                <p-chip label="Action" styleClass="mr-2"></p-chip>
+                                                                <p-chip label="Action" styleClass="mr-2"></p-chip>
+                                                        </div>
+                                                </div>
+
+                                        </div>
+
+                                        <div class="row"
+                                                style="margin-top: 2rem; margin-bottom: 1rem; background-color: #F2F2F2; padding: 10px; border-radius: 10px; width: 90%; margin-left: auto; margin-right:auto;">
+                                                <div class="personal-info col-3" style="position: static;">
+                                                        <p-avatar
+                                                                image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                                                                styleClass="mr-2" size="xlarge"
+                                                                shape="circle"></p-avatar>
+                                                        <p>Han Hong Son</p>
+                                                        <p style="font-weight: bold;">Department SH</p>
+                                                </div>
+
+                                                <div class="col-9" style="position: static;">
+                                                        <p style="font-size: 20px; font-weight: bold;">
+                                                                NewVisions continues hiring even during the
+                                                                pandemic due to increased repeat business</p>
+                                                        <div class="row"
+                                                                style="width: 100%; justify-content: space-between; margin-left: auto; margin-right: auto; height: 2rem;">
+                                                                <p>10 September, 2021</p>
+                                                                <p>30 Views</p>
+                                                        </div>
+                                                        <div class="row" style="margin-left: auto; margin-right: auto;">
+                                                                <p-chip label="Action" styleClass="mr-2"></p-chip>
+                                                                <p-chip label="Action" styleClass="mr-2"></p-chip>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
+
+                                <!-- <ng-template pTemplate="footer">
+                                                <div [ngStyle]="{'display':'flex', 'flex-direction': 'row'}">
+                                                        <h6 [ngStyle]="{'margin-right':'20px'}">3 Likes</h6>
+                                                        <h6 [ngStyle]="{'margin-right':'525px'}">3 Dislikes</h6>
+                                                        <h6>3 Comments</h6>
+                                                </div>
+                                        </ng-template> -->
                         </p-card>
                 </div>
 
+                <a href="#" style="position: fixed; top: 90%; left: 90%;">
+                        <img src="../../assets/images/post.png">
+                </a>
+
         </div>
-
-
-</div>

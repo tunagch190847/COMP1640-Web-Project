@@ -1,19 +1,52 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
+
 
 li {
     margin-top: 1rem;
 }
 
-.list-group-item{
-    border-width: 0;
+.p-input-icon-left {
+    margin-top: 2rem;
+    width: 12rem;
+    margin-bottom: 2rem;
+
 }
 
-:host ::ng-deep p-input-icon-left {
+:host ::ng-deep .p-chip.mr-2 {
+    margin-left: 25px;
+    margin-top: 20px;
+    height: 3rem;
     background-color: white;
+}
+
+
+
+
+.p-input-icon-left input{
+    background-color: rgb(233, 233, 233);
     border-width: 0;
+    height: 2rem;
+    width: 12rem;
+}
+
+.menu-left {
+    background-color: white;
+    border-radius: 10px   ;
+    height: 35rem;
+    width: 15rem;
+    margin-left: 30px;
+
+}
+
+:host ::ng-deep .p-menu {
+    border-width: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 12rem;
+    
+}
+
+
+:host ::ng-deep .p-menuitem {
+    margin-bottom: 15px;
+    
 }

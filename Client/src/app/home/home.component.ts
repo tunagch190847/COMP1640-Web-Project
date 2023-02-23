@@ -11,11 +11,37 @@ import { PostComponent } from './post/post.component';
 })
 export class HomeComponent implements OnInit{
   ref: DynamicDialogRef;
+
+  selectedNode: any;
+  nodes1: any[];
   
   constructor(private dialogService: DialogService) { 
   }
+
   ngOnInit(): void {
-    
+    this.nodes1 = [
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+    ]
   }
 
   postIdeal(){

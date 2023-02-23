@@ -1,59 +1,11 @@
-<!-- <p-button type="button" class="mr-2" (click)="display = true">Show Menu</p-button> -->
-<!-- <p-button type="button" class="mr-2" (click)="display = true" style = "position:fixed;">Show Menu</p-button> -->
-<p-button type="button" class="mr-2" (click)="display = true" [ngStyle]="{'position':'fixed'}">Show Menu</p-button>
+<div class="menu-left" style="align-items: center;">
 
-<p-sidebar [(visible)]="display">
-    <nav class="mt-2">
-        <ul class="list-group">
-            <li class="list-group-item">
-                <!-- <a [routerLink]="['']" routerLinkActive="active" class="nav-link"> -->
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input type="text" pInputText placeholder="Search" [(ngModel)]="value3" />
-                </span>
-            </li>
+    <p-chip label="Amy Elsner" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+        styleClass="mr-2"></p-chip>
 
-            <li class="list-group-item">
-                <p-button styleClass="p-button-text">
-                    <ng-template pTemplate="content">
-                        <img alt="logo" src="../../../assets/images/profile.png"  />
-                        <span class="ml-2 font-bold">View profile</span>
-                    </ng-template>
-                </p-button>
-            </li>
-
-            <li class="list-group-item">
-                <p-button styleClass="p-button-text">
-                    <ng-template pTemplate="content">
-                        <img alt="logo" src="../../../assets/images/manage-profile.png"  />
-                        <span class="ml-2 font-bold">Manage accounts</span>
-                    </ng-template>
-                </p-button>
-            </li>
-
-            <li class="list-group-item">
-                <p-button styleClass="p-button-text">
-                    <ng-template pTemplate="content">
-                        <img alt="logo" src="../../../assets/images/settings.png" />
-                        <span class="ml-2 font-bold">Settings</span>
-                    </ng-template>
-                </p-button>
-            </li>
-
-            <li class="list-group-item">
-                <p-panelMenu [model]="items"></p-panelMenu>
-            </li>
-
-            <li class="list-group-item">
-                <p-button styleClass="p-button-text">
-                    <ng-template pTemplate="content">
-                        <img alt="logo" src="../../../assets/images/logout.png" />
-                        <span class="ml-2 font-bold">Log out</span>
-                    </ng-template>
-                </p-button>
-            </li>
-            
-        </ul>
-        <ul></ul>
-    </nav>
-</p-sidebar>
+    <span class="p-input-icon-left" style="margin-left: 25px;">
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText placeholder="Search" [(ngModel)]="value3" />
+    </span>
+    <p-menu [model]="items"></p-menu>
+</div>
