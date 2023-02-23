@@ -1,7 +1,7 @@
-import { Public } from '@core/decorator/public.decorator';
 import { UserData } from '@core/decorator/user.decorator';
 import { IUserData } from '@core/interface/default.interface';
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
 import { IdeaService } from './idea.service';
 
 @Controller('idea')
@@ -20,5 +20,13 @@ export class IdeaController {
   @Get()
   getAllIdeasByCurrentSemester() {
     return this.ideaService.getAllIdeasByCurrentSemester();
+  }
+
+  @Post()
+  async createPost(
+    @UserData() userData: IUserData,
+    @Body() body: VCreateIdeaDto,
+  ) {
+    return await this.ideaService.createIdea(userData, body);
   }
 }

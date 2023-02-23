@@ -5,10 +5,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Idea } from 'src/core/database/mysql/entity/idea.entity';
 import { SemesterModule } from '@modules/semester/semester.module';
 import { CategoryIdeaModule } from '@modules/category-idea/category-idea.module';
+import { IdeaFileModule } from '@modules/idea-file/idea-file.module';
 
 @Module({
   controllers: [IdeaController],
   providers: [IdeaService],
-  imports: [TypeOrmModule.forFeature([Idea]), SemesterModule, CategoryIdeaModule],
+  imports: [
+    TypeOrmModule.forFeature([Idea]),
+    SemesterModule,
+    CategoryIdeaModule,
+    IdeaFileModule,
+  ],
 })
 export class IdeaModule {}
