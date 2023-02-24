@@ -21,9 +21,9 @@ export class DepartmentController {
     return await this.departmentService.getAllDepartments();
   }
 
-  @Get(':id')
-  getDepartmentById(@Param('id') id: string) {
-    return this.departmentService.getDepartmentById(Number(id));
+  @Get(':department_id')
+  getDepartmentById(@Param('department_id') department_id: number) {
+    return this.departmentService.getDepartmentById(department_id);
   }
 
   @Get(':department_id/ideas')
