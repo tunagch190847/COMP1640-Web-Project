@@ -28,7 +28,7 @@ export class DepartmentController {
 
   @Get(':department_id/ideas')
   getIdeasByDepartment(@Param('department_id') department_id: number) {
-    return this.getIdeasByDepartment(department_id);
+    return this.departmentService.getIdeasByDepartment(department_id);
   }
 
   @Get(':department_id/categories/:category_id/ideas')

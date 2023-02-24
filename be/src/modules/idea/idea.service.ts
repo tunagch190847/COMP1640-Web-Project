@@ -63,26 +63,36 @@ export class IdeaService {
   }
 
   async getAllIdeas(
-    semester_id: number, 
+    semester_id?: number, 
+    department_id?: number,
     entityManager?: EntityManager
   ) {
     const ideaRepository = entityManager
       ? entityManager.getRepository<Idea>('idea')
       : this.ideaRepository;
 
-    const semester = await this.semesterService.getSemesterById(semester_id);
-    const semesterId = semester.semester_id;
+    if(semester_id == null) {
+      const currentSemester = await this.semesterService.getCurrentSemester();
+      semester_id = currentSemester.semester_id;
+    }
 
-    const ideas = await ideaRepository
+    const selectQueryBuilder = ideaRepository
       .createQueryBuilder('idea')
-      .where('idea.semester_id = :semesterId', { semesterId })
       .innerJoinAndSelect('idea.user', 'user')
-      .innerJoinAndSelect('user.userDetail', 'userDetail')
-      .innerJoinAndSelect('userDetail.department', 'department')
+      .innerJoinAndSelect('user.userDetail', 'user_detail')
+      .innerJoinAndSelect('user_detail.department', 'department')
       .leftJoinAndSelect('idea.comments', 'comments')
-      .getMany();
+      .where('idea.semester_id = :semester_id', { semester_id });
 
-    const temp = [];
+    if(department_id != null) {
+      selectQueryBuilder.andWhere(
+        'user_detail.department_id = :department_id', 
+        { department_id }
+      );
+    }
+
+    const ideas = await selectQueryBuilder.getMany();
+    const data = [];
 
     for (const idea of ideas) {
       const categoryIdeas = await this.categoryIdeaService.getCategoriesByIdea(
@@ -96,7 +106,7 @@ export class IdeaService {
         };
       });
 
-      temp.push({
+      data.push({
         idea_id: idea.idea_id,
         title: idea.title,
         content: idea.content,
@@ -115,32 +125,24 @@ export class IdeaService {
           department: {
             department_id: idea.user.userDetail.department_id,
             name: idea.user.userDetail.department.name,
-            description: idea.user.userDetail.department.description,
           },
         },
       });
     }
 
-    const data = {
-      semester: {
-        semester_id: semester.semester_id,
-        name: semester.name,
-        description: semester.description,
-        created_at: semester.created_at,
-        first_closure_date: semester.first_closure_date,
-        final_closure_date: semester.final_closure_date,
-      },
-      ideas: temp,
-    };
+    // const data = {
+    //   semester: {
+    //     semester_id: semester.semester_id,
+    //     name: semester.name,
+    //     description: semester.description,
+    //     created_at: semester.created_at,
+    //     first_closure_date: semester.first_closure_date,
+    //     final_closure_date: semester.final_closure_date,
+    //   },
+    //   ideas: temp,
+    // };
 
     return data;
-  }
-
-  async getIdeasByCurrentSemester() {
-    const currentSemester = await this.semesterService.getCurrentSemester();
-    const semesterId = currentSemester.semester_id;
-
-    return this.getAllIdeas(semesterId);
   }
 
   async createIdea(userData: IUserData, body: VCreateIdeaDto) {

@@ -4,7 +4,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
 import { IdeaService } from './idea.service';
 
-@Controller('idea')
+@Controller('ideas')
 export class IdeaController {
   constructor(private readonly ideaService: IdeaService) {}
 
@@ -19,7 +19,7 @@ export class IdeaController {
 
   @Get()
   getIdeasByCurrentSemester() {
-    return this.ideaService.getIdeasByCurrentSemester();
+    return this.ideaService.getAllIdeas();
   }
 
   @Post()

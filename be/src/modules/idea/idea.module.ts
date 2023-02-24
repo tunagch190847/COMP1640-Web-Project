@@ -16,5 +16,6 @@ import { IdeaFileModule } from '@modules/idea-file/idea-file.module';
     CategoryIdeaModule,
     IdeaFileModule,
   ],
+  exports: [IdeaService],
 })
 export class IdeaModule {}

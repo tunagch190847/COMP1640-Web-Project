@@ -89,7 +89,6 @@ export class CategoryIdeaService {
           department: {
             department_id: idea.user.userDetail.department_id,
             name: idea.user.userDetail.department.name,
-            description: idea.user.userDetail.department.description,
           },
         },
       });
