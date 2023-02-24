@@ -10,7 +10,7 @@ import {
 import { SemesterDto } from 'global/dto/semester.dto';
 import { SemesterService } from './semester.service';
 
-@Controller('semester')
+@Controller('semesters')
 export class SemesterController {
   constructor(private readonly semesterService: SemesterService) {}
 
