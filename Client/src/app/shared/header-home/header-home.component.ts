@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
+
 @Component({
   selector: 'app-header-home',
   templateUrl: './header-home.component.html',
@@ -8,6 +9,8 @@ import { MenuItem } from 'primeng/api';
 })
 export class HeaderHomeComponent {
   items!: MenuItem[];
+
+  
 
   ngOnInit() {
     this.items = [
@@ -34,6 +37,8 @@ export class HeaderHomeComponent {
       },
       
     ];
+
+    
   }
 }
 
