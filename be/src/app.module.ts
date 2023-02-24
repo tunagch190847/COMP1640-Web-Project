@@ -24,6 +24,7 @@ import { DepartmentModule } from './modules/department/department.module';
 import { CategoryModule } from './modules/category/category.module';
 import { SemesterModule } from './modules/semester/semester.module';
 import { CategoryIdeaModule } from '@modules/category-idea/category-idea.module';
+import { UploadModule } from './modules/upload/upload.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -63,6 +64,7 @@ import { CategoryIdeaModule } from '@modules/category-idea/category-idea.module'
     CategoryModule,
     SemesterModule,
     CategoryIdeaModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [
