@@ -1,4 +1,18 @@
 export enum EUserRole {
-  STAFF = 1,
-  ADMIN = 2,
+  STAFF = 2,
+  ADMIN = 1,
+}
+
+export enum EGender {
+  NOT_SELECT = -1,
+  PREFER_NOT_TO_SAY = 0,
+  MALE = 1,
+  FEMALE = 2,
+}
+
+export enum EDepartment {
+  DEPARTMENT1 = 1,
+  DEPARTMENT2 = 3,
+  DEPARTMENT3 = 3,
+  DEPARTMENT4 = 4,
 }
