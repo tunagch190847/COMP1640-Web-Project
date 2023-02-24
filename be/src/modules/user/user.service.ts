@@ -1,6 +1,8 @@
+import { IUserData } from '@core/interface/default.interface';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EIsDelete } from 'enum';
+import { VSignUp } from 'global/dto/signup.dto';
 import { VLogin } from 'global/user/dto/login.dto';
 import { User } from 'src/core/database/mysql/entity/user.entity';
 import { AuthService } from 'src/core/global/auth/auth.service';
@@ -16,6 +18,10 @@ export class UserService {
 
   async login(body: VLogin) {
     return await this.authService.login(body);
+  }
+
+  async signup(userData: IUserData, body: VSignUp) {
+    return await this.authService.signup(userData, body);
   }
 
   async getUserByEmail(email: string, entityManager?: EntityManager) {
@@ -56,5 +62,26 @@ export class UserService {
       ? entityManager.getRepository<User>('user')
       : this.userRepository;
     return await userRepository.update({ user_id }, body);
+  }
+
+  async createUser(body: DeepPartial<User>, entityManager?: EntityManager) {
+    const userRepository = entityManager
+      ? entityManager.getRepository<User>('user')
+      : this.userRepository;
+
+    return await userRepository.save(body);
+  }
+
+  async findUserByUserId(userId: string, entityManager?: EntityManager) {
+    const userRepository = entityManager
+      ? entityManager.getRepository<User>('user')
+      : this.userRepository;
+    return await userRepository.findOne({
+      where: {
+        user_id: userId,
+        is_deleted: EIsDelete.NOT_DELETE,
+      },
+      relations: ['userDetail'],
+    });
   }
 }

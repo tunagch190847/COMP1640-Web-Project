@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import { User } from '@core/database/mysql/entity/user.entity';
 import {
   forwardRef,
   HttpException,
@@ -9,12 +10,19 @@ import {
 } from '@nestjs/common';
 
 import { JwtService } from '@nestjs/jwt';
+import { EIsDelete } from 'enum';
 import { ErrorMessage } from 'enum/error';
+import { VSignUp } from 'global/dto/signup.dto';
 import { VLogin } from 'global/user/dto/login.dto';
-import { handleBCRYPTCompare } from 'src/helper/utils';
+import { handleBCRYPTCompare, handleBCRYPTHash } from 'src/helper/utils';
+import { Connection } from 'typeorm';
 
 import { UserService } from 'src/modules/user/user.service';
 import { IResponseAuth } from './interface';
+import { UserDetail } from '@core/database/mysql/entity/userDetail.entity';
+import { UserDetailService } from '@modules/user-detail/user-detail.service';
+import { IUserData } from '@core/interface/default.interface';
+import { EUserRole } from 'enum/default.enum';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +32,8 @@ export class AuthService {
     @Inject(forwardRef(() => UserService))
     private userService: UserService,
     public jwtService: JwtService,
+    private connection: Connection,
+    private userDetailService: UserDetailService,
   ) {}
 
   async getUserById(user_id: string, role_id) {
@@ -71,6 +81,52 @@ export class AuthService {
     return {
       user_id: email.user_id,
       token: data.token,
+    };
+  }
+
+  async signup(userData: IUserData, body: VSignUp) {
+    const email = await this.userService.getUserByEmail(body.email);
+
+    if (email) {
+      throw new HttpException(
+        ErrorMessage.GMAIL_ALREADY_EXITS,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (userData.role_id != EUserRole.ADMIN) {
+      throw new HttpException(
+        ErrorMessage.YOU_DO_NOT_HAVE_RIGHTS_TO_REGISTER_USER_ACCOUNTS,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const userParams = new User();
+    userParams.email = body.email;
+    userParams.password = await handleBCRYPTHash(body.password);
+    userParams.role_id = body.role_id;
+    userParams.is_deleted = EIsDelete.NOT_DELETE;
+
+    const user = await this.connection.transaction(async (manager) => {
+      const newUser = await this.userService.createUser(userParams, manager);
+
+      const userDetailParams = new UserDetail();
+      userDetailParams.user_id = newUser.user_id;
+      userDetailParams.first_name = body.first_name;
+      userDetailParams.last_name = body.last_name;
+      userDetailParams.gender = body.gender;
+      userDetailParams.department_id = body.department_id;
+      userDetailParams.birthday = new Date(body?.birthdate);
+      await this.userDetailService.createUserDetail(userDetailParams, manager);
+
+      return await this.userService.findUserByUserId(newUser.user_id, manager);
+    });
+    const data = await this.returnResponseAuth(user);
+
+    return {
+      token: data.token,
+      user_data: {
+        user_id: user.user_id,
+      },
     };
   }
 }
