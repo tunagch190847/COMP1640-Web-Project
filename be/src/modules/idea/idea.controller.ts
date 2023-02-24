@@ -18,8 +18,8 @@ export class IdeaController {
   }
 
   @Get()
-  getAllIdeasByCurrentSemester() {
-    return this.ideaService.getAllIdeasByCurrentSemester();
+  getIdeasByCurrentSemester() {
+    return this.ideaService.getIdeasByCurrentSemester();
   }
 
   @Post()
