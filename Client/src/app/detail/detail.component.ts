@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,35 @@ import { Component } from '@angular/core';
 })
 export class DetailComponent {
 
+  selectedNode: any;
+  nodes1: any[];
+  like: boolean = false;
+  dislike: boolean = false;
+  comment_value: string;
+  
+  ngOnInit(): void {
+    this.nodes1 = [
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+      {
+        label: 'Category',
+      },
+    ]
+  }
 }

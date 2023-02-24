@@ -36,6 +36,8 @@ import { AvatarModule } from 'primeng/avatar';
 import { ScrollerModule } from 'primeng/scroller';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { DialogModule } from 'primeng/dialog';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 
 @NgModule({
@@ -79,7 +81,9 @@ import { DialogModule } from 'primeng/dialog';
         AvatarModule,
         ScrollerModule,
         MegaMenuModule,
-        DialogModule
+        DialogModule,
+        ToggleButtonModule,
+        InputTextareaModule
     ]
 })
 export class AppModule { }
