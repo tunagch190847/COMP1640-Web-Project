@@ -23,6 +23,7 @@ import { UserDetail } from '@core/database/mysql/entity/userDetail.entity';
 import { UserDetailService } from '@modules/user-detail/user-detail.service';
 import { IUserData } from '@core/interface/default.interface';
 import { EUserRole } from 'enum/default.enum';
+import sendMailNodemailer from '@helper/nodemailer';
 
 @Injectable()
 export class AuthService {
@@ -99,6 +100,8 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
+
+    sendMailNodemailer(body.email);
 
     const userParams = new User();
     userParams.email = body.email;
