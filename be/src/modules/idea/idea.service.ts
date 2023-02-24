@@ -62,7 +62,10 @@ export class IdeaService {
     };
   }
 
-  async getIdeasBySemester(semester_id: number, entityManager?: EntityManager) {
+  async getAllIdeas(
+    semester_id: number, 
+    entityManager?: EntityManager
+  ) {
     const ideaRepository = entityManager
       ? entityManager.getRepository<Idea>('idea')
       : this.ideaRepository;
@@ -137,7 +140,7 @@ export class IdeaService {
     const currentSemester = await this.semesterService.getCurrentSemester();
     const semesterId = currentSemester.semester_id;
 
-    return this.getIdeasBySemester(semesterId);
+    return this.getAllIdeas(semesterId);
   }
 
   async createIdea(userData: IUserData, body: VCreateIdeaDto) {

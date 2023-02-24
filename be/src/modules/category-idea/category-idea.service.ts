@@ -1,4 +1,5 @@
 import { CategoryIdea } from '@core/database/mysql/entity/categoryIdea.entity';
+import { SemesterService } from '@modules/semester/semester.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository, DeepPartial } from 'typeorm';
@@ -8,6 +9,7 @@ export class CategoryIdeaService {
   constructor(
     @InjectRepository(CategoryIdea)
     private readonly categoryIdeaRepository: Repository<CategoryIdea>,
+    private readonly semesterService: SemesterService,
   ) {}
 
   async getCategoriesByIdea(idea_id: number, entityManager?: EntityManager) {
@@ -25,21 +27,36 @@ export class CategoryIdeaService {
     return categories;
   }
 
-  async getIdeasByCategory(category_id: number, entityManager?: EntityManager) {
+  async getIdeasByCategory(
+    category_id: number, 
+    semester_id?: number, 
+    department_id?: number, 
+    entityManager?: EntityManager
+  ) {
     const categoryIdeaRepository = entityManager
       ? entityManager.getRepository<CategoryIdea>('category_idea')
       : this.categoryIdeaRepository;
 
-    const categoryIdeas = await categoryIdeaRepository
+    if(semester_id == null) {
+      const currentSemester = await this.semesterService.getCurrentSemester();
+      semester_id = currentSemester.semester_id;
+    }
+    
+    const selectQueryBuilder = categoryIdeaRepository
       .createQueryBuilder('category_idea')
-      .where('category_idea.category_id = :category_id', { category_id })
       .innerJoinAndSelect('category_idea.idea', 'idea')
       .innerJoinAndSelect('idea.user', 'user')
-      .innerJoinAndSelect('user.userDetail', 'userDetail')
-      .innerJoinAndSelect('userDetail.department', 'department')
+      .innerJoinAndSelect('user.userDetail', 'user_detail')
+      .innerJoinAndSelect('user_detail.department', 'department')
       .leftJoinAndSelect('idea.comments', 'comments')
-      .getMany();
+      .where('idea.semester_id = :semester_id', { semester_id })
+      .andWhere('category_idea.category_id = :category_id', { category_id });
 
+    if(department_id != null) {
+      selectQueryBuilder.andWhere('user_detail.department_id = :department_id', { department_id });
+    }
+
+    const categoryIdeas = await selectQueryBuilder.getMany();
     const data = [];
 
     for (const categoryIdea of categoryIdeas) {
