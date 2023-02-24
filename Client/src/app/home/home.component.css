@@ -3,6 +3,10 @@
     float: left;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 .content{
     
     padding: 20px 35% 0px 0px;

@@ -1,1 +1,73 @@
-<p>detail works!</p>
+<div class="wrapper" style="background-color: #F2F2F2">
+    <div class="menu-bar" style="position: fixed; width: 100%; top: 0%; left: 0%;">
+        <app-header-home></app-header-home>
+    </div>
+    <br>
+    <div class="">
+        <div class="menu" style="position: fixed;">
+            <app-menu></app-menu>
+        </div>
+
+        <div class="" style="margin-top: 5rem">
+            <p-card header="idea category" subheader="date post"
+                [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto', 'background-color':'white'}">
+
+                <div
+                    style="width: 90%; margin-left: auto; margin-right: auto; border-radius: 10px; border-color: #d8d8d8; border-width: 1px; border-style: solid; padding: 10px;">
+                    <p style="color: black;">
+                        Le Chien's Sasa group is known by many people in Da Nang as the "hero" squad of the sea. They
+                        spend all their energy
+                        and
+                        money to revive corals, rescue unfortunate sea creatures that are injured and stranded.</p>
+                </div>
+
+                <p-button label="Attachment" icon="pi pi-file-word"></p-button>
+                <br>
+                <button pButton type="button" label="File đính kèm.doc" class="p-button-text" id="file"></button>
+                <button pButton type="button" label="File đính kèm.doc" class="p-button-text" id="file"></button>
+                <div class="row"
+                    style="border-bottom-width: 1px; border-color: #F2F2F2; border-bottom-style: solid; width: 100%; margin-top: 15px; margin-left: auto; margin-right: auto;">
+                    <h6 style="width: 58%;">100 Views</h6>
+                    <h6 style="width: 13%;">100 Likes</h6>
+                    <h6 style="width: 13%;">100 Dislikes</h6>
+                    <h6 style="width: 16%;">100 Comments</h6>
+                </div>
+                <div class="row"
+                    style="border-bottom-width: 1px; border-color: #F2F2F2; border-bottom-style: solid; width: 100%; margin-top: 15px; margin-left: auto; margin-right: auto;">
+                    <div style="width: 80%;">
+                        <p-toggleButton #likeAble [(ngModel)]="like" onLabel="Like" offLabel="Like" offIcon="pi pi-thumbs-up-fill"
+                            onIcon="pi pi-thumbs-up-fill" (click)="dislike = false"></p-toggleButton>
+
+                        <p-toggleButton [(ngModel)]="dislike" onLabel="Dislike" offLabel="Dislike" offIcon="pi pi-thumbs-down-fill"
+                            onIcon="pi pi-thumbs-down-fill" (click)="like = false"></p-toggleButton>
+
+                    </div>
+                    <p-button id="comment_btn" label="Comments" icon="pi pi-comments"></p-button>
+                </div>
+
+                <br>
+                <div style="width: 100%; display: flex;">
+                    <span class="p-float-label" style="width: 90%;">
+                        <textarea [rows]="1" pInputTextarea [autoResize]="true"></textarea>
+                        <label for="float-input">Comment something here.............</label>
+                    </span>
+                    <button style="margin-top: 0; margin-left: 10px;" pButton pRipple type="button" icon="pi pi-reply"
+                        class="p-button-rounded p-button-outlined"></button>
+                </div>
+                <br>
+                <div
+                    style="width: 100%; margin-left: auto; margin-right: auto; border-radius: 10px; border-color: #d8d8d8; border-width: 1px; border-style: solid; padding: 10px;">
+                    <p style="color: black;">
+                        Le Chien's Sasa group is known by many people in Da Nang as the "hero" squad of the sea. They
+                        spend all their energy
+                        and
+                        money to revive corals, rescue unfortunate sea creatures that are injured and stranded.</p>
+                </div>
+            </p-card>
+        </div>
+
+        <a href="#" style="position: fixed; top: 90%; left: 90%;">
+            <img src="../../assets/images/post.png">
+        </a>
+
+    </div>

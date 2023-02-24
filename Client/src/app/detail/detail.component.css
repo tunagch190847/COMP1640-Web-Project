@@ -1,0 +1,72 @@
+.menu {
+    width: 10%;
+    float: left;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+
+:host ::ng-deep .p-card .p-card-title {
+    font-size: 16px;
+    font-weight: 700;
+
+}
+
+:host ::ng-deep .p-button {
+    position: static;
+    background-color: white;
+    color: black;
+    border-width: 0;
+    margin-top: 25px;
+    height: 30px;
+}
+
+:host ::ng-deep .p-button:active {
+    position: static;
+    background-color: white;
+    color: black;
+    border-width: 0;
+    border-color: white;
+}
+
+:host ::ng-deep .p-button:focus {
+    position: static;
+    box-shadow: none;
+}
+
+:host ::ng-deep .p-button:hover {
+    position: static;
+    background-color: white;
+    color: black;
+    border-width: 0;
+}
+
+.p-button-text{
+    border-bottom-width: 1px;
+    border-color: #f2f2f2;
+    margin-top: 10px;
+    width: 100%;
+}
+
+:host ::ng-deep #file .p-button-label {
+    text-align: start;
+    font-weight: normal;
+}
+
+:host ::ng-deep #comment_btn .p-button {
+    position: static;
+    background-color: white;
+    color: black;
+    border-width: 0;
+    margin-top: 0;
+    height: 30px;
+}
+
+:host ::ng-deep .p-inputtext {
+    position: static;
+    width: 100%;
+}
+
+
