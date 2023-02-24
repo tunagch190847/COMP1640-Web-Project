@@ -62,13 +62,13 @@ export class IdeaService {
     };
   }
 
-  async getAllIdeasByCurrentSemester(entityManager?: EntityManager) {
+  async getIdeasBySemester(semester_id: number, entityManager?: EntityManager) {
     const ideaRepository = entityManager
       ? entityManager.getRepository<Idea>('idea')
       : this.ideaRepository;
 
-    const currentSemester = await this.semesterService.getCurrentSemester();
-    const semesterId = currentSemester.semester_id;
+    const semester = await this.semesterService.getSemesterById(semester_id);
+    const semesterId = semester.semester_id;
 
     const ideas = await ideaRepository
       .createQueryBuilder('idea')
@@ -120,17 +120,24 @@ export class IdeaService {
 
     const data = {
       semester: {
-        semester_id: currentSemester.semester_id,
-        name: currentSemester.name,
-        description: currentSemester.description,
-        created_at: currentSemester.created_at,
-        first_closure_date: currentSemester.first_closure_date,
-        final_closure_date: currentSemester.final_closure_date,
+        semester_id: semester.semester_id,
+        name: semester.name,
+        description: semester.description,
+        created_at: semester.created_at,
+        first_closure_date: semester.first_closure_date,
+        final_closure_date: semester.final_closure_date,
       },
       ideas: temp,
     };
 
     return data;
+  }
+
+  async getIdeasByCurrentSemester() {
+    const currentSemester = await this.semesterService.getCurrentSemester();
+    const semesterId = currentSemester.semester_id;
+
+    return this.getIdeasBySemester(semesterId);
   }
 
   async createIdea(userData: IUserData, body: VCreateIdeaDto) {
