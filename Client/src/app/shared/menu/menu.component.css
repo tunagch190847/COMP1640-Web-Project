@@ -19,7 +19,12 @@ li {
 }
 
 
-
+:host ::ng-deep .p-megamenu {
+    background-color: white;
+    border-width: 0;
+    padding: 0;
+    margin-left: 25px;
+}
 
 .p-input-icon-left input{
     background-color: rgb(233, 233, 233);

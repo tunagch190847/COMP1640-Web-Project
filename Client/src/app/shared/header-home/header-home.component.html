@@ -1,14 +1,14 @@
+
 <div class="header">
     
-    <div class="container">
-        <p-menubar [model]="items" [style]="{'background-color':'#F2F2F2'}">
+        
+            <p-menubar [model]="items">
+            
+                <ng-template pTemplate="start">
+                    <a href="#!"><img src="../../assets/images/home.png" style="margin-left: 55px;" /></a>
+                </ng-template>
+            </p-menubar>
+        
 
-            <ng-template pTemplate="start">
-                <a href="#!"><img src="../../assets/images/home.png" /></a>
-            </ng-template>
-            <ng-template pTemplate="end">
-                <a href="#!"><img src="../../assets/images/menu.png" /></a>
-            </ng-template>
-        </p-menubar>
-    </div>
 </div>
+

@@ -33,6 +33,9 @@ import { ListboxModule } from 'primeng/listbox';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ChipModule } from 'primeng/chip';
 import { AvatarModule } from 'primeng/avatar';
+import { ScrollerModule } from 'primeng/scroller';
+import { MegaMenuModule } from 'primeng/megamenu';
+import { DialogModule } from 'primeng/dialog';
 
 
 @NgModule({
@@ -73,7 +76,10 @@ import { AvatarModule } from 'primeng/avatar';
         ListboxModule,
         PanelMenuModule,
         ChipModule,
-        AvatarModule
+        AvatarModule,
+        ScrollerModule,
+        MegaMenuModule,
+        DialogModule
     ]
 })
 export class AppModule { }
