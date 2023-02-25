@@ -10,19 +10,28 @@
 			margin: 50px auto;
 			padding: 30px 40px;
 			background-color: white;">
-				<form>
+				<form [formGroup]="formGroup" (ngSubmit)="signUp()">
 					<div class="container">
 						<h1 style="text-align: center;">Login</h1>
 					</div>
-					
+
 					<!-- Email input -->
 					<div class="form-outline mb-4">
 						<div class="col-md-6">
 							<h4>Email</h4>
 						</div>
-						<input type="email" id="form3Example3" class="form-control form-control-lg"
-							placeholder="Enter your email " style="width:378px; height:50px ; font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-							font-size: 1rem;"/>
+						<input type="email" id="inputtext" pInputText placeholder="Nhập Email"
+                                formControlName="email" style="width:378px; height:50px ; font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+								font-size: 1rem;" [ngClass]="(formGroup.controls.email.invalid && (formGroup.controls.email.dirty || formGroup.controls.email.touched)) ? 'ng-invalid ng-dirty' : ''" >
+						
+						<div class="form-group mb-2"
+							[hidden]="formGroup.controls.email.valid || formGroup.controls.email.untouched">
+							<span
+								*ngIf="formGroup.controls.email.hasError('required') || formGroup.controls.email.hasError('blankString') "
+								class="error-message-span" style="color: #FD0B0B; font-size: small;">
+								Vui lòng nhập số Email
+							</span>
+						</div>
 					</div>
 
 					<!-- Password input -->
@@ -30,7 +39,17 @@
 						<div class="col-md-6">
 							<h4>Mật khẩu</h4>
 						</div>
-						<p-password [toggleMask]="true" placeholder="Enter your Password" [style]="{'width':'90%'}" #keywordsInput></p-password>
+						<p-password [toggleMask]="true" formControlName="password" placeholder="Enter your Password"
+							[style]="{'width':'90%'}" #keywordsInput
+							[inputStyleClass]="(formGroup.controls.password.invalid && (formGroup.controls.password.dirty || formGroup.controls.password.touched)) ? 'ng-invalid ng-dirty' : ''"></p-password>
+						<div class="form-group mb-2"
+							[hidden]="formGroup.controls.password.valid || formGroup.controls.password.untouched">
+							<span
+								*ngIf="formGroup.controls.password.hasError('required') || formGroup.controls.password.hasError('blankString') "
+								class="error-message-span" style="color: #FD0B0B; font-size: small;">
+								Vui lòng nhập mật khẩu
+							</span>
+						</div>
 					</div>
 
 					<div class="d-flex justify-content-between align-items-center">
@@ -61,7 +80,7 @@
 						</button>
 					</div>
 					<div class="text-center text-lg-start mt-4 pt-2">
-						<button type="button" class="btn btn-primary btn-lg"
+						<button type="Submit" class="btn btn-primary btn-lg"
 							style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
 						<p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
 								class="link-danger">Register</a></p>
@@ -72,5 +91,5 @@
 		</div>
 	</div>
 
-
+	<p-messages></p-messages>
 </section>
