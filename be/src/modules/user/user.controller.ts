@@ -7,7 +7,7 @@ import { VLogin } from 'global/user/dto/login.dto';
 import { Public } from 'src/core/decorator/public.decorator';
 import { UserService } from './user.service';
 
-@Controller('users')
+@Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,

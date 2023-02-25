@@ -94,8 +94,8 @@ export class UserService {
       .createQueryBuilder('user')
       .innerJoinAndSelect('user.role', 'role')
       .getMany();
-  
-    return users.map(user => {
+
+    return users.map((user) => {
       return {
         user_id: user.user_id,
         email: user.email,
@@ -103,8 +103,8 @@ export class UserService {
         role: {
           role_id: user.role_id,
           name: user.role.name,
-        }
-      }
+        },
+      };
     });
   }
 }

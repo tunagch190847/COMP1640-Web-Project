@@ -13,7 +13,7 @@ import { EIdeaFilter } from 'enum/idea.enum';
 import { DepartmentDto } from 'global/dto/department.dto';
 import { DepartmentService } from './department.service';
 
-@Controller('departments')
+@Controller('department')
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}
 
@@ -33,18 +33,23 @@ export class DepartmentController {
     @Param('department_id') department_id: number,
     @Query('sorting_setting') sorting_setting: EIdeaFilter,
   ) {
-    return this.departmentService
-    .getIdeasByDepartment(department_id, sorting_setting);
+    return this.departmentService.getIdeasByDepartment(
+      department_id,
+      sorting_setting,
+    );
   }
 
   @Get(':department_id/categories/:category_id/ideas?')
   getIdeasByDepartmentAndCategory(
-    @Param('department_id') department_id: number, 
+    @Param('department_id') department_id: number,
     @Param('category_id') category_id: number,
     @Query('sorting_setting') sorting_setting: EIdeaFilter,
   ) {
-    return this.departmentService
-      .getIdeasByDepartmentAndCategory(department_id, category_id, sorting_setting);
+    return this.departmentService.getIdeasByDepartmentAndCategory(
+      department_id,
+      category_id,
+      sorting_setting,
+    );
   }
 
   @Post()
