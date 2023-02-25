@@ -5,6 +5,7 @@ import { LoginComponent } from './auth/components/login/login.component';
 import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
 import { HomeComponent } from './home/home.component';
 import { DetailComponent } from './detail/detail.component';
+import { AuthGuard } from './shared/guard/auth.guard';
 
 
 const routes: Routes = [
@@ -19,13 +20,13 @@ const routes: Routes = [
     },
     {
         path: 'home',
-        //   canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         // loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
         component: HomeComponent
     },
     {
         path: 'detail',
-        //   canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         // loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
         component: DetailComponent
     },

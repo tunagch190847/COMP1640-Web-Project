@@ -17,7 +17,7 @@ import { SlideMenuModule } from 'primeng/slidemenu';
 import { ButtonModule } from 'primeng/button';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SidebarModule } from 'primeng/sidebar';
 import { TabViewModule } from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
@@ -38,6 +38,7 @@ import { MegaMenuModule } from 'primeng/megamenu';
 import { DialogModule } from 'primeng/dialog';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { HttpClientModule } from "@angular/common/http";
 
 
 @NgModule({
@@ -83,7 +84,9 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
         MegaMenuModule,
         DialogModule,
         ToggleButtonModule,
-        InputTextareaModule
+        InputTextareaModule,
+        HttpClientModule,
+        ReactiveFormsModule
     ]
 })
 export class AppModule { }
