@@ -84,4 +84,27 @@ export class UserService {
       relations: ['userDetail'],
     });
   }
+
+  async getAllUsers(entityManager?: EntityManager) {
+    const userRepository = entityManager
+      ? entityManager.getRepository<User>('user')
+      : this.userRepository;
+
+    const users = await userRepository
+      .createQueryBuilder('user')
+      .innerJoinAndSelect('user.role', 'role')
+      .getMany();
+  
+    return users.map(user => {
+      return {
+        user_id: user.user_id,
+        email: user.email,
+        is_deleted: 0,
+        role: {
+          role_id: user.role_id,
+          name: user.role.name,
+        }
+      }
+    });
+  }
 }
