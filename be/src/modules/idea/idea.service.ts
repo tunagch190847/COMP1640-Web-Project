@@ -8,6 +8,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EUserRole } from 'enum/default.enum';
 import { ErrorMessage } from 'enum/error';
+import { EIdeaFilter } from 'enum/idea.enum';
 import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
 import { Idea } from 'src/core/database/mysql/entity/idea.entity';
 import { Repository, EntityManager, DeepPartial, Connection } from 'typeorm';
@@ -65,6 +66,7 @@ export class IdeaService {
   async getAllIdeas(
     semester_id?: number, 
     department_id?: number,
+    sorting_setting?: EIdeaFilter,
     entityManager?: EntityManager
   ) {
     const ideaRepository = entityManager
@@ -91,6 +93,14 @@ export class IdeaService {
       );
     }
 
+    if(sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
+      selectQueryBuilder.orderBy('idea.views', 'DESC');
+    }else if(sorting_setting == EIdeaFilter.RECENT_IDEAS) {
+      selectQueryBuilder.orderBy('idea.created_at', 'DESC');
+    }else if(sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
+      selectQueryBuilder.orderBy('idea.likes', 'DESC');
+    }
+
     const ideas = await selectQueryBuilder.getMany();
     const data = [];
 
@@ -115,6 +125,7 @@ export class IdeaService {
         dislikes: idea.dislikes,
         comments: idea.comments.length,
         is_anonymous: idea.is_anonymous,
+        created_at: idea.created_at,
         categories,
         user: {
           user_id: idea.user.user_id,

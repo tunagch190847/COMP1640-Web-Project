@@ -3,6 +3,7 @@ import { CategoryIdeaService } from '@modules/category-idea/category-idea.servic
 import { IdeaService } from '@modules/idea/idea.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EIdeaFilter } from 'enum/idea.enum';
 import { DepartmentDto } from 'global/dto/department.dto';
 import { Repository } from 'typeorm';
 
@@ -34,13 +35,17 @@ export class DepartmentService {
     };
   }
 
-  getIdeasByDepartmentAndCategory(department_id: number, category_id: number) {
+  getIdeasByDepartmentAndCategory(
+    department_id: number, 
+    category_id: number,
+    sorting_setting: EIdeaFilter,
+  ) {
     return this.categoryIdeaService
-        .getIdeasByCategory(category_id, null, department_id);
+        .getIdeasByCategory(category_id, null, department_id, sorting_setting);
   }
 
-  getIdeasByDepartment(department_id: number) {
-    return this.ideaService.getAllIdeas(null, department_id);
+  getIdeasByDepartment(department_id: number, sorting_setting: EIdeaFilter) {
+    return this.ideaService.getAllIdeas(null, department_id, sorting_setting);
   }
 
   async createDepartment(department: DepartmentDto) {
