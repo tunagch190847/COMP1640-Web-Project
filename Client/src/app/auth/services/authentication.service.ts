@@ -25,7 +25,7 @@ export class AuthenticationService {
         return this.userSubject.value;
     }
 
-    login(username: string, password: string) {
+    public login(username: string, password: string) {
         return this.http.post<any>('link api', { username, password }).pipe(
             map((user) => {
                 // store user details jwt token in localStorage

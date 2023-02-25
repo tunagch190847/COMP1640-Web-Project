@@ -39,7 +39,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { HttpClientModule } from "@angular/common/http";
-
+import {MessagesModule} from 'primeng/messages';
 
 @NgModule({
     declarations: [
@@ -86,7 +86,8 @@ import { HttpClientModule } from "@angular/common/http";
         ToggleButtonModule,
         InputTextareaModule,
         HttpClientModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MessagesModule
     ]
 })
 export class AppModule { }
