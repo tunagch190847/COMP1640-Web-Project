@@ -123,13 +123,11 @@ export class AuthService {
 
       return await this.userService.findUserByUserId(newUser.user_id, manager);
     });
-    const data = await this.returnResponseAuth(user);
+    // const data = await this.returnResponseAuth(user);
 
     return {
-      token: data.token,
-      user_data: {
-        user_id: user.user_id,
-      },
+      // token: data.token,
+      user_id: user.user_id,
     };
   }
 }
