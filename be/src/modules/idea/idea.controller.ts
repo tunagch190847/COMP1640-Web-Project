@@ -1,6 +1,7 @@
 import { UserData } from '@core/decorator/user.decorator';
 import { IUserData } from '@core/interface/default.interface';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { EIdeaFilter } from 'enum/idea.enum';
 import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
 import { IdeaService } from './idea.service';
 
@@ -17,9 +18,9 @@ export class IdeaController {
     return await this.ideaService.getIdeaDetail(idea_id, userData.user_id);
   }
 
-  @Get()
-  getIdeasByCurrentSemester() {
-    return this.ideaService.getAllIdeas();
+  @Get('?')
+  getIdeasByCurrentSemester(@Query('sorting_setting') sorting_setting: EIdeaFilter) {
+    return this.ideaService.getAllIdeas(null, null, sorting_setting);
   }
 
   @Post()

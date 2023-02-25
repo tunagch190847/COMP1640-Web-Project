@@ -2,6 +2,7 @@ import { CategoryIdea } from '@core/database/mysql/entity/categoryIdea.entity';
 import { SemesterService } from '@modules/semester/semester.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EIdeaFilter } from 'enum/idea.enum';
 import { EntityManager, Repository, DeepPartial } from 'typeorm';
 
 @Injectable()
@@ -31,6 +32,7 @@ export class CategoryIdeaService {
     category_id: number, 
     semester_id?: number, 
     department_id?: number, 
+    sorting_setting?: EIdeaFilter,
     entityManager?: EntityManager
   ) {
     const categoryIdeaRepository = entityManager
@@ -54,6 +56,14 @@ export class CategoryIdeaService {
 
     if(department_id != null) {
       selectQueryBuilder.andWhere('user_detail.department_id = :department_id', { department_id });
+    }
+
+    if(sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
+      selectQueryBuilder.orderBy('idea.views', 'DESC');
+    }else if(sorting_setting == EIdeaFilter.RECENT_IDEAS) {
+      selectQueryBuilder.orderBy('idea.created_at', 'DESC');
+    }else if(sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
+      selectQueryBuilder.orderBy('idea.likes', 'DESC');
     }
 
     const categoryIdeas = await selectQueryBuilder.getMany();
