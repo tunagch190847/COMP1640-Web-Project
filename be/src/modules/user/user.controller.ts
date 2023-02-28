@@ -20,7 +20,7 @@ export class UserController {
     return this.userService.login(body);
   }
 
-  @Post('signup')
+  @Post('createAccount')
   async signup(@UserData() userData: IUserData, @Body() body: VSignUp) {
     return this.userService.signup(userData, body);
   }
