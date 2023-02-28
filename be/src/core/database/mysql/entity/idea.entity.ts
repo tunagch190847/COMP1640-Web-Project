@@ -11,6 +11,7 @@ import {
 import { CategoryIdea } from './categoryIdea.entity';
 import { IdeaComment } from './comment.entity';
 import { IdeaFile } from './file.entity';
+import { Reaction } from './reaction.entity';
 import { Semester } from './semester.entity';
 import { User } from './user.entity';
 
@@ -33,12 +34,6 @@ export class Idea {
 
   @Column({ name: 'views', type: 'int', unsigned: true, default: 0 })
   views: number;
-
-  @Column({ name: 'likes', type: 'int', unsigned: true, default: 0 })
-  likes: number;
-
-  @Column({ name: 'dislikes', type: 'int', unsigned: true, default: 0 })
-  dislikes: number;
 
   @Column({
     name: 'is_anonymous',
@@ -73,4 +68,7 @@ export class Idea {
 
   @OneToMany(() => CategoryIdea, (categoryIdea) => categoryIdea.idea)
   ideaCategories: CategoryIdea[];
+
+  @OneToMany(() => Reaction, (reaction) => reaction.idea)
+  reactions: CategoryIdea[];
 }

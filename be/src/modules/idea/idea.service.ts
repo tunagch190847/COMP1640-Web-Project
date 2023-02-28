@@ -50,15 +50,13 @@ export class IdeaService {
       .leftJoinAndSelect('idea.files', 'files');
 
     const [listFiles] = await queryBuilder.getMany();
-    data = listFiles.files.map((file) => file.file);
+    data = listFiles.files.map((file) => file.path);
 
     return {
       user_id: user_id,
       title: idea.title,
       content: idea.content,
       date: idea.created_at,
-      like: idea.likes,
-      dislike: idea.dislikes,
       file: data,
     };
   }
@@ -112,7 +110,6 @@ export class IdeaService {
         return {
           category_id: categoryIdea.category.category_id,
           name: categoryIdea.category.name,
-          description: categoryIdea.category.description,
         };
       });
 
@@ -121,22 +118,19 @@ export class IdeaService {
         title: idea.title,
         content: idea.content,
         views: idea.views,
-        likes: idea.likes,
-        dislikes: idea.dislikes,
         comments: idea.comments.length,
         is_anonymous: idea.is_anonymous,
         created_at: idea.created_at,
         categories,
         user: {
           user_id: idea.user.user_id,
-          first_name: idea.user.userDetail.first_name,
-          last_name: idea.user.userDetail.last_name,
+          first_name: idea.user.userDetail.full_name,
           gender: idea.user.userDetail.gender,
           birthday: idea.user.userDetail.birthday,
-          department: {
-            department_id: idea.user.userDetail.department_id,
-            name: idea.user.userDetail.department.name,
-          },
+          // department: {
+          //   department_id: idea.user.userDetail.department_id,
+          //   name: idea.user.userDetail.department.name,
+          // },
         },
       });
     }
@@ -184,7 +178,7 @@ export class IdeaService {
           body.files.forEach((files) => {
             const ideaFileParam = new IdeaFile();
             ideaFileParam.idea_id = idea.idea_id;
-            ideaFileParam.file = files.file;
+            ideaFileParam.path = files.file;
             postFileParams.push(ideaFileParam);
           });
         }
