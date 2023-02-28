@@ -1,12 +1,13 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
-import { UserDetail } from './userDetail.entity';
+import { Role } from './role.entity';
+import { User } from './user.entity';
 
 @Entity('department')
 export class Department {
@@ -17,18 +18,16 @@ export class Department {
   })
   department_id: number;
 
-  @Column({ name: 'name', type: 'varchar', length: 20 })
+  @Column({ name: 'manager_id', default: null })
+  manager_id: string;
+
+  @Column({ name: 'name', type: 'varchar', length: 100 })
   name: string;
 
-  @Column({ name: 'description', type: 'varchar', length: 100 })
-  description: string;
+  @OneToOne(() => User, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'manager_id', referencedColumnName: 'user_id' })
+  manager: User;
 
-  @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updated_at: Date;
-
-  @OneToMany(() => UserDetail, (userDetail) => userDetail.department)
-  userDetail: UserDetail[];
+  @OneToMany(() => User, (user) => user.department)
+  users: User[];
 }

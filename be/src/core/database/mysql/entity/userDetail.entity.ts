@@ -13,17 +13,14 @@ import { User } from './user.entity';
 
 @Entity('user_detail')
 export class UserDetail {
-  @PrimaryColumn({ name: 'user_id' })
+  @PrimaryColumn('uuid', { name: 'user_id' })
   user_id: string;
 
-  @Column({ name: 'department_id', type: 'int', unsigned: true })
-  department_id: number;
+  @Column({ name: 'full_name', type: 'varchar', length: 255 })
+  full_name: string;
 
-  @Column({ name: 'first_name', type: 'varchar', length: 255 })
-  first_name: string;
-
-  @Column({ name: 'last_name', type: 'varchar', length: 255 })
-  last_name: string;
+  @Column({ name: 'nick_name', type: 'varchar', length: 255, default: null })
+  nick_name: string;
 
   @Column({
     name: 'gender',
@@ -37,6 +34,9 @@ export class UserDetail {
   @Column({ name: 'birthday', type: 'date', default: null })
   birthday: Date;
 
+  @Column({ name: 'avatar_url', type: 'varchar', length: 300, default: null })
+  avatar_url: string;
+
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
@@ -46,10 +46,4 @@ export class UserDetail {
   @OneToOne(() => User, (user) => user.userDetail, { onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
   user: User;
-
-  @ManyToOne(() => Department, (department) => department.userDetail, {
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'department_id', referencedColumnName: 'department_id' })
-  department: Department;
 }

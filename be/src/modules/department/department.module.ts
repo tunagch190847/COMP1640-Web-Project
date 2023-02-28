@@ -9,6 +9,10 @@ import { IdeaModule } from '@modules/idea/idea.module';
 @Module({
   providers: [DepartmentService],
   controllers: [DepartmentController],
-  imports: [TypeOrmModule.forFeature([Department]), CategoryIdeaModule, IdeaModule],
+  imports: [
+    TypeOrmModule.forFeature([Department]),
+    CategoryIdeaModule,
+    IdeaModule,
+  ],
 })
 export class DepartmentModule {}

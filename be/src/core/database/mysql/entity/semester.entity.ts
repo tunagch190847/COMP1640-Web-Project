@@ -4,7 +4,6 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { Idea } from './idea.entity';
 
@@ -13,23 +12,17 @@ export class Semester {
   @PrimaryGeneratedColumn({ name: 'semester_id', type: 'int', unsigned: true })
   semester_id: number;
 
-  @Column({ name: 'name', type: 'varchar', length: 20 })
+  @Column({ name: 'name', type: 'varchar', length: 100 })
   name: string;
 
-  @Column({ name: 'description', type: 'varchar', length: 100 })
-  description: string;
+  @CreateDateColumn({ name: 'created_date', type: 'timestamp' })
+  created_date: Date;
 
-  @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
-
-  @Column({ name: 'first_closure_date', type: 'date', default: null })
+  @Column({ name: 'first_closure_date', type: 'timestamp', default: null })
   first_closure_date: Date;
 
-  @Column({ name: 'final_closure_date', type: 'date', default: null })
+  @Column({ name: 'final_closure_date', type: 'timestamp', default: null })
   final_closure_date: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updated_at: Date;
 
   @OneToMany(() => Idea, (idea) => idea.semester)
   ideas: Idea[];

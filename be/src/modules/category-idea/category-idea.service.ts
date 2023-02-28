@@ -76,7 +76,6 @@ export class CategoryIdeaService {
         return {
           category_id: categoryIdea.category.category_id,
           name: categoryIdea.category.name,
-          description: categoryIdea.category.description,
         };
       });
 
@@ -85,21 +84,18 @@ export class CategoryIdeaService {
         title: idea.title,
         content: idea.content,
         views: idea.views,
-        likes: idea.likes,
-        dislikes: idea.dislikes,
         comments: idea.comments.length,
         is_anonymous: idea.is_anonymous,
         categories,
         user: {
           user_id: idea.user.user_id,
-          first_name: idea.user.userDetail.first_name,
-          last_name: idea.user.userDetail.last_name,
+          first_name: idea.user.userDetail.full_name,
           gender: idea.user.userDetail.gender,
           birthday: idea.user.userDetail.birthday,
-          department: {
-            department_id: idea.user.userDetail.department_id,
-            name: idea.user.userDetail.department.name,
-          },
+          // department: {
+          //   department_id: idea.user.userDetail.department_id,
+          //   name: idea.user.userDetail.department.name,
+          // },
         },
       });
     }
