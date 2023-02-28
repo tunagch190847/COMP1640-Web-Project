@@ -1,21 +1,14 @@
-import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Column } from 'typeorm/decorator/columns/Column';
 import { Category } from './category.entity';
 import { Idea } from './idea.entity';
 
 @Entity('category_idea')
 export class CategoryIdea {
-  @PrimaryGeneratedColumn({
-    name: 'category_idea_id',
-    type: 'int',
-    unsigned: true,
-  })
-  category_idea_id: number;
-
-  @Column({ name: 'idea_id', type: 'int', unsigned: true })
+  @PrimaryColumn({ name: 'idea_id', type: 'int', unsigned: true })
   idea_id: number;
 
-  @Column({ name: 'category_id', type: 'int', unsigned: true })
+  @PrimaryColumn({ name: 'category_id', type: 'int', unsigned: true })
   category_id: number;
 
   @ManyToOne(() => Idea, (idea) => idea.ideaCategories, { onUpdate: 'CASCADE' })

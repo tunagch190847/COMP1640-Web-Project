@@ -13,10 +13,7 @@ export class VSignUp {
   role_id: EUserRole;
 
   @IsString()
-  first_name: string;
-
-  @IsString()
-  last_name: string;
+  full_name: string;
 
   @IsEnum(EGender)
   gender: EGender;

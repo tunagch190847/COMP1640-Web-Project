@@ -1,6 +1,5 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -19,8 +18,8 @@ export class IdeaFile {
   @Column({ name: 'file', type: 'varchar', length: 300 })
   file: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  @Column({ name: 'size', type: 'double', unsigned: true })
+  size: number;
 
   @ManyToOne(() => Idea, (idea) => idea.files, { onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'idea_id', referencedColumnName: 'idea_id' })

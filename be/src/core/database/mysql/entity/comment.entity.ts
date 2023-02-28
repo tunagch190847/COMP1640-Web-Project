@@ -30,7 +30,7 @@ export class IdeaComment {
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
 
-  @ManyToOne(() => Idea, (idea) => idea.comments, { onUpdate: 'CASCADE' })
+  @ManyToOne(() => Idea, { onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'idea_id', referencedColumnName: 'idea_id' })
   idea: Idea;
 

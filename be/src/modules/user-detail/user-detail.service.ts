@@ -23,12 +23,12 @@ export class UserDetailService {
     return await userDetailRepository.save(body);
   }
 
-  async getUserDetail(user_id: string, entityManager?: EntityManager) {
+  getUserDetail(user_id: string, entityManager?: EntityManager) {
     const userDetailRepository = entityManager
       ? entityManager.getRepository<UserDetail>('user_detail')
       : this.userDetailRepository;
 
-    return await userDetailRepository.findOne({
+    return userDetailRepository.findOne({
       user_id: user_id,
     });
   }

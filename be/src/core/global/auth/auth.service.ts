@@ -114,10 +114,8 @@ export class AuthService {
 
       const userDetailParams = new UserDetail();
       userDetailParams.user_id = newUser.user_id;
-      userDetailParams.first_name = body.first_name;
-      userDetailParams.last_name = body.last_name;
+      userDetailParams.full_name = body.full_name;
       userDetailParams.gender = body.gender;
-      userDetailParams.department_id = body.department_id;
       userDetailParams.birthday = new Date(body?.birthdate);
       await this.userDetailService.createUserDetail(userDetailParams, manager);
 

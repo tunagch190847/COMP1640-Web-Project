@@ -18,7 +18,7 @@ export class DepartmentService {
 
   async getAllDepartments() {
     const departments = await this.departmentRepository.find();
-    const data = departments.map(department => {
+    const data = departments.map((department) => {
       return {
         department_id: department.department_id,
         name: department.name,
@@ -36,12 +36,16 @@ export class DepartmentService {
   }
 
   getIdeasByDepartmentAndCategory(
-    department_id: number, 
+    department_id: number,
     category_id: number,
     sorting_setting: EIdeaFilter,
   ) {
-    return this.categoryIdeaService
-        .getIdeasByCategory(category_id, null, department_id, sorting_setting);
+    return this.categoryIdeaService.getIdeasByCategory(
+      category_id,
+      null,
+      department_id,
+      sorting_setting,
+    );
   }
 
   getIdeasByDepartment(department_id: number, sorting_setting: EIdeaFilter) {
