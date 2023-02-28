@@ -1,7 +1,6 @@
 import { UserDetail } from '@core/database/mysql/entity/userDetail.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserDetailDto } from 'global/dto/userDetail.dto';
 import { DeepPartial } from 'typeorm/common/DeepPartial';
 import { EntityManager } from 'typeorm/entity-manager/EntityManager';
 import { Repository } from 'typeorm/repository/Repository';
@@ -32,13 +31,5 @@ export class UserDetailService {
     return userDetailRepository.findOne({
       user_id: user_id,
     });
-  }
-
-  updateUserDetail(user_id: string, userDetail: UserDetailDto, entityManager?: EntityManager) {
-    const userDetailRepository = entityManager
-    ? entityManager.getRepository<UserDetail>('user_detail')
-    : this.userDetailRepository;
-
-    return userDetailRepository.update(user_id, userDetail);
   }
 }

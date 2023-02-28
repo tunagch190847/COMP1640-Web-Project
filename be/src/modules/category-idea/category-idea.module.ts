@@ -6,9 +6,9 @@ import { CategoryIdeaController } from './category-idea.controller';
 import { CategoryIdeaService } from './category-idea.service';
 
 @Module({
-    controllers: [CategoryIdeaController],
-    providers: [CategoryIdeaService],
-    imports: [TypeOrmModule.forFeature([CategoryIdea]), SemesterModule],
-    exports: [CategoryIdeaService],
+  controllers: [CategoryIdeaController],
+  providers: [CategoryIdeaService],
+  imports: [TypeOrmModule.forFeature([CategoryIdea]), SemesterModule],
+  exports: [CategoryIdeaService],
 })
 export class CategoryIdeaModule {}

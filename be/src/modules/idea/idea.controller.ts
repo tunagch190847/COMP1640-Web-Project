@@ -19,7 +19,9 @@ export class IdeaController {
   }
 
   @Get('?')
-  getIdeasByCurrentSemester(@Query('sorting_setting') sorting_setting: EIdeaFilter) {
+  getIdeasByCurrentSemester(
+    @Query('sorting_setting') sorting_setting: EIdeaFilter,
+  ) {
     return this.ideaService.getAllIdeas(null, null, sorting_setting);
   }
 

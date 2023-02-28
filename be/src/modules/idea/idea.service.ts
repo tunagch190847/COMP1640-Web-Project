@@ -50,7 +50,7 @@ export class IdeaService {
       .leftJoinAndSelect('idea.files', 'files');
 
     const [listFiles] = await queryBuilder.getMany();
-    data = listFiles.files.map((file) => file.path);
+    data = listFiles.files.map((file) => file.file);
 
     return {
       user_id: user_id,
@@ -62,16 +62,16 @@ export class IdeaService {
   }
 
   async getAllIdeas(
-    semester_id?: number, 
+    semester_id?: number,
     department_id?: number,
     sorting_setting?: EIdeaFilter,
-    entityManager?: EntityManager
+    entityManager?: EntityManager,
   ) {
     const ideaRepository = entityManager
       ? entityManager.getRepository<Idea>('idea')
       : this.ideaRepository;
 
-    if(semester_id == null) {
+    if (semester_id == null) {
       const currentSemester = await this.semesterService.getCurrentSemester();
       semester_id = currentSemester.semester_id;
     }
@@ -84,18 +84,18 @@ export class IdeaService {
       .leftJoinAndSelect('idea.comments', 'comments')
       .where('idea.semester_id = :semester_id', { semester_id });
 
-    if(department_id != null) {
+    if (department_id != null) {
       selectQueryBuilder.andWhere(
-        'user_detail.department_id = :department_id', 
-        { department_id }
+        'user_detail.department_id = :department_id',
+        { department_id },
       );
     }
 
-    if(sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
+    if (sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
       selectQueryBuilder.orderBy('idea.views', 'DESC');
-    }else if(sorting_setting == EIdeaFilter.RECENT_IDEAS) {
+    } else if (sorting_setting == EIdeaFilter.RECENT_IDEAS) {
       selectQueryBuilder.orderBy('idea.created_at', 'DESC');
-    }else if(sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
+    } else if (sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
       selectQueryBuilder.orderBy('idea.likes', 'DESC');
     }
 
@@ -178,7 +178,7 @@ export class IdeaService {
           body.files.forEach((files) => {
             const ideaFileParam = new IdeaFile();
             ideaFileParam.idea_id = idea.idea_id;
-            ideaFileParam.path = files.file;
+            ideaFileParam.file = files.file;
             postFileParams.push(ideaFileParam);
           });
         }

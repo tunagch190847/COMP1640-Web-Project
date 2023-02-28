@@ -39,7 +39,7 @@ import { UserDetailModule } from './modules/user-detail/user-detail.module';
         password: configService.get(EConfiguration.DB_MYSQL_PASSWORD),
         database: configService.get(EConfiguration.DB_MYSQL_NAME),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true,
+        // synchronize: true,
         autoLoadEntities: true,
         // logging: true,
         // logger: new DatabaseMysqlLogger(),

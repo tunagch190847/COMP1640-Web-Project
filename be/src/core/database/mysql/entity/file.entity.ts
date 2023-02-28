@@ -1,6 +1,5 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -16,8 +15,8 @@ export class IdeaFile {
   @Column({ name: 'idea_id', type: 'int', unsigned: true })
   idea_id: number;
 
-  @Column({ name: 'path', type: 'varchar', length: 300 })
-  path: string;
+  @Column({ name: 'file', type: 'varchar', length: 300 })
+  file: string;
 
   @Column({ name: 'size', type: 'double', unsigned: true })
   size: number;
