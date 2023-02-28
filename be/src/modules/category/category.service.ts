@@ -42,7 +42,6 @@ export class CategoryService {
       const categoryParam = new Category();
 
       categoryParam.name = body.name;
-      categoryParam.description = body.description;
 
      return await this.categoryRepository.save(categoryParam);
   }
@@ -50,8 +49,25 @@ export class CategoryService {
   async updateCategory(
     category_id: number, 
     body: VCreateCategoryDto,
+    userData: IUserData,
     ) {
-    return await this.categoryRepository.update({ category_id }, body);
+      if (userData.role_id != EUserRole.ADMIN) {
+        throw new HttpException(
+          ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    
+    const categoryParams = new Category();
+    if(!body){
+      throw new HttpException(
+        ErrorMessage.IDEA_NOT_EXIST,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    categoryParams.name = body.name;
+    await this.categoryRepository.update({ category_id }, categoryParams);
+    return;
   }
 
   async deleteCategory(category_id: number) {
