@@ -1,4 +1,6 @@
 import { Public } from '@core/decorator/public.decorator';
+import { UserData } from '@core/decorator/user.decorator';
+import { IUserData } from '@core/interface/default.interface';
 import {
   Body,
   Controller,
@@ -8,10 +10,10 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CategoryDto } from 'global/dto/category.dto';
+import { VCreateCategoryDto } from 'global/dto/category.dto';
 import { CategoryService } from './category.service';
 
-@Controller('categories')
+@Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
@@ -26,13 +28,15 @@ export class CategoryController {
   }
 
   @Post()
-  createCategory(@Body() dept: CategoryDto) {
-    return this.categoryService.createCategory(dept);
+  createCategory(
+    @UserData() userData: IUserData,
+    @Body() body: VCreateCategoryDto) {
+    return this.categoryService.createCategory(userData,body);
   }
 
-  @Put(':id')
-  updateCategory(@Param('id') category_id: number, @Body() dept: CategoryDto) {
-    return this.categoryService.updateCategory(category_id, dept);
+  @Put(':category_id')
+  updateCategory(@Param('category_id') category_id: number, @Body() body: VCreateCategoryDto) {
+    return this.categoryService.updateCategory(category_id, body);
   }
 
   @Delete(':id')

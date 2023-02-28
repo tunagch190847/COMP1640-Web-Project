@@ -1,9 +1,12 @@
 import { Category } from '@core/database/mysql/entity/category.entity';
+import { IUserData } from '@core/interface/default.interface';
 import { CategoryIdeaService } from '@modules/category-idea/category-idea.service';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoryDto } from 'global/dto/category.dto';
-import { Repository } from 'typeorm';
+import { EUserRole } from 'enum/default.enum';
+import { ErrorMessage } from 'enum/error';
+import { VCreateCategoryDto } from 'global/dto/category.dto';
+import { DeepPartial, Repository } from 'typeorm';
 import { EntityManager } from 'typeorm/entity-manager/EntityManager';
 
 @Injectable()
@@ -25,12 +28,30 @@ export class CategoryService {
     return this.categoryIdeaService.getIdeasByCategory(category_id);
   }
 
-  async createCategory(category: CategoryDto) {
-    return await this.categoryRepository.save(category);
+  async createCategory(
+    userData: IUserData,
+    body: VCreateCategoryDto,
+    ) {
+      if (userData.role_id != EUserRole.ADMIN) {
+        throw new HttpException(
+          ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const categoryParam = new Category();
+
+      categoryParam.name = body.name;
+      categoryParam.description = body.description;
+
+     return await this.categoryRepository.save(categoryParam);
   }
 
-  async updateCategory(category_id: number, category: CategoryDto) {
-    return await this.categoryRepository.update({ category_id }, category);
+  async updateCategory(
+    category_id: number, 
+    body: VCreateCategoryDto,
+    ) {
+    return await this.categoryRepository.update({ category_id }, body);
   }
 
   async deleteCategory(category_id: number) {

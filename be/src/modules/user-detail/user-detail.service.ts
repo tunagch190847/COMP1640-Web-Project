@@ -32,4 +32,12 @@ export class UserDetailService {
       user_id: user_id,
     });
   }
+
+  // async updateUserDetail (user_id: string, entityManager?: EntityManager){
+  //   const userDetailRepository = entityManager
+  //   ? entityManager.getRepository<UserDetail>('user_detail')
+  //   :this.userDetailRepository;
+
+  //   return await
+  // }
 }
