@@ -35,8 +35,11 @@ export class CategoryController {
   }
 
   @Put(':category_id')
-  updateCategory(@Param('category_id') category_id: number, @Body() body: VCreateCategoryDto) {
-    return this.categoryService.updateCategory(category_id, body);
+  updateCategory(
+  @Param('category_id') category_id: number, 
+  @Body() body: VCreateCategoryDto,
+  @UserData() userData: IUserData,) {
+    return this.categoryService.updateCategory(category_id, body, userData);
   }
 
   @Delete(':id')
