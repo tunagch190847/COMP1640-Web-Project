@@ -1,7 +1,10 @@
-import { IsInt } from "class-validator";
+import { IsEnum } from "class-validator";
+import { ErrorMessage } from "enum/error";
+import { EReactionType } from "enum/idea.enum";
 
-// Validate 0 or 1
 export class VCreateReactionDto {
-    @IsInt()
-    reaction: number;
+    @IsEnum(EReactionType, { 
+        message: ErrorMessage.REACTION_TYPE_NOT_EXIST, 
+    })
+    reaction: EReactionType;
 }
