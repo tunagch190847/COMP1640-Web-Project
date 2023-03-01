@@ -1,7 +1,8 @@
 import { Semester } from '@core/database/mysql/entity/semester.entity';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SemesterDto } from 'global/dto/semester.dto';
+import { ErrorMessage } from 'enum/error';
+import { VUpdateSemesterDto } from 'global/dto/semester.dto';
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 
 @Injectable()
@@ -25,15 +26,31 @@ export class SemesterService {
   }
 
   async getSemesterById(semester_id: number) {
-    return await this.semesterRepository.findOne(semester_id);
+    return await this.semesterRepository.findOne({
+      semester_id: semester_id,
+    });
   }
 
-  async createSemester(dept: SemesterDto) {
-    return await this.semesterRepository.save(dept);
-  }
+  async updateSemester(semester_id: number, body: VUpdateSemesterDto) {
+    const semester = await this.getSemesterById(semester_id);
 
-  async updateSemester(semester_id: number, dept: SemesterDto) {
-    return await this.semesterRepository.update({ semester_id }, dept);
+    if (!semester) {
+      throw new HttpException(
+        ErrorMessage.SEMESTER_NOT_EXIST,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const semesterParam = new Semester();
+    semesterParam.name = body.name;
+    semesterParam.final_closure_date = new Date(body?.final_closure_date);
+    semesterParam.first_closure_date = new Date(body?.first_closure_date);
+
+    await this.semesterRepository.update(
+      { semester_id: semester_id },
+      semesterParam,
+    );
+    return;
   }
 
   async deleteSemester(semester_id: number) {

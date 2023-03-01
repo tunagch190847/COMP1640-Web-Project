@@ -1,16 +1,8 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
-import { SemesterDto } from 'global/dto/semester.dto';
+import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
+import { VUpdateSemesterDto } from 'global/dto/semester.dto';
 import { SemesterService } from './semester.service';
 
-@Controller('semesters')
+@Controller('semester')
 export class SemesterController {
   constructor(private readonly semesterService: SemesterService) {}
 
@@ -24,14 +16,12 @@ export class SemesterController {
     return this.semesterService.getSemesterById(Number(id));
   }
 
-  @Post()
-  createSemester(@Body() dept: SemesterDto) {
-    return this.semesterService.createSemester(dept);
-  }
-
-  @Put(':id')
-  updateSemester(@Param('id') id: string, @Body() dept: SemesterDto) {
-    return this.semesterService.updateSemester(Number(id), dept);
+  @Put(':semester_id')
+  updateSemester(
+    @Param('semester_id') semester_id: number,
+    @Body() body: VUpdateSemesterDto,
+  ) {
+    return this.semesterService.updateSemester(semester_id, body);
   }
 
   @Delete(':id')
