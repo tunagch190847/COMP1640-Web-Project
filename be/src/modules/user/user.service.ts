@@ -1,8 +1,11 @@
 import { IUserData } from '@core/interface/default.interface';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EIsDelete } from 'enum';
+import { EUserRole } from 'enum/default.enum';
+import { ErrorMessage } from 'enum/error';
 import { VSignUp } from 'global/dto/signup.dto';
+import { VUpdateAccount } from 'global/dto/update-account.dto';
 import { VLogin } from 'global/user/dto/login.dto';
 import { User } from 'src/core/database/mysql/entity/user.entity';
 import { AuthService } from 'src/core/global/auth/auth.service';
@@ -48,6 +51,18 @@ export class UserService {
       where: {
         user_id: userId,
         role_id: role_id,
+        is_deleted: EIsDelete.NOT_DELETE,
+      },
+    });
+  }
+
+  async checkUserByUserId(userId: string, entityManager?: EntityManager) {
+    const userRepository = entityManager
+      ? entityManager.getRepository<User>('user')
+      : this.userRepository;
+    return await userRepository.findOne({
+      where: {
+        user_id: userId,
         is_deleted: EIsDelete.NOT_DELETE,
       },
     });
@@ -111,5 +126,37 @@ export class UserService {
   async handleLogout(userId: string) {
     await this.authService.logout(userId);
     return null;
+  }
+  async updateAccount(
+    userData: IUserData,
+    user_id: string,
+    body: VUpdateAccount,
+    entityManager?: EntityManager,
+  ) {
+    const userRepository = entityManager
+      ? entityManager.getRepository<User>('user')
+      : this.userRepository;
+
+    if (userData.role_id != EUserRole.ADMIN) {
+      throw new HttpException(
+        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_EDIT_ACCOUNT,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const userID = await this.checkUserByUserId(user_id);
+
+    if (user_id != userID.user_id) {
+      throw new HttpException(
+        ErrorMessage.INVALID_PARAM,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const userParam = new User();
+    userParam.role_id = body.role_id;
+    userParam.department_id = body.department_id;
+    userParam.is_deleted = body.is_deleted;
+
+    return await userRepository.update({ user_id: user_id }, userParam);
   }
 }
