@@ -1,8 +1,9 @@
 import { UserData } from '@core/decorator/user.decorator';
 import { IUserData } from '@core/interface/default.interface';
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { EIdeaFilter } from 'enum/idea.enum';
 import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
+import { VCreateReactionDto } from 'global/dto/reaction.dto';
 import { IdeaService } from './idea.service';
 
 @Controller('idea')
@@ -31,5 +32,22 @@ export class IdeaController {
     @Body() body: VCreateIdeaDto,
   ) {
     return await this.ideaService.createIdea(userData, body);
+  }
+
+  @Post(':idea_id/reaction')
+  createIdeaReaction(
+    @UserData() userData: IUserData,
+    @Param('idea_id') idea_id: number,
+    @Body() body: VCreateReactionDto,
+  ) {
+    return this.ideaService.createIdeaReaction(userData, idea_id, body);
+  }
+
+  @Delete(':idea_id/reaction')
+  deleteIdeaReaction(
+    @UserData() userData: IUserData,
+    @Param('idea_id') idea_id: number,
+  ) {
+    return this.ideaService.deleteIdeaReaction(userData, idea_id);
   }
 }

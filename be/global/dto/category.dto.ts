@@ -6,5 +6,4 @@ export class VCreateCategoryDto {
   @MinLength(1, { message: ErrorMessage.MIN_LENGTH_1 })
   @MaxLength(100)
   name: string;
-
 }
