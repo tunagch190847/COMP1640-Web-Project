@@ -156,6 +156,7 @@ export class UserService {
     userParam.department_id = body.department_id;
     userParam.is_deleted = body.is_deleted;
 
-    return await userRepository.update({ user_id: user_id }, userParam);
+    await userRepository.update({ user_id: user_id }, userParam);
+    return;
   }
 }
