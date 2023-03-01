@@ -107,4 +107,9 @@ export class UserService {
       };
     });
   }
+
+  async handleLogout(userId: string) {
+    await this.authService.logout(userId);
+    return null;
+  }
 }
