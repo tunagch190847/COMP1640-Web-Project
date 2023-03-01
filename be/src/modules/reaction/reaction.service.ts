@@ -1,5 +1,4 @@
 import { Reaction } from '@core/database/mysql/entity/reaction.entity';
-import { IUserData } from '@core/interface/default.interface';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ErrorMessage } from 'enum/error';
@@ -31,12 +30,16 @@ export class ReactionService {
         })
 
         if(reaction) {
-            if(body.reaction != reaction.type) {
-                await reactionRepository.update({ idea_id, user_id }, {
-                    type: body.reaction,
-                });
-                reaction.type = body.reaction;
+            if(body.reaction == reaction.type) {
+                throw new HttpException(
+                    ErrorMessage.REACTION_ALREADY_EXISTS,
+                    HttpStatus.BAD_REQUEST,
+                );
             }
+            await reactionRepository.update({ idea_id, user_id }, {
+                type: body.reaction,
+            });
+            reaction.type = body.reaction;
         }else {
             const newReaction = new Reaction();
             newReaction.idea_id = idea_id;
@@ -66,7 +69,7 @@ export class ReactionService {
 
         if (!reaction) {
             throw new HttpException(
-                ErrorMessage.REACTION_NOT_EXIST,
+                ErrorMessage.REACTION_NOT_EXISTS,
                 HttpStatus.BAD_REQUEST,
             );
         }

@@ -4,7 +4,7 @@ import { EReactionType } from "enum/idea.enum";
 
 export class VCreateReactionDto {
     @IsEnum(EReactionType, { 
-        message: ErrorMessage.REACTION_TYPE_NOT_EXIST, 
+        message: ErrorMessage.REACTION_TYPE_NOT_EXISTS, 
     })
     reaction: EReactionType;
 }
