@@ -128,4 +128,9 @@ export class AuthService {
       user_id: user.user_id,
     };
   }
+  async logout(userId: string) {
+    this.userService.updateUser(userId, {
+      token: null,
+    });
+  }
 }
