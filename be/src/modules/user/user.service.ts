@@ -63,7 +63,6 @@ export class UserService {
     return await userRepository.findOne({
       where: {
         user_id: userId,
-        is_deleted: EIsDelete.NOT_DELETE,
       },
     });
   }
@@ -145,9 +144,9 @@ export class UserService {
     }
     const userID = await this.checkUserByUserId(user_id);
 
-    if (user_id != userID.user_id) {
+    if (!userID) {
       throw new HttpException(
-        ErrorMessage.INVALID_PARAM,
+        ErrorMessage.USER_NOT_EXISTS,
         HttpStatus.BAD_REQUEST,
       );
     }
