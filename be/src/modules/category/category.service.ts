@@ -70,7 +70,26 @@ export class CategoryService {
     return;
   }
 
-  async deleteCategory(category_id: number) {
-    return await this.categoryRepository.delete({ category_id });
+  async deleteCategory(
+    category_id: number,
+    userData: IUserData,) {
+
+    if (userData.role_id != EUserRole.ADMIN) {
+        throw new HttpException(
+          ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    
+    const ideaData =await this.getIdeasByCategory(category_id);
+    if(ideaData.length != 0){
+      throw new HttpException(
+        ErrorMessage.CATEGORY_STILL_CONTAINS_IDEAS,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    await this.categoryRepository.delete({ category_id });
+    return;
   }
 }

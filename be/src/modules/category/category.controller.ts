@@ -44,8 +44,10 @@ export class CategoryController {
     return this.categoryService.updateCategory(category_id, body, userData);
   }
 
-  @Delete(':id')
-  deleteCategory(@Param('id') category_id: number) {
-    return this.categoryService.deleteCategory(category_id);
+  @Delete(':category_id')
+  deleteCategory(
+    @Param('category_id') category_id: number,
+  @UserData() userData: IUserData,) {
+    return this.categoryService.deleteCategory(category_id, userData);
   }
 }
