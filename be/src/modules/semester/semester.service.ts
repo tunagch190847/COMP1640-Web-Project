@@ -18,7 +18,7 @@ export class SemesterService {
   async getCurrentSemester() {
     return await this.semesterRepository.findOne({
       where: {
-        created_at: LessThanOrEqual(new Date()),
+        created_date: LessThanOrEqual(new Date()),
         final_closure_date: MoreThanOrEqual(new Date()),
       },
     });
