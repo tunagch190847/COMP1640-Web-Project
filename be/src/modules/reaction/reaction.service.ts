@@ -16,7 +16,7 @@ export class ReactionService {
     ) {}
 
     async createReaction(
-        userData: IUserData, 
+        user_id: string, 
         idea_id: number,
         body: VCreateReactionDto,
         entityManager?: EntityManager,
@@ -25,17 +25,9 @@ export class ReactionService {
             ? entityManager.getRepository<Reaction>('reaction')
             : this.reactionRepository;
 
-        if (userData.role_id != EUserRole.STAFF) {
-            throw new HttpException(
-                ErrorMessage.IDEA_REACTION_PERMISSION,
-                HttpStatus.BAD_REQUEST,
-            );
-        }
-
-        const user_id = userData.user_id;
         let reaction = await reactionRepository.findOne({
             where: {
-                user_id: userData.user_id,
+                user_id: user_id,
                 idea_id: idea_id,
             }
         })
