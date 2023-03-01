@@ -6,6 +6,7 @@ import { Idea } from 'src/core/database/mysql/entity/idea.entity';
 import { SemesterModule } from '@modules/semester/semester.module';
 import { CategoryIdeaModule } from '@modules/category-idea/category-idea.module';
 import { IdeaFileModule } from '@modules/idea-file/idea-file.module';
+import { ReactionModule } from '@modules/reaction/reaction.module';
 
 @Module({
   controllers: [IdeaController],
@@ -15,6 +16,7 @@ import { IdeaFileModule } from '@modules/idea-file/idea-file.module';
     SemesterModule,
     CategoryIdeaModule,
     IdeaFileModule,
+    ReactionModule,
   ],
   exports: [IdeaService],
 })

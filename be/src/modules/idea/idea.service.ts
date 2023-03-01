@@ -3,6 +3,7 @@ import { IdeaFile } from '@core/database/mysql/entity/file.entity';
 import { IUserData } from '@core/interface/default.interface';
 import { CategoryIdeaService } from '@modules/category-idea/category-idea.service';
 import { IdeaFileService } from '@modules/idea-file/idea-file.service';
+import { ReactionService } from '@modules/reaction/reaction.service';
 import { SemesterService } from '@modules/semester/semester.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,6 +11,7 @@ import { EGender, EUserRole } from 'enum/default.enum';
 import { ErrorMessage } from 'enum/error';
 import { EIdeaFilter } from 'enum/idea.enum';
 import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
+import { VCreateReactionDto } from 'global/dto/reaction.dto';
 import { Idea } from 'src/core/database/mysql/entity/idea.entity';
 import { Repository, EntityManager, DeepPartial, Connection } from 'typeorm';
 
@@ -20,8 +22,9 @@ export class IdeaService {
     private readonly ideaRepository: Repository<Idea>,
     private readonly semesterService: SemesterService,
     private readonly categoryIdeaService: CategoryIdeaService,
-    private ideaFileService: IdeaFileService,
-    private connection: Connection,
+    private readonly ideaFileService: IdeaFileService,
+    private readonly reactionService: ReactionService,
+    private readonly connection: Connection,
   ) {}
 
   async getIdeaDetail(
@@ -97,7 +100,7 @@ export class IdeaService {
     } else if (sorting_setting == EIdeaFilter.RECENT_IDEAS) {
       selectQueryBuilder.orderBy('idea.created_at', 'DESC');
     } else if (sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
-      // selectQueryBuilder.orderBy('idea.likes', 'DESC');
+
     }
 
     const ideas = await selectQueryBuilder.getMany();
@@ -240,5 +243,23 @@ export class IdeaService {
     console.log(value);
 
     return await ideaRepository.save(value);
+  }
+
+  async createIdeaReaction(
+    userData: IUserData, 
+    idea_id: number, 
+    body: VCreateReactionDto,
+  ) {
+    const idea = await this.ideaRepository.findOne({
+      where: { idea_id },
+    });
+
+    if (!idea) {
+      throw new HttpException(
+        ErrorMessage.IDEA_NOT_EXIST,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return this.reactionService.createReaction(userData, idea_id, body);
   }
 }

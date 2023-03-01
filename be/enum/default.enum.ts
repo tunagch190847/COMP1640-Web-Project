@@ -1,6 +1,8 @@
 export enum EUserRole {
-  STAFF = 2,
   ADMIN = 1,
+  QA_MANAGER = 2,
+  QA_COORDINATOR = 3,
+  STAFF = 4,
 }
 
 export enum EGender {
