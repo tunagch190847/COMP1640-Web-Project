@@ -254,12 +254,42 @@ export class IdeaService {
       where: { idea_id },
     });
 
+    if (userData.role_id != EUserRole.STAFF) {
+      throw new HttpException(
+          ErrorMessage.IDEA_REACTION_PERMISSION,
+          HttpStatus.BAD_REQUEST,
+      );
+    }
+
     if (!idea) {
       throw new HttpException(
         ErrorMessage.IDEA_NOT_EXIST,
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.reactionService.createReaction(userData, idea_id, body);
+    return this.reactionService
+        .createReaction(userData.user_id, idea_id, body);
+  }
+
+  async deleteIdeaReaction(userData: IUserData, idea_id: number) {
+    const idea = await this.ideaRepository.findOne({
+      where: { idea_id },
+    });
+
+    if (userData.role_id != EUserRole.STAFF) {
+      throw new HttpException(
+          ErrorMessage.IDEA_REACTION_PERMISSION,
+          HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (!idea) {
+      throw new HttpException(
+        ErrorMessage.IDEA_NOT_EXIST,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return this.reactionService
+        .deleteReaction(userData.user_id, idea_id);
   }
 }

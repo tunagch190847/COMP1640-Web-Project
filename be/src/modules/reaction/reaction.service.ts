@@ -2,9 +2,7 @@ import { Reaction } from '@core/database/mysql/entity/reaction.entity';
 import { IUserData } from '@core/interface/default.interface';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EUserRole } from 'enum/default.enum';
 import { ErrorMessage } from 'enum/error';
-import { EReactionType } from 'enum/idea.enum';
 import { VCreateReactionDto } from 'global/dto/reaction.dto';
 import { EntityManager, Repository } from 'typeorm';
 
@@ -16,7 +14,7 @@ export class ReactionService {
     ) {}
 
     async createReaction(
-        userData: IUserData, 
+        user_id: string,
         idea_id: number,
         body: VCreateReactionDto,
         entityManager?: EntityManager,
@@ -25,17 +23,9 @@ export class ReactionService {
             ? entityManager.getRepository<Reaction>('reaction')
             : this.reactionRepository;
 
-        if (userData.role_id != EUserRole.STAFF) {
-            throw new HttpException(
-                ErrorMessage.IDEA_REACTION_PERMISSION,
-                HttpStatus.BAD_REQUEST,
-            );
-        }
-
-        const user_id = userData.user_id;
         let reaction = await reactionRepository.findOne({
             where: {
-                user_id: userData.user_id,
+                user_id: user_id,
                 idea_id: idea_id,
             }
         })
@@ -56,5 +46,35 @@ export class ReactionService {
         }
         
         return reaction;
+    }
+
+    async deleteReaction(
+        user_id: string, 
+        idea_id: number,
+        entityManager?: EntityManager,
+    ) {
+        const reactionRepository = entityManager
+            ? entityManager.getRepository<Reaction>('reaction')
+            : this.reactionRepository;
+
+        let reaction = await reactionRepository.findOne({
+            where: {
+                user_id: user_id,
+                idea_id: idea_id,
+            }
+        })
+
+        if (!reaction) {
+            throw new HttpException(
+                ErrorMessage.REACTION_NOT_EXIST,
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+
+        const result = await reactionRepository.delete({ idea_id, user_id });
+        
+        return {
+            affected: result.affected,
+        };
     }
 }
