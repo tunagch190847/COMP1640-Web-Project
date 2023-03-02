@@ -159,4 +159,67 @@ export class UserService {
     await userRepository.update({ user_id: user_id }, userParam);
     return;
   }
+
+  async checkUserDeleteStatus(userId: string, entityManager?: EntityManager) {
+    const userRepository = entityManager
+      ? entityManager.getRepository<User>('user')
+      : this.userRepository;
+      
+    const deleteStatus = await userRepository.
+    createQueryBuilder('user')
+    .where("user.user_id = :id", { id: userId })
+    .andWhere('user.is_deleted = :is_deleted', { is_deleted: 1 })
+    .getOne();
+    
+    if(!deleteStatus){
+      return 0
+    }
+    else{
+      return 1
+    }
+  }
+
+  async deleteUser(
+    userID: string, 
+    userData: IUserData,
+    entityManager?: EntityManager,
+  ){
+    if (userData.role_id != EUserRole.ADMIN) {
+      throw new HttpException(
+        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const userRepository = entityManager
+      ? entityManager.getRepository<User>('user')
+      : this.userRepository;
+
+      const user_ID = await this.checkUserByUserId(userID);
+
+      if (!user_ID) {
+        throw new HttpException(
+          ErrorMessage.USER_NOT_EXISTS,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      const user_delete_status = await this.checkUserDeleteStatus(userID);
+      console.log(user_delete_status)
+
+      if (user_delete_status == 1) {
+        throw new HttpException(
+          ErrorMessage.ALREADY_DELETED,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    
+    await userRepository.createQueryBuilder('user')
+    .update(User)
+    .set({is_deleted: EIsDelete.DELETED})
+    .where({
+      user_id: userID
+    })
+    .execute();
+
+    return {"Message" : "Finished deleting user"};
+  }
 }
