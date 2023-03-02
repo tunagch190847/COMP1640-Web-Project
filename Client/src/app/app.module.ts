@@ -40,6 +40,11 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { HttpClientModule } from "@angular/common/http";
 import {MessagesModule} from 'primeng/messages';
+import { ProfileComponent } from './profile/profile.component';
+import { UpdateProfileComponent } from './update-profile/update-profile.component';
+import { ManageCategoryComponent } from './manage-category/manage-category.component';
+import { ManageSemesterComponent } from './manage-semester/manage-semester.component';
+import { ManageAccountComponent } from './manage-account/manage-account.component';
 
 @NgModule({
     declarations: [
@@ -52,6 +57,11 @@ import {MessagesModule} from 'primeng/messages';
         HeaderHomeComponent,
         LayoutComponent,
         MenuComponent,
+        ProfileComponent,
+        UpdateProfileComponent,
+        ManageCategoryComponent,
+        ManageSemesterComponent,
+        ManageAccountComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
