@@ -76,7 +76,11 @@ export class CategoryService {
 
     if (userData.role_id != EUserRole.ADMIN) {
         throw new HttpException(
+<<<<<<< HEAD
           ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_DELETE_CATEGORY,
+=======
+          ErrorMessage.YOU_DO_NOT_HAVE_RIGHTS_TO_DELETE_CATEGORY,
+>>>>>>> 312a3bbe928c03366647484b1d69a68b41f907d0
           HttpStatus.BAD_REQUEST,
         );
       }
