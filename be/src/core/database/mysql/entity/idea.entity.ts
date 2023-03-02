@@ -70,5 +70,5 @@ export class Idea {
   ideaCategories: CategoryIdea[];
 
   @OneToMany(() => Reaction, (reaction) => reaction.idea)
-  reactions: CategoryIdea[];
+  reactions: Reaction[];
 }
