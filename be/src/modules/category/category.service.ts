@@ -28,40 +28,37 @@ export class CategoryService {
     return this.categoryIdeaService.getIdeasByCategory(category_id);
   }
 
-  async createCategory(
-    userData: IUserData,
-    body: VCreateCategoryDto,
-    ) {
-      if (userData.role_id != EUserRole.ADMIN) {
-        throw new HttpException(
-          ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+  async createCategory(userData: IUserData, body: VCreateCategoryDto) {
+    if (userData.role_id != EUserRole.ADMIN) {
+      throw new HttpException(
+        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
-      const categoryParam = new Category();
+    const categoryParam = new Category();
 
-      categoryParam.name = body.name;
+    categoryParam.name = body.name;
 
-     return await this.categoryRepository.save(categoryParam);
+    return await this.categoryRepository.save(categoryParam);
   }
 
   async updateCategory(
-    category_id: number, 
+    category_id: number,
     body: VCreateCategoryDto,
     userData: IUserData,
-    ) {
-      if (userData.role_id != EUserRole.ADMIN) {
-        throw new HttpException(
-          ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-    
-    const categoryParams = new Category();
-    if(!body){
+  ) {
+    if (userData.role_id != EUserRole.ADMIN) {
       throw new HttpException(
-        ErrorMessage.IDEA_NOT_EXIST,
+        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_UPDATE_CATEGORY,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const categoryParams = new Category();
+    if (!body) {
+      throw new HttpException(
+        ErrorMessage.EMPTY_UPDATE_BODY,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -70,7 +67,23 @@ export class CategoryService {
     return;
   }
 
-  async deleteCategory(category_id: number) {
-    return await this.categoryRepository.delete({ category_id });
+  async deleteCategory(category_id: number, userData: IUserData) {
+    if (userData.role_id != EUserRole.ADMIN) {
+      throw new HttpException(
+        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_DELETE_CATEGORY,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const ideaData = await this.getIdeasByCategory(category_id);
+    if (ideaData.length != 0) {
+      throw new HttpException(
+        ErrorMessage.CATEGORY_STILL_CONTAINS_IDEAS,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    await this.categoryRepository.delete({ category_id });
+    return;
   }
 }

@@ -30,22 +30,25 @@ export class CategoryController {
   @Post()
   createCategory(
     @UserData() userData: IUserData,
-    @Body() body: VCreateCategoryDto
+    @Body() body: VCreateCategoryDto,
   ) {
-    return this.categoryService.createCategory(userData,body);
+    return this.categoryService.createCategory(userData, body);
   }
 
   @Put(':category_id')
   updateCategory(
-    @Param('category_id') category_id: number, 
+    @Param('category_id') category_id: number,
     @Body() body: VCreateCategoryDto,
     @UserData() userData: IUserData,
   ) {
     return this.categoryService.updateCategory(category_id, body, userData);
   }
 
-  @Delete(':id')
-  deleteCategory(@Param('id') category_id: number) {
-    return this.categoryService.deleteCategory(category_id);
+  @Delete(':category_id')
+  deleteCategory(
+    @Param('category_id') category_id: number,
+    @UserData() userData: IUserData,
+  ) {
+    return this.categoryService.deleteCategory(category_id, userData);
   }
 }

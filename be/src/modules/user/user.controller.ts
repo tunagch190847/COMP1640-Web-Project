@@ -1,8 +1,9 @@
 import { UserData } from '@core/decorator/user.decorator';
 import { IUserData } from '@core/interface/default.interface';
 import { UserDetailService } from '@modules/user-detail/user-detail.service';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { VSignUp } from 'global/dto/signup.dto';
+import { VUpdateAccount } from 'global/dto/update-account.dto';
 import { VLogin } from 'global/user/dto/login.dto';
 import { Public } from 'src/core/decorator/public.decorator';
 import { UserService } from './user.service';
@@ -38,5 +39,13 @@ export class UserController {
   @Post('/logout')
   async logout(@UserData() userData: IUserData) {
     return await this.userService.handleLogout(userData.user_id);
+  }
+  @Put('updateAccount/:user_id')
+  async updateAccount(
+    @UserData() userData: IUserData,
+    @Param('user_id') user_id: string,
+    @Body() body: VUpdateAccount,
+  ) {
+    return await this.userService.updateAccount(userData, user_id, body);
   }
 }
