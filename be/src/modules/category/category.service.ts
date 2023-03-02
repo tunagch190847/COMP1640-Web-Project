@@ -53,7 +53,7 @@ export class CategoryService {
     ) {
       if (userData.role_id != EUserRole.ADMIN) {
         throw new HttpException(
-          ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
+          ErrorMessage.YOU_DO_NOT_HAVE_RIGHTS_TO_UPDATE_CATEGORY,
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -76,7 +76,7 @@ export class CategoryService {
 
     if (userData.role_id != EUserRole.ADMIN) {
         throw new HttpException(
-          ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
+          ErrorMessage.YOU_DO_NOT_HAVE_RIGHTS_TO_DELETE_CATEGORY,
           HttpStatus.BAD_REQUEST,
         );
       }
