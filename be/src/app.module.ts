@@ -44,7 +44,7 @@ import { ReactionModule } from './modules/reaction/reaction.module';
         autoLoadEntities: true,
         // logging: true,
         // logger: new DatabaseMysqlLogger(),
-        timezone: configService.get(EConfiguration.DB_MYSQL_TZ) || '+09:00',
+        timezone: configService.get(EConfiguration.DB_MYSQL_TZ) || '+07:00',
         legacySpatialSupport: false, //fix version mysql 8
       }),
 
