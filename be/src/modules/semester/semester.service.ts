@@ -1,9 +1,12 @@
 import { Semester } from '@core/database/mysql/entity/semester.entity';
+import { IUserData } from '@core/interface/default.interface';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EUserRole } from 'enum/default.enum';
 import { ErrorMessage } from 'enum/error';
 import { VUpdateSemesterDto } from 'global/dto/semester.dto';
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
+import moment = require('moment');
 
 @Injectable()
 export class SemesterService {
@@ -31,12 +34,33 @@ export class SemesterService {
     });
   }
 
-  async updateSemester(semester_id: number, body: VUpdateSemesterDto) {
+  async updateSemester(
+    userData: IUserData,
+    semester_id: number,
+    body: VUpdateSemesterDto,
+  ) {
+    if (userData.role_id != EUserRole.ADMIN) {
+      throw new HttpException(
+        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_UPDATE_SEMESTER,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const semester = await this.getSemesterById(semester_id);
 
     if (!semester) {
       throw new HttpException(
         ErrorMessage.SEMESTER_NOT_EXIST,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const startDate = moment(body.first_closure_date);
+    const endDate = moment(body.final_closure_date);
+
+    if (startDate > endDate) {
+      throw new HttpException(
+        ErrorMessage.THE_START_DATE_NEEDS_TO_BE_LESS_THAN_THE_END_DATE,
         HttpStatus.BAD_REQUEST,
       );
     }

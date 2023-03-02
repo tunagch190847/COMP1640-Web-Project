@@ -1,3 +1,5 @@
+import { UserData } from '@core/decorator/user.decorator';
+import { IUserData } from '@core/interface/default.interface';
 import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
 import { VUpdateSemesterDto } from 'global/dto/semester.dto';
 import { SemesterService } from './semester.service';
@@ -18,10 +20,11 @@ export class SemesterController {
 
   @Put(':semester_id')
   updateSemester(
+    @UserData() userData: IUserData,
     @Param('semester_id') semester_id: number,
     @Body() body: VUpdateSemesterDto,
   ) {
-    return this.semesterService.updateSemester(semester_id, body);
+    return this.semesterService.updateSemester(userData, semester_id, body);
   }
 
   @Delete(':id')
