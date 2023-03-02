@@ -65,6 +65,15 @@ export class SemesterService {
       );
     }
 
+    const createDate = moment(semester.created_date);
+
+    if (createDate > startDate) {
+      throw new HttpException(
+        ErrorMessage.THE_CREATE_DATE_NEEDS_TO_BE_LESS_THAN_THE_START_DATE,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const semesterParam = new Semester();
     semesterParam.name = body.name;
     semesterParam.final_closure_date = new Date(body?.final_closure_date);
