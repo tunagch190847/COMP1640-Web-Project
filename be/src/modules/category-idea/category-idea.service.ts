@@ -30,21 +30,21 @@ export class CategoryIdeaService {
   }
 
   async getIdeasByCategory(
-    category_id: number, 
-    semester_id?: number, 
-    department_id?: number, 
+    category_id: number,
+    semester_id?: number,
+    department_id?: number,
     sorting_setting?: EIdeaFilter,
-    entityManager?: EntityManager
+    entityManager?: EntityManager,
   ) {
     const categoryIdeaRepository = entityManager
       ? entityManager.getRepository<CategoryIdea>('category_idea')
       : this.categoryIdeaRepository;
 
-    if(semester_id == null) {
+    if (semester_id == null) {
       const currentSemester = await this.semesterService.getCurrentSemester();
       semester_id = currentSemester.semester_id;
     }
-    
+
     const selectQueryBuilder = categoryIdeaRepository
       .createQueryBuilder('category_idea')
       .innerJoinAndSelect('category_idea.idea', 'idea')
@@ -55,18 +55,17 @@ export class CategoryIdeaService {
       .where('idea.semester_id = :semester_id', { semester_id })
       .andWhere('category_idea.category_id = :category_id', { category_id });
 
-    if(department_id != null) {
-      selectQueryBuilder.andWhere(
-        'user.department_id = :department_id', 
-        { department_id },
-      );
+    if (department_id != null) {
+      selectQueryBuilder.andWhere('user.department_id = :department_id', {
+        department_id,
+      });
     }
 
-    if(sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
+    if (sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
       selectQueryBuilder.orderBy('idea.views', 'DESC');
-    }else if(sorting_setting == EIdeaFilter.RECENT_IDEAS) {
+    } else if (sorting_setting == EIdeaFilter.RECENT_IDEAS) {
       selectQueryBuilder.orderBy('idea.created_at', 'DESC');
-    }else if(sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
+    } else if (sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
       // selectQueryBuilder.orderBy('idea.likes', 'DESC');
     }
 
@@ -77,20 +76,20 @@ export class CategoryIdeaService {
       const idea = categoryIdea.idea;
       const categoryIdeas = await this.getCategoriesByIdea(idea.idea_id);
       const categories = categoryIdeas.map(
-        (categoryIdea) => categoryIdea.category
+        (categoryIdea) => categoryIdea.category,
       );
 
-      let txtGender = "";
+      let txtGender = '';
 
       switch (idea.user.userDetail.gender) {
         case EGender.PREFER_NOT_TO_SAY:
-          txtGender = "Prefer not to say";
+          txtGender = 'Prefer not to say';
           break;
         case EGender.MALE:
-          txtGender = "Male";
+          txtGender = 'Male';
           break;
         case EGender.FEMALE:
-          txtGender = "Female";
+          txtGender = 'Female';
           break;
         default:
           break;
@@ -134,5 +133,13 @@ export class CategoryIdeaService {
       .into(CategoryIdea)
       .values(body)
       .execute();
+  }
+
+  async deleteIdeaCategory(idea_id: number, entityManager?: EntityManager) {
+    const categoryIdeaRepository = entityManager
+      ? entityManager.getRepository<CategoryIdea>('category_idea')
+      : this.categoryIdeaRepository;
+
+    return await categoryIdeaRepository.delete({ idea_id });
   }
 }

@@ -12,6 +12,7 @@ import { ErrorMessage } from 'enum/error';
 import { EIdeaFilter } from 'enum/idea.enum';
 import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
 import { VCreateReactionDto } from 'global/dto/reaction.dto';
+import { VUpdateIdeaDto } from 'global/dto/update-idea.dto';
 import { Idea } from 'src/core/database/mysql/entity/idea.entity';
 import { Repository, EntityManager, DeepPartial, Connection } from 'typeorm';
 
@@ -87,12 +88,10 @@ export class IdeaService {
       .leftJoinAndSelect('idea.comments', 'comments')
       .where('idea.semester_id = :semester_id', { semester_id });
 
-
     if (department_id != null) {
-      selectQueryBuilder.andWhere(
-        'user.department_id = :department_id',
-        { department_id },
-      );
+      selectQueryBuilder.andWhere('user.department_id = :department_id', {
+        department_id,
+      });
     }
 
     if (sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
@@ -100,7 +99,6 @@ export class IdeaService {
     } else if (sorting_setting == EIdeaFilter.RECENT_IDEAS) {
       selectQueryBuilder.orderBy('idea.created_at', 'DESC');
     } else if (sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
-
     }
 
     const ideas = await selectQueryBuilder.getMany();
@@ -111,20 +109,20 @@ export class IdeaService {
         idea.idea_id,
       );
       const categories = categoryIdeas.map(
-        (categoryIdea) => categoryIdea.category
+        (categoryIdea) => categoryIdea.category,
       );
 
-      let txtGender = "";
+      let txtGender = '';
 
       switch (idea.user.userDetail.gender) {
         case EGender.PREFER_NOT_TO_SAY:
-          txtGender = "Prefer not to say";
+          txtGender = 'Prefer not to say';
           break;
         case EGender.MALE:
-          txtGender = "Male";
+          txtGender = 'Male';
           break;
         case EGender.FEMALE:
-          txtGender = "Female";
+          txtGender = 'Female';
           break;
         default:
           break;
@@ -166,8 +164,8 @@ export class IdeaService {
   }
 
   async createIdea(userData: IUserData, body: VCreateIdeaDto) {
-    // let countPDF = 0;
     let data: DeepPartial<Idea>;
+
     if (userData.role_id != EUserRole.STAFF) {
       throw new HttpException(
         ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
@@ -194,6 +192,8 @@ export class IdeaService {
             const ideaFileParam = new IdeaFile();
             ideaFileParam.idea_id = idea.idea_id;
             ideaFileParam.file = files.file;
+            ideaFileParam.size = files.size;
+
             postFileParams.push(ideaFileParam);
           });
         }
@@ -227,6 +227,7 @@ export class IdeaService {
         return idea;
       });
     } catch (error) {
+      console.log(error);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
     return {
@@ -246,8 +247,8 @@ export class IdeaService {
   }
 
   async createIdeaReaction(
-    userData: IUserData, 
-    idea_id: number, 
+    userData: IUserData,
+    idea_id: number,
     body: VCreateReactionDto,
   ) {
     const idea = await this.ideaRepository.findOne({
@@ -256,8 +257,8 @@ export class IdeaService {
 
     if (userData.role_id != EUserRole.STAFF) {
       throw new HttpException(
-          ErrorMessage.IDEA_REACTION_PERMISSION,
-          HttpStatus.BAD_REQUEST,
+        ErrorMessage.IDEA_REACTION_PERMISSION,
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -267,8 +268,7 @@ export class IdeaService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.reactionService
-        .createReaction(userData.user_id, idea_id, body);
+    return this.reactionService.createReaction(userData.user_id, idea_id, body);
   }
 
   async deleteIdeaReaction(userData: IUserData, idea_id: number) {
@@ -278,8 +278,8 @@ export class IdeaService {
 
     if (userData.role_id != EUserRole.STAFF) {
       throw new HttpException(
-          ErrorMessage.IDEA_REACTION_PERMISSION,
-          HttpStatus.BAD_REQUEST,
+        ErrorMessage.IDEA_REACTION_PERMISSION,
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -289,7 +289,112 @@ export class IdeaService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.reactionService
-        .deleteReaction(userData.user_id, idea_id);
+    return this.reactionService.deleteReaction(userData.user_id, idea_id);
+  }
+
+  async checkIdea(idea_id: number, user_id: string) {
+    return await this.ideaRepository.findOne({
+      where: { idea_id: idea_id, user_id: user_id },
+    });
+  }
+
+  async updateIdea(userData: IUserData, idea_id: number, body: VUpdateIdeaDto) {
+    if (userData.role_id != EUserRole.STAFF) {
+      throw new HttpException(
+        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_UPDATE_IDEA,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const isAccess = await this.checkIdea(idea_id, userData.user_id);
+
+    if (!isAccess) {
+      throw new HttpException(
+        ErrorMessage.UPDATE_POST_PERMISSION_DENIED,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    try {
+      await this.connection.transaction(async (manager) => {
+        const currentSemester = await this.semesterService.getCurrentSemester();
+        const ideaParams = new Idea();
+        ideaParams.user_id = userData.user_id;
+        ideaParams.title = body.title;
+        ideaParams.content = body.content;
+        ideaParams.is_anonymous = body.is_anonymous;
+        ideaParams.semester_id = currentSemester.semester_id;
+
+        const idea = await this.updateIdeaCurrent(
+          {
+            idea_id: idea_id,
+          },
+          ideaParams,
+          manager,
+        );
+
+        const postFileParams = [];
+        if (body?.files && body?.files.length) {
+          body.files.forEach((files) => {
+            const ideaFileParam = new IdeaFile();
+            ideaFileParam.idea_id = idea_id;
+            ideaFileParam.file = files.file;
+            ideaFileParam.size = files.size;
+            postFileParams.push(ideaFileParam);
+          });
+        }
+        const categoryIdeaParams = [];
+
+        await this.ideaFileService.deleteIdeaFile(idea_id);
+
+        if (body?.category_ids && body?.category_ids?.length) {
+          body.category_ids.forEach((category_id) => {
+            const categoryIdeaParam = new CategoryIdea();
+            categoryIdeaParam.idea_id = idea_id;
+            categoryIdeaParam.category_id = category_id;
+
+            categoryIdeaParams.push(categoryIdeaParam);
+          });
+        }
+
+        await this.categoryIdeaService.deleteIdeaCategory(idea_id);
+
+        const result = await Promise.allSettled([
+          this.ideaFileService.createIdeaFile(postFileParams, manager),
+          this.categoryIdeaService.createIdeaCategory(
+            categoryIdeaParams,
+            manager,
+          ),
+        ]);
+
+        if (result.some((r) => r.status === 'rejected'))
+          throw new HttpException(
+            'ErrorMessage.UPDATING_IDEA_FAILED',
+            HttpStatus.BAD_REQUEST,
+          );
+
+        return idea;
+      });
+    } catch (error) {
+      console.log(error, 1111111);
+
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+    return {
+      idea_id: idea_id,
+      files: body.files || [],
+    };
+  }
+
+  async updateIdeaCurrent(
+    conditions: DeepPartial<Idea>,
+    value: DeepPartial<Idea>,
+    entityManager?: EntityManager,
+  ) {
+    const ideaRepository = entityManager
+      ? entityManager.getRepository<Idea>('idea')
+      : this.ideaRepository;
+
+    await ideaRepository.update(conditions, value);
   }
 }
