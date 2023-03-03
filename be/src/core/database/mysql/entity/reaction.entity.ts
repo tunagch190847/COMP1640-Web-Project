@@ -14,8 +14,7 @@ export class Reaction {
   @Column({
     name: 'type',
     type: 'tinyint',
-    unsigned: true,
-    comment: '0: liked, 1: disliked',
+    comment: '1: liked, -1: disliked',
   })
   type: number;
 

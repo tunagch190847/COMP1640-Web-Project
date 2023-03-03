@@ -13,7 +13,7 @@ import { EIdeaFilter } from 'enum/idea.enum';
 import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
 import { VCreateReactionDto } from 'global/dto/reaction.dto';
 import { Idea } from 'src/core/database/mysql/entity/idea.entity';
-import { Repository, EntityManager, DeepPartial, Connection } from 'typeorm';
+import { Repository, EntityManager, DeepPartial, Connection, getManager, SelectQueryBuilder } from 'typeorm';
 
 @Injectable()
 export class IdeaService {
@@ -67,6 +67,7 @@ export class IdeaService {
   async getAllIdeas(
     semester_id?: number,
     department_id?: number,
+    category_id?: number,
     sorting_setting?: EIdeaFilter,
     entityManager?: EntityManager,
   ) {
@@ -79,89 +80,105 @@ export class IdeaService {
       semester_id = currentSemester.semester_id;
     }
 
-    const selectQueryBuilder = ideaRepository
-      .createQueryBuilder('idea')
-      .innerJoinAndSelect('idea.user', 'user')
-      .innerJoinAndSelect('user.userDetail', 'user_detail')
-      .innerJoinAndSelect('user.department', 'department')
-      .leftJoinAndSelect('idea.comments', 'comments')
-      .where('idea.semester_id = :semester_id', { semester_id });
+    let ideaQueryBuilder: SelectQueryBuilder<any>;
 
+    if(sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
+      const subQuery = ideaRepository
+        .createQueryBuilder('idea')
+        .addSelect('IFNULL(SUM(reaction.type), 0)', 'total')
+        .innerJoin('idea.user', 'user')
+        .innerJoinAndSelect('user.userDetail', 'user_detail')
+        .innerJoinAndSelect('user.department', 'department')
+        .leftJoin('idea.reactions', 'reaction')
+        .where('idea.semester_id = :semester_id', { semester_id })
+        .groupBy('idea.idea_id')
+        .orderBy('total', 'DESC');
+
+      ideaQueryBuilder = getManager()
+        .createQueryBuilder()
+        .select('popular_idea.*')
+        .addSelect('COUNT(comment.idea_id)', 'comments')
+        .from('('+subQuery.getQuery()+')', 'popular_idea')
+        .leftJoin('comment', 'comment', 'comment.idea_id = popular_idea.idea_idea_id')
+        .groupBy('popular_idea.idea_idea_id')
+        .setParameters(subQuery.getParameters());
+    }else {
+      ideaQueryBuilder = ideaRepository
+        .createQueryBuilder('idea')
+        .addSelect('COUNT(comment.idea_id)', 'comments')
+        .innerJoin('idea.user', 'user')
+        .innerJoinAndSelect('user.userDetail', 'user_detail')
+        .innerJoinAndSelect('user.department', 'department')
+        .leftJoin('idea.comments', 'comment')
+        .where('idea.semester_id = :semester_id', { semester_id })
+        .groupBy('idea.idea_id');
+      
+      if (sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
+        ideaQueryBuilder.orderBy('idea.views', 'DESC');
+      } else if (sorting_setting == EIdeaFilter.RECENT_IDEAS) {
+        ideaQueryBuilder.orderBy('idea.created_at', 'DESC');
+      }
+    }
 
     if (department_id != null) {
-      selectQueryBuilder.andWhere(
+      ideaQueryBuilder.andWhere(
         'user.department_id = :department_id',
         { department_id },
       );
     }
 
-    if (sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
-      selectQueryBuilder.orderBy('idea.views', 'DESC');
-    } else if (sorting_setting == EIdeaFilter.RECENT_IDEAS) {
-      selectQueryBuilder.orderBy('idea.created_at', 'DESC');
-    } else if (sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
-
+    if(category_id != null) {
+      const txtIdeaId = sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS 
+          ? 'popular_idea.idea_idea_id' 
+          : 'idea.idea_id';
+      const subQuery = getManager()
+        .createQueryBuilder()
+        .select('category_idea.idea_id')
+        .from('category_idea', 'category_idea')
+        .where('category_idea.category_id = :category_id', { category_id });
+      
+      ideaQueryBuilder
+        .andWhere(txtIdeaId + ' IN ('+subQuery.getQuery()+')')
+        .setParameters(subQuery.getParameters());
     }
 
-    const ideas = await selectQueryBuilder.getMany();
+    const rows = await ideaQueryBuilder.getRawMany();
     const data = [];
 
-    for (const idea of ideas) {
+    for (const cursor of rows) {
+      const idea_id = cursor.idea_idea_id;
       const categoryIdeas = await this.categoryIdeaService.getCategoriesByIdea(
-        idea.idea_id,
+        idea_id,
       );
       const categories = categoryIdeas.map(
         (categoryIdea) => categoryIdea.category
       );
 
-      let txtGender = "";
-
-      switch (idea.user.userDetail.gender) {
-        case EGender.PREFER_NOT_TO_SAY:
-          txtGender = "Prefer not to say";
-          break;
-        case EGender.MALE:
-          txtGender = "Male";
-          break;
-        case EGender.FEMALE:
-          txtGender = "Female";
-          break;
-        default:
-          break;
-      }
-
       data.push({
-        idea_id: idea.idea_id,
-        title: idea.title,
-        content: idea.content,
-        views: idea.views,
-        comments: idea.comments.length,
-        is_anonymous: idea.is_anonymous,
-        created_at: idea.created_at,
+        idea_id: idea_id,
+        title: cursor.idea_title,
+        content: cursor.idea_content,
+        views: cursor.idea_views,
+        comments: cursor.comments,
+        is_anonymous: cursor.idea_is_anonymous,
+        created_at: cursor.idea_created_at,
         categories,
         user: {
-          user_id: idea.user.user_id,
-          full_name: idea.user.userDetail.full_name,
-          nick_name: idea.user.userDetail.nick_name,
-          gender: txtGender,
-          birthday: idea.user.userDetail.birthday,
-          avatar_url: idea.user.userDetail.avatar_url,
-          department: idea.user.department,
+          user_id: cursor.idea_user_id,
+          full_name: cursor.user_detail_full_name,
+          nick_name: cursor.user_detail_nick_name,
+          gender: cursor.user_detail_gender,
+          birthday: cursor.user_detail_birthday,
+          avatar_url: cursor.user_detail_avatar_url,
+          department: {
+            department_id: cursor.department_department_id,
+            department_name: cursor.department_name,
+            manager_id: cursor.department_manager_id,
+          },
         },
       });
     }
-    // const data = {
-    //   semester: {
-    //     semester_id: semester.semester_id,
-    //     name: semester.name,
-    //     description: semester.description,
-    //     created_at: semester.created_at,
-    //     first_closure_date: semester.first_closure_date,
-    //     final_closure_date: semester.final_closure_date,
-    //   },
-    //   ideas: temp,
-    // };
-
+    
     return data;
   }
 
@@ -250,16 +267,16 @@ export class IdeaService {
     idea_id: number, 
     body: VCreateReactionDto,
   ) {
-    const idea = await this.ideaRepository.findOne({
-      where: { idea_id },
-    });
-
     if (userData.role_id != EUserRole.STAFF) {
       throw new HttpException(
           ErrorMessage.IDEA_REACTION_PERMISSION,
           HttpStatus.BAD_REQUEST,
       );
     }
+
+    const idea = await this.ideaRepository.findOne({
+      where: { idea_id },
+    });
 
     if (!idea) {
       throw new HttpException(
@@ -272,16 +289,16 @@ export class IdeaService {
   }
 
   async deleteIdeaReaction(userData: IUserData, idea_id: number) {
-    const idea = await this.ideaRepository.findOne({
-      where: { idea_id },
-    });
-
     if (userData.role_id != EUserRole.STAFF) {
       throw new HttpException(
           ErrorMessage.IDEA_REACTION_PERMISSION,
           HttpStatus.BAD_REQUEST,
       );
     }
+
+    const idea = await this.ideaRepository.findOne({
+      where: { idea_id },
+    });
 
     if (!idea) {
       throw new HttpException(
