@@ -67,6 +67,7 @@ export class IdeaService {
   async getAllIdeas(
     semester_id?: number,
     department_id?: number,
+    category_id?: number,
     sorting_setting?: EIdeaFilter,
     entityManager?: EntityManager,
   ) {
@@ -79,7 +80,7 @@ export class IdeaService {
       semester_id = currentSemester.semester_id;
     }
 
-    let ideaQueryBuilder: any;
+    let ideaQueryBuilder: SelectQueryBuilder<any>;
 
     if(sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
       const subQuery = ideaRepository
@@ -124,6 +125,21 @@ export class IdeaService {
         'user.department_id = :department_id',
         { department_id },
       );
+    }
+
+    if(category_id != null) {
+      const txtIdeaId = sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS 
+          ? 'popular_idea.idea_idea_id' 
+          : 'idea.idea_id';
+      const subQuery = getManager()
+        .createQueryBuilder()
+        .select('category_idea.idea_id')
+        .from('category_idea', 'category_idea')
+        .where('category_idea.category_id = :category_id', { category_id });
+      
+      ideaQueryBuilder
+        .andWhere(txtIdeaId + ' IN ('+subQuery.getQuery()+')')
+        .setParameters(subQuery.getParameters());
     }
 
     const rows = await ideaQueryBuilder.getRawMany();

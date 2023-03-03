@@ -23,7 +23,7 @@ export class IdeaController {
   getIdeasByCurrentSemester(
     @Query('sorting_setting') sorting_setting: EIdeaFilter,
   ) {
-    return this.ideaService.getAllIdeas(null, null, sorting_setting);
+    return this.ideaService.getAllIdeas(null, null, null, sorting_setting);
   }
 
   @Post()
