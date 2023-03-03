@@ -186,7 +186,7 @@ export class UserService {
   ){
     if (userData.role_id != EUserRole.ADMIN) {
       throw new HttpException(
-        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
+        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_MANAGE_ACCOUNT,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -203,11 +203,10 @@ export class UserService {
         );
       }
       const user_delete_status = await this.checkUserDeleteStatus(userID);
-      console.log(user_delete_status)
 
       if (user_delete_status == 1) {
         throw new HttpException(
-          ErrorMessage.ALREADY_DELETED,
+          ErrorMessage.ACCOUNT_ALREADY_DELETED,
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -220,6 +219,6 @@ export class UserService {
     })
     .execute();
 
-    return {"Message" : "Finished deleting user"};
+    return ;
   }
 }
