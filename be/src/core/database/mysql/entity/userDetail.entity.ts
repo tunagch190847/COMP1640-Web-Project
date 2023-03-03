@@ -43,7 +43,7 @@ export class UserDetail {
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
 
-  @OneToOne(() => User, (user) => user.userDetail, { onUpdate: 'CASCADE' })
+  @OneToOne(() => User, (user) => user.userDetail, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
   user: User;
 }
