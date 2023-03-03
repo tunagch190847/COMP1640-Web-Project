@@ -1,9 +1,19 @@
 import { UserData } from '@core/decorator/user.decorator';
 import { IUserData } from '@core/interface/default.interface';
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { EIdeaFilter } from 'enum/idea.enum';
 import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
 import { VCreateReactionDto } from 'global/dto/reaction.dto';
+import { VUpdateIdeaDto } from 'global/dto/update-idea.dto';
 import { IdeaService } from './idea.service';
 
 @Controller('idea')
@@ -49,5 +59,14 @@ export class IdeaController {
     @Param('idea_id') idea_id: number,
   ) {
     return this.ideaService.deleteIdeaReaction(userData, idea_id);
+  }
+
+  @Put(':idea_id')
+  updateIdea(
+    @UserData() userData: IUserData,
+    @Param('idea_id') idea_id: number,
+    @Body() body: VUpdateIdeaDto,
+  ) {
+    return this.ideaService.updateIdea(userData, idea_id, body);
   }
 }

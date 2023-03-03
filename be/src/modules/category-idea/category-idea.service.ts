@@ -40,4 +40,12 @@ export class CategoryIdeaService {
       .values(body)
       .execute();
   }
+
+  async deleteIdeaCategory(idea_id: number, entityManager?: EntityManager) {
+    const categoryIdeaRepository = entityManager
+      ? entityManager.getRepository<CategoryIdea>('category_idea')
+      : this.categoryIdeaRepository;
+
+    return await categoryIdeaRepository.delete({ idea_id });
+  }
 }
