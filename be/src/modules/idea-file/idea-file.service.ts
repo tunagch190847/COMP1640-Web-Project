@@ -13,11 +13,11 @@ export class IdeaFileService {
     body: Array<DeepPartial<IdeaFile>>,
     entityManager?: EntityManager,
   ) {
-    const postMediaRepository = entityManager
-      ? entityManager.getRepository('file')
+    const ideaFileRepository = entityManager
+      ? entityManager.getRepository<IdeaFile>('file')
       : this.ideaFileRepository;
 
-    await postMediaRepository
+    await ideaFileRepository
       .createQueryBuilder()
       .insert()
       .into(IdeaFile)
@@ -25,5 +25,13 @@ export class IdeaFileService {
       .execute();
 
     return null;
+  }
+
+  async deleteIdeaFile(idea_id: number, entityManager?: EntityManager) {
+    const ideaFileRepository = entityManager
+      ? entityManager.getRepository<IdeaFile>('file')
+      : this.ideaFileRepository;
+
+    return await ideaFileRepository.delete({ idea_id });
   }
 }
