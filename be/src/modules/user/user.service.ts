@@ -185,7 +185,7 @@ export class UserService {
   ) {
     if (userData.role_id != EUserRole.ADMIN) {
       throw new HttpException(
-        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_MANAGE_ACCOUNT,
+        ErrorMessage.YOU_DO_NOT_HAVE_RIGHTS_TO_MANAGE_USER_ACCOUNTS,
         HttpStatus.BAD_REQUEST,
       );
     }
