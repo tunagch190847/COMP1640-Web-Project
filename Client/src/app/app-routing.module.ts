@@ -6,6 +6,7 @@ import { ResetPasswordComponent } from './auth/components/reset-password/reset-p
 import { HomeComponent } from './home/home.component';
 import { DetailComponent } from './detail/detail.component';
 import { AuthGuard } from './shared/guard/auth.guard';
+import { ManageCategoryComponent } from './manage-category/manage-category.component';
 
 
 const routes: Routes = [
@@ -29,6 +30,12 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
         // loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
         component: DetailComponent
+    },
+    {
+        path: 'manage/category',
+        // canActivate: [AuthGuard],
+        // loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+        component: ManageCategoryComponent
     },
 
     // { path: '**', component: PageNotFoundComponent },
