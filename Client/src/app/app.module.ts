@@ -45,6 +45,17 @@ import { UpdateProfileComponent } from './update-profile/update-profile.componen
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
 import { ManageSemesterComponent } from './manage-semester/manage-semester.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { RippleModule } from 'primeng/ripple';
+import { RatingModule } from 'primeng/rating';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputNumberModule } from 'primeng/inputnumber';
+
+
 
 @NgModule({
     declarations: [
@@ -97,7 +108,16 @@ import { ManageAccountComponent } from './manage-account/manage-account.componen
         InputTextareaModule,
         HttpClientModule,
         ReactiveFormsModule,
-        MessagesModule
+        MessagesModule,
+        TableModule,
+        ToastModule,
+        ToolbarModule,
+        FileUploadModule,
+        ConfirmDialogModule,
+        RippleModule,
+        RatingModule,
+        RadioButtonModule,
+        InputNumberModule,
     ]
 })
 export class AppModule { }
