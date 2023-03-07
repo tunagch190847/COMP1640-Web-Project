@@ -24,9 +24,7 @@
 
                                 <div class="row"
                                         style="width: 100%; margin-left: auto; margin-right: auto; justify-content: space-between;">
-                                        <div class="col-2" style="position: static;">
-
-                                        </div>
+                                        <div class="col-2" style="position: static;"></div>
                                         <div class="col-5" style="position: static;">
                                                 <p
                                                         style="text-align: center; margin-left: 10px; font-size: 25px; font-weight: bold; color: black;">
@@ -38,73 +36,62 @@
                                                         placeholder="Filter"></p-treeSelect>
                                         </div>
 
+                                        <div class="col-3" style="position: static;">
+                                                <ng-template ptemplate="filter" let-listcategory
+                                                        let-filter="filterCallback">
+                                                        <p-dropdown [options]="listCategory"
+                                                                (onChange)="filter($event.value)"
+                                                                placeholder="Category">
+                                                                <ng-template let-option ptemplate="item">
+                                                                        <span
+                                                                                [class]="'customer-badge status-' + option.value">{{option.name}}</span>
+                                                                </ng-template>
+                                                        </p-dropdown>
+                                                </ng-template>
+                                        </div>
+
                                 </div>
 
                                 <div>
-                                        <div class="row"
+
+                                        <div class="row" *ngFor="let l of listIdea; index as i;"
                                                 style="margin-top: 2rem; margin-bottom: 1rem; background-color: #F2F2F2; padding: 10px; border-radius: 10px; width: 90%; margin-left: auto; margin-right:auto;">
                                                 <div class="personal-info col-3" style="position: static;">
                                                         <p-avatar
                                                                 image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                                                                styleClass="mr-2" size="xlarge"
+                                                                styleclass="mr-2" size="xlarge"
                                                                 shape="circle"></p-avatar>
-                                                        <p>Han Hong Son</p>
-                                                        <p style="font-weight: bold;">Department SH</p>
+                                                        <p></p>
+                                                        <button pButton pRipple type="button" label="{{l.user.first_name}}" class="p-button-text p-button-plain" (click)="UserDetail(l.user.user_id)"></button>                                             
                                                 </div>
-
                                                 <div class="col-9" style="position: static;">
-                                                        <a href="#" style="font-size: 20px; font-weight: bold; color: black;">
-                                                                NewVisions continues hiring even during the
-                                                                pandemic due to increased repeat business</a>
+
+                                                        <button pButton pRipple type="button" label="{{l.title}}" class="p-button-text p-button-plain" (click)="IdeaDetail(l.idea_id)"></button>                                              
+
                                                         <div class="row"
                                                                 style="width: 100%; justify-content: space-between; margin-left: auto; margin-right: auto; height: 2rem;">
-                                                                <p>10 September, 2021</p>
-                                                                <p>30 Views</p>
+                                                                <p>{{l.created_at | date:'mediumDate'}}
+                                                                </p>
+                                                                <p>{{l.views}}
+                                                                        Views</p>
                                                         </div>
                                                         <div class="row" style="margin-left: auto; margin-right: auto;">
-                                                                <p-chip label="Action" styleClass="mr-2"></p-chip>
-                                                                <p-chip label="Action" styleClass="mr-2"></p-chip>
-                                                        </div>
-                                                </div>
-
-                                        </div>
-
-                                        <div class="row"
-                                                style="margin-top: 2rem; margin-bottom: 1rem; background-color: #F2F2F2; padding: 10px; border-radius: 10px; width: 90%; margin-left: auto; margin-right:auto;">
-                                                <div class="personal-info col-3" style="position: static;">
-                                                        <p-avatar
-                                                                image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                                                                styleClass="mr-2" size="xlarge"
-                                                                shape="circle"></p-avatar>
-                                                        <p>Han Hong Son</p>
-                                                        <p style="font-weight: bold;">Department SH</p>
-                                                </div>
-
-                                                <div class="col-9" style="position: static;">
-                                                        <p style="font-size: 20px; font-weight: bold;">
-                                                                NewVisions continues hiring even during the
-                                                                pandemic due to increased repeat business</p>
-                                                        <div class="row"
-                                                                style="width: 100%; justify-content: space-between; margin-left: auto; margin-right: auto; height: 2rem;">
-                                                                <p>10 September, 2021</p>
-                                                                <p>30 Views</p>
-                                                        </div>
-                                                        <div class="row" style="margin-left: auto; margin-right: auto;">
-                                                                <p-chip label="Action" styleClass="mr-2"></p-chip>
-                                                                <p-chip label="Action" styleClass="mr-2"></p-chip>
+                                                                <p-chip label="{{lc.name}}" styleclass="mr-2"
+                                                                        *ngFor="let lc of l.categories; index as i;"></p-chip>
                                                         </div>
                                                 </div>
                                         </div>
                                 </div>
 
                                 <!-- <ng-template pTemplate="footer">
-                                                <div [ngStyle]="{'display':'flex', 'flex-direction': 'row'}">
-                                                        <h6 [ngStyle]="{'margin-right':'20px'}">3 Likes</h6>
-                                                        <h6 [ngStyle]="{'margin-right':'525px'}">3 Dislikes</h6>
-                                                        <h6>3 Comments</h6>
-                                                </div>
-                                        </ng-template> -->
+			                                                <div [ngStyle]="{'display':'flex', 'flex-direction': 'row'}">
+			                                                        <h6 [ngStyle]="{'margin-right':'20px'}">3 Likes</h6>
+			                                                        <h6 [ngStyle]="{'margin-right':'525px'}">3 Dislikes</h6>
+			                                                        <h6>3 Comments</h6>
+			                                                </div>
+			                                        </ng-template> -->
                         </p-card>
+
                 </div>
 
                 <a href="#" style="position: fixed; top: 90%; left: 90%;">

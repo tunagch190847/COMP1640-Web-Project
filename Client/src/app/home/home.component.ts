@@ -1,6 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AuthenticationService } from '../auth/services/authentication.service';
 import { PostComponent } from './post/post.component';
 
 @Component({
@@ -11,39 +14,43 @@ import { PostComponent } from './post/post.component';
 })
 export class HomeComponent implements OnInit{
   ref: DynamicDialogRef;
-
+  listIdea = [];
+  listCategory = []
   selectedNode: any;
   nodes1: any[];
-  
-  constructor(private dialogService: DialogService) { 
+  apiUrl = 'http://localhost:3009/api/idea?sorting_setting=RECENT_IDEAS';
+  constructor(private dialogService: DialogService, private http: HttpClient, 
+    private authService: AuthenticationService, private router: Router) { 
+    this.getAllIdeas();
+    this.getAllCategory()
   }
 
+
+  getAllIdeas() {
+      this.http.get<any>(this.apiUrl, {headers: {
+        Authorization: 'Bearer ' + this.authService.getToken()}
+      }).subscribe((res:any)=>{
+        this.listIdea = res.data;
+        console.log(this.listIdea)
+      })
+    }
+  getAllCategory() {
+    this.http.get<any>("http://localhost:3009/api/categories", {headers: {
+      Authorization: 'Bearer ' + this.authService.getToken()}
+    }).subscribe((res:any)=>{
+      this.listCategory = res.data;
+      console.log(this.listCategory)
+    })
+  }
   ngOnInit(): void {
-    this.nodes1 = [
-      {
-        label: 'Category',
-      },
-      {
-        label: 'Category',
-      },
-      {
-        label: 'Category',
-      },
-      {
-        label: 'Category',
-      },
-      {
-        label: 'Category',
-      },
-      {
-        label: 'Category',
-      },
-      {
-        label: 'Category',
-      },
-    ]
+    
   }
-
+  UserDetail(Id) : void {
+    console.log(Id)
+  }
+  IdeaDetail(IdIdeal) : void{
+    this.router.navigateByUrl('/detail', { state: { Id: IdIdeal } });
+  }
   postIdeal(){
     this.ref = this.dialogService.open(PostComponent, {
       header: 'Add ideal',

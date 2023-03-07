@@ -56,6 +56,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 
 
+import { PostComponent } from './home/post/post.component';
 
 @NgModule({
     declarations: [
@@ -73,6 +74,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
         ManageCategoryComponent,
         ManageSemesterComponent,
         ManageAccountComponent,
+        PostComponent
     ],
     providers: [],
     bootstrap: [AppComponent],
