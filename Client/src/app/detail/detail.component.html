@@ -9,16 +9,13 @@
         </div>
 
         <div class="" style="margin-top: 5rem">
-            <p-card header="idea category" subheader="date post"
+            <p-card header="{{title}}" subheader="{{date| date:'mediumDate'}}"
                 [style]="{'width': '50rem', 'margin-bottom': '4em', 'margin-left': 'auto', 'margin-right': 'auto', 'background-color':'white'}">
 
                 <div
                     style="width: 90%; margin-left: auto; margin-right: auto; border-radius: 10px; border-color: #d8d8d8; border-width: 1px; border-style: solid; padding: 10px;">
                     <p style="color: black;">
-                        Le Chien's Sasa group is known by many people in Da Nang as the "hero" squad of the sea. They
-                        spend all their energy
-                        and
-                        money to revive corals, rescue unfortunate sea creatures that are injured and stranded.</p>
+                        {{title}}</p>
                 </div>
 
                 <p-button label="Attachment" icon="pi pi-file-word"></p-button>
@@ -28,8 +25,8 @@
                 <div class="row"
                     style="border-bottom-width: 1px; border-color: #F2F2F2; border-bottom-style: solid; width: 100%; margin-top: 15px; margin-left: auto; margin-right: auto;">
                     <h6 style="width: 58%;">100 Views</h6>
-                    <h6 style="width: 13%;">100 Likes</h6>
-                    <h6 style="width: 13%;">100 Dislikes</h6>
+                    <h6 style="width: 13%;">{{like}} Like</h6>
+                    <h6 style="width: 13%;">{{dislike}} Dislikes</h6>
                     <h6 style="width: 16%;">100 Comments</h6>
                 </div>
                 <div class="row"
@@ -48,7 +45,7 @@
                 <br>
                 <div style="width: 100%; display: flex;">
                     <span class="p-float-label" style="width: 90%;">
-                        <textarea [rows]="1" pInputTextarea [autoResize]="true"></textarea>
+                        <textarea [(ngModel)]="comment_value" [rows]="1" pInputTextarea [autoResize]="true"></textarea>
                         <label for="float-input">Comment something here.............</label>
                     </span>
                     <button style="margin-top: 0; margin-left: 10px;" pButton pRipple type="button" icon="pi pi-reply"
@@ -58,10 +55,7 @@
                 <div
                     style="width: 100%; margin-left: auto; margin-right: auto; border-radius: 10px; border-color: #d8d8d8; border-width: 1px; border-style: solid; padding: 10px;">
                     <p style="color: black;">
-                        Le Chien's Sasa group is known by many people in Da Nang as the "hero" squad of the sea. They
-                        spend all their energy
-                        and
-                        money to revive corals, rescue unfortunate sea creatures that are injured and stranded.</p>
+                        {{comment_value}}</p>
                 </div>
             </p-card>
         </div>

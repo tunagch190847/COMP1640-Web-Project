@@ -1,1 +1,16 @@
 <button pButton type="button" label="Click"></button>
+<form [formGroup]="formGroup" (ngSubmit)="SaveIdea()">
+    
+    <p-dropdown [options]="categories" placeholder="Select a category" optionLabel="name" [showClear]="true" formControlName="category"></p-dropdown>
+    <br>
+    <br>
+    <span class="p-float-label">
+        <input id="float-input" type="text" pInputText formControlName="title"> 
+        <label for="float-input">Title</label>
+    </span>
+    <br>
+    <span class="p-float-label">
+        <textarea id="float-input" rows="5" cols="30" pInputTextarea formControlName="content"></textarea>
+        <label for="float-input">Content</label>
+    </span>
+</form>

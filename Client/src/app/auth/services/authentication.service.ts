@@ -25,20 +25,26 @@ export class AuthenticationService {
         return this.userSubject.value;
     }
 
+    public getToken(): any {
+        return this.userSubject.value.data.token;
+    }
+
     public login(username: string, password: string) {
-        return this.http.post<any>('link api', { username, password }).pipe(
+        return this.http.post<any>('http://localhost:3009/api/user/login', { "email": username,"password": password }).pipe(
             map((user) => {
                 // store user details jwt token in localStorage
-                localStorage.setItem('currentUser', JSON.stringify(user));
+                localStorage.setItem('user', JSON.stringify(user));
+                this.setUser(user)
+                console.log(this.userSubject.value.data.token)
                 this.userSubject.next(user);
                 return user;
             })
         );
     }
 
-    logout() {
+    public logout() {
         //remove user from localStorage
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem('user');
         this.userSubject.next(null);
     }
 }

@@ -29,7 +29,12 @@
 							<span
 								*ngIf="formGroup.controls.email.hasError('required') || formGroup.controls.email.hasError('blankString') "
 								class="error-message-span" style="color: #FD0B0B; font-size: small;">
-								Vui lòng nhập số Email
+								Vui lòng nhập Email
+							</span>
+							<span
+								*ngIf="formGroup.controls.email.hasError('pattern')"
+								class="error-message-span" style="color: #FD0B0B; font-size: small;">
+								Vui lòng nhập đúng Email
 							</span>
 						</div>
 					</div>
