@@ -7,14 +7,21 @@ import { ReactionService } from '@modules/reaction/reaction.service';
 import { SemesterService } from '@modules/semester/semester.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EGender, EUserRole } from 'enum/default.enum';
+import { EUserRole } from 'enum/default.enum';
 import { ErrorMessage } from 'enum/error';
 import { EIdeaFilter } from 'enum/idea.enum';
 import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
 import { VCreateReactionDto } from 'global/dto/reaction.dto';
 import { VUpdateIdeaDto } from 'global/dto/update-idea.dto';
 import { Idea } from 'src/core/database/mysql/entity/idea.entity';
-import { Repository, EntityManager, DeepPartial, Connection, getManager, SelectQueryBuilder } from 'typeorm';
+import {
+  Repository,
+  EntityManager,
+  DeepPartial,
+  Connection,
+  getManager,
+  SelectQueryBuilder,
+} from 'typeorm';
 
 @Injectable()
 export class IdeaService {
@@ -83,7 +90,7 @@ export class IdeaService {
 
     let ideaQueryBuilder: SelectQueryBuilder<any>;
 
-    if(sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
+    if (sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
       const subQuery = ideaRepository
         .createQueryBuilder('idea')
         .addSelect('IFNULL(SUM(reaction.type), 0)', 'total')
@@ -99,11 +106,15 @@ export class IdeaService {
         .createQueryBuilder()
         .select('popular_idea.*')
         .addSelect('COUNT(comment.idea_id)', 'comments')
-        .from('('+subQuery.getQuery()+')', 'popular_idea')
-        .leftJoin('comment', 'comment', 'comment.idea_id = popular_idea.idea_idea_id')
+        .from('(' + subQuery.getQuery() + ')', 'popular_idea')
+        .leftJoin(
+          'comment',
+          'comment',
+          'comment.idea_id = popular_idea.idea_idea_id',
+        )
         .groupBy('popular_idea.idea_idea_id')
         .setParameters(subQuery.getParameters());
-    }else {
+    } else {
       ideaQueryBuilder = ideaRepository
         .createQueryBuilder('idea')
         .addSelect('COUNT(comment.idea_id)', 'comments')
@@ -113,7 +124,7 @@ export class IdeaService {
         .leftJoin('idea.comments', 'comment')
         .where('idea.semester_id = :semester_id', { semester_id })
         .groupBy('idea.idea_id');
-      
+
       if (sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
         ideaQueryBuilder.orderBy('idea.views', 'DESC');
       } else if (sorting_setting == EIdeaFilter.RECENT_IDEAS) {
@@ -122,24 +133,24 @@ export class IdeaService {
     }
 
     if (department_id != null) {
-      ideaQueryBuilder.andWhere(
-        'user.department_id = :department_id',
-        { department_id },
-      );
+      ideaQueryBuilder.andWhere('user.department_id = :department_id', {
+        department_id,
+      });
     }
 
-    if(category_id != null) {
-      const txtIdeaId = sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS 
-          ? 'popular_idea.idea_idea_id' 
+    if (category_id != null) {
+      const txtIdeaId =
+        sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS
+          ? 'popular_idea.idea_idea_id'
           : 'idea.idea_id';
       const subQuery = getManager()
         .createQueryBuilder()
         .select('category_idea.idea_id')
         .from('category_idea', 'category_idea')
         .where('category_idea.category_id = :category_id', { category_id });
-      
+
       ideaQueryBuilder
-        .andWhere(txtIdeaId + ' IN ('+subQuery.getQuery()+')')
+        .andWhere(txtIdeaId + ' IN (' + subQuery.getQuery() + ')')
         .setParameters(subQuery.getParameters());
     }
 
@@ -179,7 +190,7 @@ export class IdeaService {
         },
       });
     }
-    
+
     return data;
   }
 

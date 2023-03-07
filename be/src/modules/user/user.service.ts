@@ -164,26 +164,25 @@ export class UserService {
     const userRepository = entityManager
       ? entityManager.getRepository<User>('user')
       : this.userRepository;
-      
-    const deleteStatus = await userRepository.
-    createQueryBuilder('user')
-    .where("user.user_id = :id", { id: userId })
-    .andWhere('user.is_deleted = :is_deleted', { is_deleted: 1 })
-    .getOne();
-    
-    if(!deleteStatus){
-      return 0
-    }
-    else{
-      return 1
+
+    const deleteStatus = await userRepository
+      .createQueryBuilder('user')
+      .where('user.user_id = :id', { id: userId })
+      .andWhere('user.is_deleted = :is_deleted', { is_deleted: 1 })
+      .getOne();
+
+    if (!deleteStatus) {
+      return 0;
+    } else {
+      return 1;
     }
   }
 
   async deleteUser(
-    userID: string, 
+    userID: string,
     userData: IUserData,
     entityManager?: EntityManager,
-  ){
+  ) {
     if (userData.role_id != EUserRole.ADMIN) {
       throw new HttpException(
         ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_MANAGE_ACCOUNT,
@@ -194,31 +193,32 @@ export class UserService {
       ? entityManager.getRepository<User>('user')
       : this.userRepository;
 
-      const user_ID = await this.checkUserByUserId(userID);
+    const user_ID = await this.checkUserByUserId(userID);
 
-      if (!user_ID) {
-        throw new HttpException(
-          ErrorMessage.USER_NOT_EXISTS,
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-      const user_delete_status = await this.checkUserDeleteStatus(userID);
+    if (!user_ID) {
+      throw new HttpException(
+        ErrorMessage.USER_NOT_EXISTS,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const user_delete_status = await this.checkUserDeleteStatus(userID);
 
-      if (user_delete_status == 1) {
-        throw new HttpException(
-          ErrorMessage.ACCOUNT_ALREADY_DELETED,
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-    
-    await userRepository.createQueryBuilder('user')
-    .update(User)
-    .set({is_deleted: EIsDelete.DELETED})
-    .where({
-      user_id: userID
-    })
-    .execute();
+    if (user_delete_status == 1) {
+      throw new HttpException(
+        ErrorMessage.ACCOUNT_ALREADY_DELETED,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
-    return ;
+    await userRepository
+      .createQueryBuilder('user')
+      .update(User)
+      .set({ is_deleted: EIsDelete.DELETED })
+      .where({
+        user_id: userID,
+      })
+      .execute();
+
+    return;
   }
 }
