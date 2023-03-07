@@ -1,82 +1,111 @@
 <p-toast></p-toast>
 
-<div class="table-view" style="width: 80%; margin-left: auto; margin-right: auto; padding: 2%; background-color: white; margin-top: 2%; border-radius: 10px;">
-<div class="card" >
-    <p-toolbar styleClass="mb-4 gap-2">
-        <ng-template pTemplate="left">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
-                (click)="openNew()"></button>
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-                (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
-        </ng-template>
-
-        <ng-template pTemplate="right">
-            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
-                class="mr-2 inline-block"></p-fileUpload>
-            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
-        </ng-template>
-    </p-toolbar>
-
-    <p-table #dt [value]="products" [rows]="10" [paginator]="true"
-        [globalFilterFields]="['name','country.name','representative.name','status']"
-        [tableStyle]="{'min-width': '75rem'}" [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
-        <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between" style="display: flex;">
-                <h5 class="m-0">Manage Products</h5>
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input  pInputText type="text"  (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Search..." />
-                </span>
+<div style="margin-bottom: 5%;">
+    <div class="menu-bar" style="position: fixed; width: 100%; top: 0%; left: 0%;">
+        <app-header-home></app-header-home>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div style="display: flex; justify-content: space-between; ">
+        <div>
+            <div class="menu" style="position: fixed;">
+                <app-menu></app-menu>
             </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 40px">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
-                <th pSortableColumn="name" style="width:8rem">Name <p-sortIcon field="name"></p-sortIcon></th>
-                <th>Image</th>
-                <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
-                <th pSortableColumn="category" style="width:9rem">Category <p-sortIcon
-                        field="category"></p-sortIcon></th>
-                <th pSortableColumn="rating" style="width:10rem">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
-                <th pSortableColumn="inventoryStatus" style="width:5rem">Status <p-sortIcon
-                        field="inventoryStatus"></p-sortIcon></th>
-                <th></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-product>
-            <tr>
-                <td>
-                    <p-tableCheckbox [value]="product"></p-tableCheckbox>
-                </td>
-                <td>{{product.name}}</td>
-                <td><img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image"
-                        [alt]="product.name" width="100" class="shadow-4" /></td>
-                <td>{{product.price | currency:'USD'}}</td>
-                <td>{{product.category}}</td>
-                <td><p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating></td>
-                <td><span
-                        [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span>
-                </td>
-                <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-                        (click)="editProduct(product)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                        (click)="deleteProduct(product)"></button>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
-                In total there are {{products ? products.length : 0 }} products.
+        </div>
+
+        <div class="table-view"
+            style="width: 80%; margin-left: 10px; margin-right: 10px; padding: 2%; background-color: white; margin-top: 2%; border-radius: 10px;">
+            <div class="card" style="position: static;">
+                <p-toolbar styleClass="mb-4 gap-2" >
+                    <ng-template pTemplate="left">
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" style="position: static;"
+                            (click)="openNew()"></button>
+                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" 
+                            (click)="deleteSelectedProducts()"
+                            [disabled]="!selectedProducts || !selectedProducts.length" style="position: static;"></button>
+                    </ng-template>
+
+                    <ng-template pTemplate="right">
+                        <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
+                            chooseLabel="Import" class="mr-2 inline-block" ></p-fileUpload>
+                        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+                    </ng-template>
+                </p-toolbar>
+
+                <p-table #dt [value]="products" [rows]="10" [paginator]="true"
+                    [globalFilterFields]="['name','country.name','representative.name','status']"
+                    [tableStyle]="{'min-width': '75rem'}" [(selection)]="selectedProducts" [rowHover]="true"
+                    dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [showCurrentPageReport]="true">
+                    <ng-template pTemplate="caption">
+                        <div class="flex align-items-center justify-content-between" style="display: flex;">
+                            <h5 class="m-0">Manage Products</h5>
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text"
+                                    (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                                    placeholder="Search..." />
+                            </span>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 40px">
+                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                            </th>
+                            <th pSortableColumn="name" style="width:8rem">Name <p-sortIcon field="name"></p-sortIcon>
+                            </th>
+                            <th>Image</th>
+                            <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                            <th pSortableColumn="category" style="width:9rem">Category <p-sortIcon
+                                    field="category"></p-sortIcon></th>
+                            <th pSortableColumn="rating" style="width:10rem">Reviews <p-sortIcon
+                                    field="rating"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="inventoryStatus" style="width:5rem">Status <p-sortIcon
+                                    field="inventoryStatus"></p-sortIcon></th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product>
+                        <tr>
+                            <td>
+                                <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                            </td>
+                            <td>{{product.name}}</td>
+                            <td><img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image"
+                                    [alt]="product.name" width="100" class="shadow-4" /></td>
+                            <td>{{product.price | currency:'USD'}}</td>
+                            <td>{{product.category}}</td>
+                            <td><p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating></td>
+                            <td><span
+                                    [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span>
+                            </td>
+                            <td>
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editProduct(product)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteProduct(product)"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        <div class="flex align-items-center justify-content-between">
+                            In total there are {{products ? products.length : 0 }} products.
+                        </div>
+                    </ng-template>
+                </p-table>
             </div>
-        </ng-template>
-    </p-table>
+
+        </div>
+    </div>
 </div>
 
-</div>
+
+
+
 
 <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true"
     styleClass="p-fluid">
