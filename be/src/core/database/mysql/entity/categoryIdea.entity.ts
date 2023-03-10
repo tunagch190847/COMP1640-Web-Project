@@ -11,7 +11,7 @@ export class CategoryIdea {
   @PrimaryColumn({ name: 'category_id', type: 'int', unsigned: true })
   category_id: number;
 
-  @ManyToOne(() => Idea, (idea) => idea.ideaCategories, { onUpdate: 'CASCADE' })
+  @ManyToOne(() => Idea, (idea) => idea.ideaCategories, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
   @JoinColumn({ name: 'idea_id', referencedColumnName: 'idea_id' })
   idea: Idea;
 
