@@ -2,7 +2,7 @@ import { CategoryIdea } from '@core/database/mysql/entity/categoryIdea.entity';
 import { IdeaFile } from '@core/database/mysql/entity/file.entity';
 import { IUserData } from '@core/interface/default.interface';
 import { CategoryIdeaService } from '@modules/category-idea/category-idea.service';
-import { CommentService } from 'src/comment/comment.service';
+import { CommentService } from '@modules/comment/comment.service';
 import { IdeaFileService } from '@modules/idea-file/idea-file.service';
 import { ReactionService } from '@modules/reaction/reaction.service';
 import { SemesterService } from '@modules/semester/semester.service';

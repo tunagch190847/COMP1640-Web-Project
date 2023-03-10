@@ -7,7 +7,7 @@ import { SemesterModule } from '@modules/semester/semester.module';
 import { CategoryIdeaModule } from '@modules/category-idea/category-idea.module';
 import { IdeaFileModule } from '@modules/idea-file/idea-file.module';
 import { ReactionModule } from '@modules/reaction/reaction.module';
-import { CommentModule } from 'src/comment/comment.module';
+import { CommentModule } from '@modules/comment/comment.module';
 
 @Module({
   controllers: [IdeaController],
