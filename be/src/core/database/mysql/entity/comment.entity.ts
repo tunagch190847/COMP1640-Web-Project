@@ -12,7 +12,7 @@ import { Idea } from './idea.entity';
 import { User } from './user.entity';
 
 @Entity('comment')
-export class IdeaComment {
+export class Comment {
   @PrimaryGeneratedColumn({ name: 'comment_id', type: 'int', unsigned: true })
   comment_id: number;
 
@@ -22,8 +22,8 @@ export class IdeaComment {
   @Column('uuid', { name: 'author_id' })
   author_id: string;
 
-  @Column('uuid', { name: 'reply_for_id', nullable: true })
-  reply_for_id: string;
+  @Column({ name: 'parent_id', type: 'int', unsigned: true, nullable: true })
+  parent_id: number;
 
   @Column({ name: 'level', type: 'tinyint', unsigned: true, default: 1 })
   level: number;
@@ -54,7 +54,7 @@ export class IdeaComment {
   @JoinColumn({ name: 'author_id', referencedColumnName: 'user_id' })
   author: User;
 
-  @ManyToOne(() => User, { onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'reply_for_id', referencedColumnName: 'user_id' })
-  reply_for: User;
+  @ManyToOne(() => Comment, { onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'parent_id', referencedColumnName: 'comment_id' })
+  parent: Comment;
 }
