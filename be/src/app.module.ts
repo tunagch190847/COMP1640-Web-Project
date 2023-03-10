@@ -27,6 +27,7 @@ import { CategoryIdeaModule } from '@modules/category-idea/category-idea.module'
 import { UploadModule } from './modules/upload/upload.module';
 import { UserDetailModule } from './modules/user-detail/user-detail.module';
 import { ReactionModule } from './modules/reaction/reaction.module';
+import { MeModule } from './modules/me/me.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -69,6 +70,7 @@ import { ReactionModule } from './modules/reaction/reaction.module';
     UploadModule,
     UserDetailModule,
     ReactionModule,
+    MeModule,
   ],
   controllers: [AppController],
   providers: [

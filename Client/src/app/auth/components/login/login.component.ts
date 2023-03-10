@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
-      email: new FormControl(null, [Validators.required]),
+      email: new FormControl(null, [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]),
       password: new FormControl(null, [Validators.required]),
     });
   }
@@ -57,13 +57,14 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.formGroup.value.email, this.formGroup.value.password)
     .pipe(first())
-    .subscribe(
-      data => {
-        this.router.navigate(['/home']);
-      },
-      error => {
-        this.showMessage('error', error.data.login.message);
+    .subscribe((result: any) => {
+      if(result.status_code == 200){
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        });
+      }else{
+        this.showMessage('error', "Vui lòng đăng nhập lại");
       }
+    }
     );
   }
 

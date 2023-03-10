@@ -11,7 +11,6 @@ import { IdeaModule } from '@modules/idea/idea.module';
   controllers: [DepartmentController],
   imports: [
     TypeOrmModule.forFeature([Department]),
-    CategoryIdeaModule,
     IdeaModule,
   ],
 })

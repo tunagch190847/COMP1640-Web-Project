@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { MegaMenuItem } from 'primeng/api';
+import { AuthenticationService } from 'src/app/auth/services/authentication.service';
 interface Country {
   name: string,
   code: string
@@ -18,11 +19,18 @@ export class MenuComponent {
   items: MenuItem[];
   categories!: MegaMenuItem[];
 
+  constructor(private authService: AuthenticationService,
+    public router: Router,){
+    
+  }
+  
   ngOnInit() {
     this.items = [
       { label: 'View profile', icon: 'pi pi-users' },
       { label: 'Settings', icon: 'pi pi-fw pi-download' },
-      { label: 'Log out', icon: 'pi pi-sign-out' }
+      { label: 'Log out', icon: 'pi pi-sign-out', command: () => {
+        this.logout()
+      }}
     ];
 
     this.categories = [
@@ -56,5 +64,9 @@ export class MenuComponent {
         ]
       },
     ]
+  }
+  logout() {
+    this.authService.logout();
+    this.router.navigateByUrl('/login')
   }
 }

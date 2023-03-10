@@ -1,3 +1,4 @@
+import { EIsDelete } from 'enum';
 import {
   Column,
   CreateDateColumn,
@@ -9,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CategoryIdea } from './categoryIdea.entity';
-import { IdeaComment } from './comment.entity';
+import { Comment } from './comment.entity';
 import { IdeaFile } from './file.entity';
 import { Reaction } from './reaction.entity';
 import { Semester } from './semester.entity';
@@ -44,6 +45,15 @@ export class Idea {
   })
   is_anonymous: number;
 
+  @Column({
+    name: 'is_deleted',
+    type: 'tinyint',
+    width: 1,
+    comment: '0: not deleted, 1: deleted',
+    default: EIsDelete.NOT_DELETE,
+  })
+  is_deleted: number;
+
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
@@ -60,8 +70,8 @@ export class Idea {
   @JoinColumn({ name: 'semester_id', referencedColumnName: 'semester_id' })
   semester: Semester;
 
-  @OneToMany(() => IdeaComment, (comment) => comment.idea)
-  comments: IdeaComment[];
+  @OneToMany(() => Comment, (comment) => comment.idea)
+  comments: Comment[];
 
   @OneToMany(() => IdeaFile, (file) => file.idea)
   files: IdeaFile[];
@@ -70,5 +80,5 @@ export class Idea {
   ideaCategories: CategoryIdea[];
 
   @OneToMany(() => Reaction, (reaction) => reaction.idea)
-  reactions: CategoryIdea[];
+  reactions: Reaction[];
 }

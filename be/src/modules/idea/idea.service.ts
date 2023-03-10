@@ -7,13 +7,21 @@ import { ReactionService } from '@modules/reaction/reaction.service';
 import { SemesterService } from '@modules/semester/semester.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EGender, EUserRole } from 'enum/default.enum';
+import { EUserRole } from 'enum/default.enum';
 import { ErrorMessage } from 'enum/error';
 import { EIdeaFilter } from 'enum/idea.enum';
 import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
 import { VCreateReactionDto } from 'global/dto/reaction.dto';
+import { VUpdateIdeaDto } from 'global/dto/update-idea.dto';
 import { Idea } from 'src/core/database/mysql/entity/idea.entity';
-import { Repository, EntityManager, DeepPartial, Connection } from 'typeorm';
+import {
+  Repository,
+  EntityManager,
+  DeepPartial,
+  Connection,
+  getManager,
+  SelectQueryBuilder,
+} from 'typeorm';
 
 @Injectable()
 export class IdeaService {
@@ -67,6 +75,7 @@ export class IdeaService {
   async getAllIdeas(
     semester_id?: number,
     department_id?: number,
+    category_id?: number,
     sorting_setting?: EIdeaFilter,
     entityManager?: EntityManager,
   ) {
@@ -79,95 +88,115 @@ export class IdeaService {
       semester_id = currentSemester.semester_id;
     }
 
-    const selectQueryBuilder = ideaRepository
-      .createQueryBuilder('idea')
-      .innerJoinAndSelect('idea.user', 'user')
-      .innerJoinAndSelect('user.userDetail', 'user_detail')
-      .innerJoinAndSelect('user.department', 'department')
-      .leftJoinAndSelect('idea.comments', 'comments')
-      .where('idea.semester_id = :semester_id', { semester_id });
+    let ideaQueryBuilder: SelectQueryBuilder<any>;
 
+    if (sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
+      const subQuery = ideaRepository
+        .createQueryBuilder('idea')
+        .addSelect('IFNULL(SUM(reaction.type), 0)', 'total')
+        .innerJoin('idea.user', 'user')
+        .innerJoinAndSelect('user.userDetail', 'user_detail')
+        .innerJoinAndSelect('user.department', 'department')
+        .leftJoin('idea.reactions', 'reaction')
+        .where('idea.semester_id = :semester_id', { semester_id })
+        .groupBy('idea.idea_id')
+        .orderBy('total', 'DESC');
+
+      ideaQueryBuilder = getManager()
+        .createQueryBuilder()
+        .select('popular_idea.*')
+        .addSelect('COUNT(comment.idea_id)', 'comments')
+        .from('(' + subQuery.getQuery() + ')', 'popular_idea')
+        .leftJoin(
+          'comment',
+          'comment',
+          'comment.idea_id = popular_idea.idea_idea_id',
+        )
+        .groupBy('popular_idea.idea_idea_id')
+        .setParameters(subQuery.getParameters());
+    } else {
+      ideaQueryBuilder = ideaRepository
+        .createQueryBuilder('idea')
+        .addSelect('COUNT(comment.idea_id)', 'comments')
+        .innerJoin('idea.user', 'user')
+        .innerJoinAndSelect('user.userDetail', 'user_detail')
+        .innerJoinAndSelect('user.department', 'department')
+        .leftJoin('idea.comments', 'comment')
+        .where('idea.semester_id = :semester_id', { semester_id })
+        .groupBy('idea.idea_id');
+
+      if (sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
+        ideaQueryBuilder.orderBy('idea.views', 'DESC');
+      } else if (sorting_setting == EIdeaFilter.RECENT_IDEAS) {
+        ideaQueryBuilder.orderBy('idea.created_at', 'DESC');
+      }
+    }
 
     if (department_id != null) {
-      selectQueryBuilder.andWhere(
-        'user.department_id = :department_id',
-        { department_id },
-      );
+      ideaQueryBuilder.andWhere('user.department_id = :department_id', {
+        department_id,
+      });
     }
 
-    if (sorting_setting == EIdeaFilter.MOST_VIEWED_IDEAS) {
-      selectQueryBuilder.orderBy('idea.views', 'DESC');
-    } else if (sorting_setting == EIdeaFilter.RECENT_IDEAS) {
-      selectQueryBuilder.orderBy('idea.created_at', 'DESC');
-    } else if (sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS) {
+    if (category_id != null) {
+      const txtIdeaId =
+        sorting_setting == EIdeaFilter.MOST_POPULAR_IDEAS
+          ? 'popular_idea.idea_idea_id'
+          : 'idea.idea_id';
+      const subQuery = getManager()
+        .createQueryBuilder()
+        .select('category_idea.idea_id')
+        .from('category_idea', 'category_idea')
+        .where('category_idea.category_id = :category_id', { category_id });
 
+      ideaQueryBuilder
+        .andWhere(txtIdeaId + ' IN (' + subQuery.getQuery() + ')')
+        .setParameters(subQuery.getParameters());
     }
 
-    const ideas = await selectQueryBuilder.getMany();
+    const rows = await ideaQueryBuilder.getRawMany();
     const data = [];
 
-    for (const idea of ideas) {
+    for (const cursor of rows) {
+      const idea_id = cursor.idea_idea_id;
       const categoryIdeas = await this.categoryIdeaService.getCategoriesByIdea(
-        idea.idea_id,
+        idea_id,
       );
       const categories = categoryIdeas.map(
-        (categoryIdea) => categoryIdea.category
+        (categoryIdea) => categoryIdea.category,
       );
 
-      let txtGender = "";
-
-      switch (idea.user.userDetail.gender) {
-        case EGender.PREFER_NOT_TO_SAY:
-          txtGender = "Prefer not to say";
-          break;
-        case EGender.MALE:
-          txtGender = "Male";
-          break;
-        case EGender.FEMALE:
-          txtGender = "Female";
-          break;
-        default:
-          break;
-      }
-
       data.push({
-        idea_id: idea.idea_id,
-        title: idea.title,
-        content: idea.content,
-        views: idea.views,
-        comments: idea.comments.length,
-        is_anonymous: idea.is_anonymous,
-        created_at: idea.created_at,
+        idea_id: idea_id,
+        title: cursor.idea_title,
+        content: cursor.idea_content,
+        views: cursor.idea_views,
+        comments: cursor.comments,
+        is_anonymous: cursor.idea_is_anonymous,
+        created_at: cursor.idea_created_at,
         categories,
         user: {
-          user_id: idea.user.user_id,
-          full_name: idea.user.userDetail.full_name,
-          nick_name: idea.user.userDetail.nick_name,
-          gender: txtGender,
-          birthday: idea.user.userDetail.birthday,
-          avatar_url: idea.user.userDetail.avatar_url,
-          department: idea.user.department,
+          user_id: cursor.idea_user_id,
+          full_name: cursor.user_detail_full_name,
+          nick_name: cursor.user_detail_nick_name,
+          gender: cursor.user_detail_gender,
+          birthday: cursor.user_detail_birthday,
+          avatar_url: cursor.user_detail_avatar_url,
+          department: {
+            department_id: cursor.department_department_id,
+            department_name: cursor.department_name,
+            manager_id: cursor.department_manager_id,
+          },
         },
       });
     }
-    // const data = {
-    //   semester: {
-    //     semester_id: semester.semester_id,
-    //     name: semester.name,
-    //     description: semester.description,
-    //     created_at: semester.created_at,
-    //     first_closure_date: semester.first_closure_date,
-    //     final_closure_date: semester.final_closure_date,
-    //   },
-    //   ideas: temp,
-    // };
 
     return data;
   }
 
   async createIdea(userData: IUserData, body: VCreateIdeaDto) {
-    // let countPDF = 0;
     let data: DeepPartial<Idea>;
+
     if (userData.role_id != EUserRole.STAFF) {
       throw new HttpException(
         ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_POST_IDEA,
@@ -194,6 +223,8 @@ export class IdeaService {
             const ideaFileParam = new IdeaFile();
             ideaFileParam.idea_id = idea.idea_id;
             ideaFileParam.file = files.file;
+            ideaFileParam.size = files.size;
+
             postFileParams.push(ideaFileParam);
           });
         }
@@ -227,6 +258,7 @@ export class IdeaService {
         return idea;
       });
     } catch (error) {
+      console.log(error);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
     return {
@@ -246,20 +278,20 @@ export class IdeaService {
   }
 
   async createIdeaReaction(
-    userData: IUserData, 
-    idea_id: number, 
+    userData: IUserData,
+    idea_id: number,
     body: VCreateReactionDto,
   ) {
+    if (userData.role_id != EUserRole.STAFF) {
+      throw new HttpException(
+        ErrorMessage.IDEA_REACTION_PERMISSION,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const idea = await this.ideaRepository.findOne({
       where: { idea_id },
     });
-
-    if (userData.role_id != EUserRole.STAFF) {
-      throw new HttpException(
-          ErrorMessage.IDEA_REACTION_PERMISSION,
-          HttpStatus.BAD_REQUEST,
-      );
-    }
 
     if (!idea) {
       throw new HttpException(
@@ -267,21 +299,20 @@ export class IdeaService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.reactionService
-        .createReaction(userData.user_id, idea_id, body);
+    return this.reactionService.createReaction(userData.user_id, idea_id, body);
   }
 
   async deleteIdeaReaction(userData: IUserData, idea_id: number) {
+    if (userData.role_id != EUserRole.STAFF) {
+      throw new HttpException(
+        ErrorMessage.IDEA_REACTION_PERMISSION,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const idea = await this.ideaRepository.findOne({
       where: { idea_id },
     });
-
-    if (userData.role_id != EUserRole.STAFF) {
-      throw new HttpException(
-          ErrorMessage.IDEA_REACTION_PERMISSION,
-          HttpStatus.BAD_REQUEST,
-      );
-    }
 
     if (!idea) {
       throw new HttpException(
@@ -289,7 +320,112 @@ export class IdeaService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.reactionService
-        .deleteReaction(userData.user_id, idea_id);
+    return this.reactionService.deleteReaction(userData.user_id, idea_id);
+  }
+
+  async checkIdea(idea_id: number, user_id: string) {
+    return await this.ideaRepository.findOne({
+      where: { idea_id: idea_id, user_id: user_id },
+    });
+  }
+
+  async updateIdea(userData: IUserData, idea_id: number, body: VUpdateIdeaDto) {
+    if (userData.role_id != EUserRole.STAFF) {
+      throw new HttpException(
+        ErrorMessage.YOU_DO_NOT_HAVE_PERMISSION_TO_UPDATE_IDEA,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const isAccess = await this.checkIdea(idea_id, userData.user_id);
+
+    if (!isAccess) {
+      throw new HttpException(
+        ErrorMessage.UPDATE_POST_PERMISSION_DENIED,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    try {
+      await this.connection.transaction(async (manager) => {
+        const currentSemester = await this.semesterService.getCurrentSemester();
+        const ideaParams = new Idea();
+        ideaParams.user_id = userData.user_id;
+        ideaParams.title = body.title;
+        ideaParams.content = body.content;
+        ideaParams.is_anonymous = body.is_anonymous;
+        ideaParams.semester_id = currentSemester.semester_id;
+
+        const idea = await this.updateIdeaCurrent(
+          {
+            idea_id: idea_id,
+          },
+          ideaParams,
+          manager,
+        );
+
+        const postFileParams = [];
+        if (body?.files && body?.files.length) {
+          body.files.forEach((files) => {
+            const ideaFileParam = new IdeaFile();
+            ideaFileParam.idea_id = idea_id;
+            ideaFileParam.file = files.file;
+            ideaFileParam.size = files.size;
+            postFileParams.push(ideaFileParam);
+          });
+        }
+        const categoryIdeaParams = [];
+
+        await this.ideaFileService.deleteIdeaFile(idea_id);
+
+        if (body?.category_ids && body?.category_ids?.length) {
+          body.category_ids.forEach((category_id) => {
+            const categoryIdeaParam = new CategoryIdea();
+            categoryIdeaParam.idea_id = idea_id;
+            categoryIdeaParam.category_id = category_id;
+
+            categoryIdeaParams.push(categoryIdeaParam);
+          });
+        }
+
+        await this.categoryIdeaService.deleteIdeaCategory(idea_id);
+
+        const result = await Promise.allSettled([
+          this.ideaFileService.createIdeaFile(postFileParams, manager),
+          this.categoryIdeaService.createIdeaCategory(
+            categoryIdeaParams,
+            manager,
+          ),
+        ]);
+
+        if (result.some((r) => r.status === 'rejected'))
+          throw new HttpException(
+            'ErrorMessage.UPDATING_IDEA_FAILED',
+            HttpStatus.BAD_REQUEST,
+          );
+
+        return idea;
+      });
+    } catch (error) {
+      console.log(error, 1111111);
+
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+    return {
+      idea_id: idea_id,
+      files: body.files || [],
+    };
+  }
+
+  async updateIdeaCurrent(
+    conditions: DeepPartial<Idea>,
+    value: DeepPartial<Idea>,
+    entityManager?: EntityManager,
+  ) {
+    const ideaRepository = entityManager
+      ? entityManager.getRepository<Idea>('idea')
+      : this.ideaRepository;
+
+    await ideaRepository.update(conditions, value);
   }
 }

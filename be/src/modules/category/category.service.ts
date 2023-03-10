@@ -1,12 +1,12 @@
 import { Category } from '@core/database/mysql/entity/category.entity';
 import { IUserData } from '@core/interface/default.interface';
-import { CategoryIdeaService } from '@modules/category-idea/category-idea.service';
+import { IdeaService } from '@modules/idea/idea.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EUserRole } from 'enum/default.enum';
 import { ErrorMessage } from 'enum/error';
 import { VCreateCategoryDto } from 'global/dto/category.dto';
-import { DeepPartial, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { EntityManager } from 'typeorm/entity-manager/EntityManager';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class CategoryService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
-    private readonly categoryIdeaService: CategoryIdeaService,
+    private readonly ideaService: IdeaService,
   ) {}
 
   async getAllCategories(entityManager?: EntityManager) {
@@ -25,7 +25,7 @@ export class CategoryService {
   }
 
   getIdeasByCategory(category_id: number) {
-    return this.categoryIdeaService.getIdeasByCategory(category_id);
+    return this.ideaService.getAllIdeas(null, null, category_id);
   }
 
   async createCategory(userData: IUserData, body: VCreateCategoryDto) {

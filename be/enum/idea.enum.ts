@@ -5,6 +5,6 @@ export enum EIdeaFilter {
 }
 
 export enum EReactionType {
-    LIKE = 0,
-    DISLIKE = 1,
+    LIKE = 1,
+    DISLIKE = -1,
 }

@@ -1,5 +1,4 @@
 import { Department } from '@core/database/mysql/entity/department.entity';
-import { CategoryIdeaService } from '@modules/category-idea/category-idea.service';
 import { IdeaService } from '@modules/idea/idea.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,7 +11,6 @@ export class DepartmentService {
   constructor(
     @InjectRepository(Department)
     private readonly departmentRepository: Repository<Department>,
-    private readonly categoryIdeaService: CategoryIdeaService,
     private readonly ideaService: IdeaService,
   ) {}
 
@@ -36,20 +34,20 @@ export class DepartmentService {
   }
 
   getIdeasByDepartmentAndCategory(
-    department_id: number,
-    category_id: number,
-    sorting_setting: EIdeaFilter,
+    department_id?: number,
+    category_id?: number,
+    sorting_setting?: EIdeaFilter,
   ) {
-    return this.categoryIdeaService.getIdeasByCategory(
-      category_id,
+    return this.ideaService.getAllIdeas(
       null,
       department_id,
+      category_id,
       sorting_setting,
     );
   }
 
   getIdeasByDepartment(department_id: number, sorting_setting: EIdeaFilter) {
-    return this.ideaService.getAllIdeas(null, department_id, sorting_setting);
+    return this.ideaService.getAllIdeas(null, department_id, null, sorting_setting);
   }
 
   async createDepartment(department: DepartmentDto) {
