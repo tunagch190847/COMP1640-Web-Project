@@ -69,4 +69,13 @@ export class IdeaController {
   ) {
     return this.ideaService.updateIdea(userData, idea_id, body);
   }
+
+  @Get(':idea_id/comments/:parent_id')
+  async getIdeaComments(
+    @UserData() userData: IUserData,
+    @Param('idea_id')
+    idea_id: number,
+  ) {
+    return await this.ideaService.getIdeaDetail(idea_id, userData.user_id);
+  }
 }

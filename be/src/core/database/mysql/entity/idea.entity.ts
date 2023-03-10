@@ -1,3 +1,4 @@
+import { EIsDelete } from 'enum';
 import {
   Column,
   CreateDateColumn,
@@ -43,6 +44,15 @@ export class Idea {
     comment: '0: not anonymous, 1: anonymous',
   })
   is_anonymous: number;
+
+  @Column({
+    name: 'is_deleted',
+    type: 'tinyint',
+    width: 1,
+    comment: '0: not deleted, 1: deleted',
+    default: EIsDelete.NOT_DELETE,
+  })
+  is_deleted: number;
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
