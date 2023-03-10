@@ -21,7 +21,7 @@ export class IdeaFile {
   @Column({ name: 'size', type: 'double', unsigned: true })
   size: number;
 
-  @ManyToOne(() => Idea, (idea) => idea.files, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
+  @ManyToOne(() => Idea, (idea) => idea.files, { onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'idea_id', referencedColumnName: 'idea_id' })
   idea: Idea;
 }
