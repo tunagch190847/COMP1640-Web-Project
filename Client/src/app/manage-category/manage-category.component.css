@@ -8,3 +8,14 @@
 :host ::ng-deep .p-button:disabled {
     position: static;
 }
+
+.p-button-danger{
+    position: static;
+}
+:host ::ng-deep .p-button-danger:disabled {
+    position: static;
+}
+
+:host ::ng-deep .p-datatable {
+    position: static;
+}
