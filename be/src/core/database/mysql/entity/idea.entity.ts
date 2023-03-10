@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CategoryIdea } from './categoryIdea.entity';
-import { IdeaComment } from './comment.entity';
+import { Comment } from './comment.entity';
 import { IdeaFile } from './file.entity';
 import { Reaction } from './reaction.entity';
 import { Semester } from './semester.entity';
@@ -70,8 +70,8 @@ export class Idea {
   @JoinColumn({ name: 'semester_id', referencedColumnName: 'semester_id' })
   semester: Semester;
 
-  @OneToMany(() => IdeaComment, (comment) => comment.idea)
-  comments: IdeaComment[];
+  @OneToMany(() => Comment, (comment) => comment.idea)
+  comments: Comment[];
 
   @OneToMany(() => IdeaFile, (file) => file.idea)
   files: IdeaFile[];
