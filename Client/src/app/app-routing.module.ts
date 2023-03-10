@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { DetailComponent } from './detail/detail.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 const routes: Routes = [
@@ -37,6 +38,13 @@ const routes: Routes = [
         // loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
         component: ManageCategoryComponent
     },
+    {
+        path: 'view/profile',
+        // canActivate: [AuthGuard],
+        // loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+        component: ProfileComponent
+    },
+
 
     // { path: '**', component: PageNotFoundComponent },
 ];

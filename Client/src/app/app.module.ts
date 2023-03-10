@@ -54,9 +54,12 @@ import { RippleModule } from 'primeng/ripple';
 import { RatingModule } from 'primeng/rating';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
-
+import { CheckboxModule } from 'primeng/checkbox';
+import { CalendarModule } from 'primeng/calendar';
+import { ImageModule } from 'primeng/image';
 
 import { PostComponent } from './home/post/post.component';
+
 
 @NgModule({
     declarations: [
@@ -120,6 +123,9 @@ import { PostComponent } from './home/post/post.component';
         RatingModule,
         RadioButtonModule,
         InputNumberModule,
+        CheckboxModule,
+        CalendarModule,
+        ImageModule
     ]
 })
 export class AppModule { }
