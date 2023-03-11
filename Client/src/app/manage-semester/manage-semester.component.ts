@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../auth/services/authentication.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class ManageSemesterComponent {
   name: string;
   apiUrl: string = "http://localhost:3009/api/semester";
   listSelectedData: Array<any> = [];
-  constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private router : Router,
+  constructor(private messageService: MessageService, private router : Router,
     private http : HttpClient, private authService: AuthenticationService) { 
     this.getAllData();
   }
@@ -28,6 +28,9 @@ export class ManageSemesterComponent {
     this.cols = [
       { field: 'Stt', header: 'STT', width: '50px', textAlign: 'center' },
       { field: 'name', header: 'Name', width: '300px', textAlign: 'center' },
+      { field: 'startD', header: 'Start Date', width: '300px', textAlign: 'center' },
+      { field: 'closureD', header: 'closure Date', width: '300px', textAlign: 'center' },
+      { field: 'finalD', header: 'Final Date', width: '300px', textAlign: 'center' },
       {
         field: 'ThaoTac',
         header: 'Thao tác',
@@ -96,7 +99,7 @@ export class ManageSemesterComponent {
     this.messageService.add({ severity: severity, summary: 'Thông báo:', detail: detail });
   }
 
-  addCategory(){
+  addSemester(){
     this.http.post(this.apiUrl, {"name" : "hehe"}, {
       headers: {
         Authorization: 'Bearer ' + this.authService.getToken()
