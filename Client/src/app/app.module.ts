@@ -56,8 +56,9 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
-import { ImageModule } from 'primeng/image';
 
+import { ImageModule } from 'primeng/image'
+import { MessageService } from 'primeng/api';
 import { PostComponent } from './home/post/post.component';
 
 
@@ -79,11 +80,14 @@ import { PostComponent } from './home/post/post.component';
         ManageAccountComponent,
         PostComponent
     ],
-    providers: [],
+    providers: [MessageService],
     bootstrap: [AppComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
+        CheckboxModule,
+        CalendarModule,
+        ImageModule,
         AccordionModule,
         PasswordModule,
         InputTextModule,
@@ -126,6 +130,7 @@ import { PostComponent } from './home/post/post.component';
         CheckboxModule,
         CalendarModule,
         ImageModule
+        
     ]
 })
 export class AppModule { }

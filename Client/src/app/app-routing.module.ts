@@ -9,7 +9,6 @@ import { AuthGuard } from './shared/guard/auth.guard';
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
 import { ProfileComponent } from './profile/profile.component';
 
-
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     {
@@ -22,7 +21,7 @@ const routes: Routes = [
     },
     {
         path: 'home',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         // loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
         component: HomeComponent
     },
@@ -34,18 +33,16 @@ const routes: Routes = [
     },
     {
         path: 'manage/category',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         // loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
         component: ManageCategoryComponent
     },
     {
         path: 'view/profile',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         // loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
         component: ProfileComponent
     },
-
-
     // { path: '**', component: PageNotFoundComponent },
 ];
 
