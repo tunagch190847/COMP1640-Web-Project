@@ -5,12 +5,15 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
 } from '@nestjs/common';
 import { EIdeaFilter } from 'enum/idea.enum';
+import { VAddComment } from 'global/dto/addComment.dto';
 import { VCreateIdeaDto } from 'global/dto/create-idea.dto';
 import { VCreateReactionDto } from 'global/dto/reaction.dto';
 import { VUpdateIdeaDto } from 'global/dto/update-idea.dto';
@@ -77,5 +80,20 @@ export class IdeaController {
     idea_id: number,
   ) {
     return await this.ideaService.getIdeaDetail(idea_id, userData.user_id);
+  }
+
+  @Post('/:idea_id/comments')
+  async handleAddComment(
+    @UserData() userData: IUserData,
+    @Body() body: VAddComment,
+    @Param(
+      'idea_id',
+      new ParseIntPipe({
+        errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE,
+      }),
+    )
+    idea_id: number,
+  ) {
+    return await this.ideaService.createComment(userData, idea_id, body);
   }
 }
