@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 
@@ -23,7 +23,7 @@ interface Account {
   styleUrls: ['./profile.component.css'],
   providers: [MessageService, ConfirmationService]
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   profileDialog: boolean;
 
   accountDialog: boolean;
@@ -38,8 +38,13 @@ export class ProfileComponent {
   profileSubmitted: boolean;
   accountSubmitted: boolean;
   uploadedFiles: any[] = [];
+  url: string;
 
   constructor(private messageService: MessageService, private confirmationService: ConfirmationService) { }
+
+  ngOnInit() {
+    
+  }
 
   onUpload(event) {
     for (let file of event.files) {
@@ -75,6 +80,16 @@ export class ProfileComponent {
     this.accountDialog = false;
     this.profileSubmitted = false;
     this.accountSubmitted = false;
+  }
+
+  onselectFile(e){
+    if(e.target.files){
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload=(event:any)=>{
+        this.url = event.target.result;
+      }
+    }
   }
 
 }

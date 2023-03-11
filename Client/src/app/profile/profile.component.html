@@ -59,12 +59,9 @@
     styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="field">
-            <p-avatar image="https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg" shape="circle"
+            <p-avatar [image]="url" shape="circle"
                 size="xlarge"></p-avatar>
-            <p-fileUpload name="demo[]" url="./upload.php" (onUpload)="onUpload($event)"  accept="image/*"
-                >
-                
-            </p-fileUpload>
+            <input type="file" (change)="onselectFile($event)">
         </div>
         
         <div class="field">
