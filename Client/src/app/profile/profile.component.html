@@ -7,6 +7,7 @@
                 ideas section.</p>
         </div>
         
+
     </p-card>
 
     <p-card >
@@ -16,17 +17,17 @@
         </div>
         <div style="display: flex; justify-content: space-between;">
             <p style="min-width: 10%;">Full Name</p>
-            <p style="min-width: 20%;">Trinh Quoc Anh</p>
+            <p style="min-width: 20%;">{{name}}</p>
             <p style="min-width: 50%;">Your name will be displayed on the idea if you want</p>
         </div>
         <div style="display: flex; justify-content: space-between;">
             <p style="min-width: 10%;">Gender</p>
-            <p style="min-width: 20%;">Male</p>
+            <p style="min-width: 20%;">{{gender}}</p>
             <p style="min-width: 50%;"></p>
         </div>
         <div style="display: flex; justify-content: space-between;">
             <p style="min-width: 10%;">BirthDay</p>
-            <p style="min-width: 20%;">01/01/2001</p>
+            <p style="min-width: 20%;">{{date| date:'mediumDate'}}</p>
             <p style="min-width: 50%;"></p>
         </div>
         <div style="display: flex; justify-content: space-between;">
@@ -34,7 +35,6 @@
             <p style="min-width: 20%;">08*****932</p>
             <p style="min-width: 50%;"></p>
         </div>
-    
     </p-card>
 
     <p-card  >
@@ -85,7 +85,6 @@
             </div>
         </div>
 
-        
         <div class="field">
             <label for="phone">Phone</label>
             <p-inputNumber [(ngModel)]="Phone" mode="decimal" inputId="withoutgrouping" [useGrouping]="false">

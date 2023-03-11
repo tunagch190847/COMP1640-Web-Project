@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import { AuthenticationService } from '../auth/services/authentication.service';
 
 
 interface Profile {
@@ -23,27 +26,39 @@ interface Account {
   styleUrls: ['./profile.component.css'],
   providers: [MessageService, ConfirmationService]
 })
-export class ProfileComponent implements OnInit {
-  profileDialog: boolean;
 
+export class ProfileComponent {
+  profileDialog: boolean;
+  url: string;
   accountDialog: boolean;
   selectedValues: string;
   date: Date;
   Phone: number;
   password: string
   confirmPass: string
-
+  name: string;
+  gender: string;
   profile: Profile;
   account: Account;
   profileSubmitted: boolean;
   accountSubmitted: boolean;
   uploadedFiles: any[] = [];
-  url: string;
+  apiUrl:string = "http://localhost:3009/api/user/";
 
-  constructor(private messageService: MessageService, private confirmationService: ConfirmationService) { }
+  constructor(private messageService: MessageService, private confirmationService: ConfirmationService, 
+    private http : HttpClient, private router: Router,private authService: AuthenticationService,) { 
+    this.getDataUser();
+  }
 
-  ngOnInit() {
-    
+  getDataUser() {
+    this.http.get<any>(this.apiUrl + this.authService.getUserID(), {headers: {
+        Authorization: 'Bearer ' + this.authService.getToken()}
+      }).subscribe((result: any) => {
+              this.name = result.data.full_name;
+              this.gender = result.data.gender == 1 ? "Male" : "Female";
+              this.date = result.data.birthday;
+          });
+
   }
 
   onUpload(event) {
@@ -81,7 +96,6 @@ export class ProfileComponent implements OnInit {
     this.profileSubmitted = false;
     this.accountSubmitted = false;
   }
-
   onselectFile(e){
     if(e.target.files){
       var reader = new FileReader();
