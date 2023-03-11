@@ -108,4 +108,14 @@ export class ManageCategoryComponent implements OnInit {
     this.messageService.add({ severity: severity, summary: 'Thông báo:', detail: detail });
   }
 
+  addCategory(){
+    this.http.post(this.apiUrl, {"name" : "hehe"}, {
+      headers: {
+        Authorization: 'Bearer ' + this.authService.getToken()
+      }
+    }).subscribe((result: any) => {
+      console.log(result);
+    });
+    this.getAllData();
+  }
 }
